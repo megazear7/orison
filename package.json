@@ -1,0 +1,18 @@
+{
+  "name": "first-thoughts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@popeindustries/lit-html-server": "^1.1.1",
+    "esm": "^3.2.20",
+    "lit-html": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node -r esm build.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
