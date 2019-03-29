@@ -1,18 +1,20 @@
+# Orison
+
 [Orison Documentation](https://orison.alexlockhart.me)
 
-[lit-html](https://github.com/Polymer/lit-html) based static site generator.
-[lit-html-server](https://github.com/popeindustries/lit-html-server) for server side rendering with lit-html
+* [lit-html](https://github.com/Polymer/lit-html) based static site generator.
+* [lit-html-server](https://github.com/popeindustries/lit-html-server) for server side rendering with lit-html
 Requires [Node.js](https://nodejs.org/en/) 11.0.0+
 
-# Install
+## Install
 
 `npm run install`
 
-# Build
+## Build
 
 `npm run build`
 
-# Develop
+## Develop
 
 ### TODO
 
