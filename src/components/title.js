@@ -1,3 +1,5 @@
 const { html } = require('@popeindustries/lit-html-server');
 
-export default html`<h1>Hello, World!</h1>`;
+export default (title) => html`
+  <h1>${title}</h1>
+`;

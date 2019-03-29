@@ -1,4 +1,5 @@
 lit-html based static site generator.
+Requires node v11+
 
 # Install
 
