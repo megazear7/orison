@@ -16,7 +16,6 @@ Requires [Node.js](https://nodejs.org/en/) 11.0.0+
 
 1. Create a static directory of some sort.
 1. Allow the use of markdown.
-1. Allow for configuration of the build process. Create a root level js file that uses a method exported by /bin/build.js
 1. Update the example /src files to be documentation of this project.
 1. Update the package definition, giving the project a name, and making the /bin/build.js installed as a global cli utility.
 

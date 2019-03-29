@@ -11,7 +11,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node -r esm ./bin/build.js"
+    "build": "node -r esm ./orison.js"
   },
   "author": "",
   "license": "ISC"
