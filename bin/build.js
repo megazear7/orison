@@ -8,26 +8,46 @@ fileWalker(__dirname + '/../src/pages',
     if (err) throw err;
     if (file.includes('/layout.js')) return;
 
-    const newPath = '/build' + file
-      .slice(__dirname.length)
-      .slice('/pages'.length)
-      .replace('.js', '.html');
-    const page = renderToString(require(file).default);
+    const renderers = require(file).default;
+
+    let pages = [ ];
+    if (renderers.constructor.name === 'TemplateResult') {
+      pages.push({
+        path: '/build' + file.slice(__dirname.length).slice('/pages'.length).replace('.js', '.html'),
+        html: renderToString(renderers)
+      });
+    } else {
+      Object.keys(renderers).forEach(key => {
+        const renderer = renderers[key];
+        let path = '/build' + file.slice(__dirname.length).slice('/pages'.length);
+        path = path.slice(0, path.lastIndexOf('/'))
+        path = path + '/' + key + '.html';
+
+        pages.push({
+          path: path,
+          html: renderToString(renderer)
+        });
+      });
+    }
 
     if (!fs.existsSync(__dirname + '/../build')){
       fs.mkdirSync(__dirname + '/../build');
     }
 
-    page.then(html => {
-      fs.writeFile(__dirname + '/..' + newPath, html, err => {
-        if (err) console.log(err);
+    pages.forEach(page => {
+      page.html.then(html => {
+        fs.writeFile(__dirname + '/..' + page.path, html, err => {
+          if (err) console.log(err);
+        });
       });
     });
   },
   (err, directory) => {
-    const newPath = '/build' + directory.slice(__dirname.length).slice('/pages'.length)
-    fs.mkdir(__dirname + '/..' + newPath, err => {
-      if (err) console.log(err);
-    });
+    const newPath = __dirname + '/../build' + directory.slice(__dirname.length).slice('/pages'.length)
+    if (!fs.existsSync(newPath)){
+      fs.mkdir(newPath, err => {
+        if (err) console.log(err);
+      });
+    }
   }
 );
