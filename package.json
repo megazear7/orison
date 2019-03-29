@@ -1,7 +1,7 @@
 {
-  "name": "first-thoughts",
+  "name": "orison",
   "version": "1.0.0",
-  "description": "",
+  "description": "A static site generator built on top of lit-html",
   "main": "index.js",
   "dependencies": {
     "@popeindustries/lit-html-server": "^1.1.1",
