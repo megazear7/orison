@@ -6,13 +6,15 @@
   "dependencies": {
     "@popeindustries/lit-html-server": "^1.1.1",
     "esm": "^3.2.20",
+    "express": "^4.16.4",
     "lit-html": "^1.0.0",
     "markdown-it": "^8.4.2"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node -r esm ./orison.js"
+    "build": "node -r esm ./orison.js",
+    "serve": "node -r esm ./bin/server.js"
   },
   "author": "",
   "license": "ISC"

@@ -14,7 +14,9 @@ Requires [Node.js](https://nodejs.org/en/) 11.0.0+
 
 `npm run build`
 
-## Develop
+## Serve
+
+`npm run serve`
 
 ### TODO
 
