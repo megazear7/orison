@@ -146,55 +146,52 @@ class OrisonFile {
       const template = eval('html`' + fs.readFileSync(this.file).toString() + '`');
 
       this.orison.getLayout(this.file)
-      .then(layout => renderToString(layout(template)))
-      .then(html => {
-        fs.writeFile(this.orison.getBuildFilePath(this.file), html, err => {
-          if (err) console.log(err);
-        });
-      });
+      .then(layout =>
+        renderToString(layout(template)))
+      .then(html =>
+        fs.writeFile(this.orison.getBuildFilePath(this.file), html, err => err && console.log(err)));
     });
   }
 
   renderMdFile() {
-    const markdown = fs.readFileSync(this.file).toString();
-    const htmlString = md().render(markdown);
-
     this.orison.getLayout(this.file)
-    .then(layout => renderToString(layout(html`${unsafeHTML(htmlString)}`)))
-    .then(html => {
-      fs.writeFile(this.orison.getBuildFilePath(this.file), html, err => {
-        if (err) console.log(err);
-      });
-    });
+    .then(layout =>
+      renderToString(layout(html`${unsafeHTML(this.markdownHtml)}`)))
+    .then(html =>
+      fs.writeFile(this.orison.getBuildFilePath(this.file), html, err => err && console.log(err)));
   }
 
   renderJsFile() {
+    this.jsPages.forEach(page =>
+      page.html.then(html =>
+        fs.writeFile(page.path, html, err => err && console.log(err))));
+  }
+
+  get markdownHtml() {
+    return md().render(this.markdown);
+  }
+
+  get markdown() {
+    return fs.readFileSync(this.file).toString();
+  }
+
+  getIndexPath(fileName) {
+    return this.orison.getBuildPath(
+             this.orison.replaceFileName(
+               this.orison.getPageContextPath(this.file), fileName + '.html'));
+  }
+
+  get jsPages() {
     const renderers = require(this.file).default;
 
-    let pages = [ ];
-    if (renderers.constructor.name === 'TemplateResult') {
-      pages.push({
-        path: this.orison.getBuildFilePath(this.file),
-        html: renderToString(renderers)
-      });
-    } else {
-      Object.keys(renderers).forEach(key => {
-        const renderer = renderers[key];
-        let filePath = this.orison.replaceFileName(this.orison.getPageContextPath(this.file), key + '.html');
-
-        pages.push({
-          path: this.orison.getBuildPath(filePath),
-          html: renderToString(renderer)
-        });
-      });
-    }
-
-    pages.forEach(page => {
-      page.html.then(html => {
-        fs.writeFile(page.path, html, err => {
-          if (err) console.log(err);
-        });
-      });
-    });
+    return renderers.constructor.name === 'TemplateResult'
+      ? [{
+          path: this.orison.getBuildFilePath(this.file),
+          html: renderToString(renderers)
+        }]
+      : Object.keys(renderers).map(key => ({
+          path: this.getIndexPath(key),
+          html: renderToString(renderers[key])
+        }));
   }
 }
