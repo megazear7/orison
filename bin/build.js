@@ -30,8 +30,7 @@ export default function({ buildDir = 'docs' } = {}) {
       }
     },
     (err, directory) => {
-      const newPath = getBuildPath(directory.split('/pages')[1]);
-      console.log(newPath);
+      const newPath = getBuildPath(getPageContextPath(directory));
       if (!fs.existsSync(newPath)){
         fs.mkdir(newPath, err => {
           if (err) console.log(err);
@@ -61,7 +60,7 @@ export default function({ buildDir = 'docs' } = {}) {
     } else {
       Object.keys(renderers).forEach(key => {
         const renderer = renderers[key];
-        let filePath = replaceFileName(file.split('/pages')[1], key + '.html');
+        let filePath = replaceFileName(getPageContextPath(file), key + '.html');
 
         pages.push({
           path: getBuildPath(filePath),
@@ -84,8 +83,17 @@ export default function({ buildDir = 'docs' } = {}) {
     return path.join(directory, fileName);
   }
 
+  function replaceExtension(filePath, extension) {
+    let newFilePath = path.basename(filePath, path.extname(filePath)) + '.' + extension;
+    return path.join(path.dirname(filePath), newFilePath);
+  }
+
   function getBuildFilePath(file) {
-    return __dirname + '/..' + '/' + buildDir + file.slice(__dirname.length).slice('/pages'.length).replace('.js', '.html');
+    return getBuildPath(replaceExtension(getPageContextPath(file), 'html'));
+  }
+
+  function getPageContextPath(pagePath) {
+    return pagePath.split('/pages')[1];
   }
 
   function getSrcPath(srcPath = '') {
