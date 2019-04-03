@@ -7,93 +7,89 @@ import fileWalker from './file-walker.js';
 import md from 'markdown-it';
 import { ncp } from 'ncp';
 
-const protectedFileNames = [ 'CNAME' ];
-
 export default class OrisonGenerator {
-  constructor({ buildDir = 'docs' } = {}) {
+  constructor({
+      buildDir = 'docs',
+      protectedFileNames = [ 'CNAME' ]
+    } = {}) {
     this.buildDir = buildDir;
+    this.protectedFileNames = protectedFileNames;
+    this.global = JSON.parse(fs.readFileSync(this.getSrcPath('global.json')));
   }
 
   build() {
-    build({
-      buildDir: this.buildDir
+    if (fs.existsSync(this.getBuildPath())){
+      fileWalker(this.getBuildPath(),
+        (err, file) => {
+          if (! this.protectedFileNames.includes(path.basename(file))) fs.unlinkSync(file);
+        }
+      );
+    } else {
+      fs.mkdirSync(this.getBuildPath());
+    }
+
+    ncp(this.getSrcPath('static'), this.getBuildPath(), function (err) {
+     if (err) {
+       return console.error(err);
+     }
     });
-  }
-}
 
-function build({ buildDir = 'docs' } = {}) {
-  var global = JSON.parse(fs.readFileSync(getSrcPath('global.json')));
+    fileWalker(this.getSrcPath('pages'),
+      (err, file) => {
+        if (err) throw err;
 
-  fileWalker(getBuildPath(),
-    (err, file) => {
-      if (! protectedFileNames.includes(path.basename(file))) fs.unlinkSync(file);
-    }
-  );
-
-  if (!fs.existsSync(getBuildPath())){
-    fs.mkdirSync(getBuildPath());
-  }
-
-  ncp(getSrcPath('static'), getBuildPath(), function (err) {
-   if (err) {
-     return console.error(err);
-   }
-  });
-
-  fileWalker(getSrcPath('pages'),
-    (err, file) => {
-      if (err) throw err;
-
-      if (file.includes('/layout.js')) {
-        return;
-      } else if (file.endsWith('.md')) {
-        renderMdFile(file);
-      } else if (file.endsWith('.js')) {
-        renderJsFile(file);
-      } else if (file.endsWith('.html')) {
-        renderHtmlFile(file);
+        if (file.includes('/layout.js')) {
+          return;
+        } else if (file.endsWith('.md')) {
+          this.renderMdFile(file);
+        } else if (file.endsWith('.js')) {
+          this.renderJsFile(file);
+        } else if (file.endsWith('.html')) {
+          this.renderHtmlFile(file);
+        }
+      },
+      (err, directory) => {
+        const newPath = this.getBuildPath(this.getPageContextPath(directory));
+        if (!fs.existsSync(newPath)){
+          fs.mkdir(newPath, err => {
+            if (err) console.log(err);
+          });
+        }
       }
-    },
-    (err, directory) => {
-      const newPath = getBuildPath(getPageContextPath(directory));
-      if (!fs.existsSync(newPath)){
-        fs.mkdir(newPath, err => {
-          if (err) console.log(err);
-        });
-      }
-    }
-  );
+    );
+  }
 
-  function renderHtmlFile(file) {
-    getData(file)
+  renderHtmlFile(file) {
+    this.getData(file)
     .then(data => {
-      // The global and data variable is used in the evaled lit-html template literal.
+      // The global and data variables are used in the evaled lit-html template literal.
+      const global = this.global
       const template = eval('html`' + fs.readFileSync(file).toString() + '`');
 
-      getLayout(file)
+      this.getLayout(file)
       .then(layout => renderToString(layout(template)))
       .then(html => {
-        fs.writeFile(getBuildFilePath(file), html, err => {
+        fs.writeFile(this.getBuildFilePath(file), html, err => {
           if (err) console.log(err);
         });
       });
     });
   }
 
-  function renderMdFile(file) {
+  renderMdFile(file) {
     const markdown = fs.readFileSync(file).toString();
     const htmlString = md().render(markdown);
 
-    getLayout(file)
+    this.getLayout(file)
     .then(layout => renderToString(layout(html`${unsafeHTML(htmlString)}`)))
     .then(html => {
-      fs.writeFile(getBuildFilePath(file), html, err => {
+      fs.writeFile(this.getBuildFilePath(file), html, err => {
         if (err) console.log(err);
       });
     });
   }
 
-  function getData(filePath) {
+  getData(filePath) {
     let directory = path.dirname(filePath);
 
     while (! directory.endsWith('src') && directory != '/') {
@@ -109,7 +105,7 @@ function build({ buildDir = 'docs' } = {}) {
     return new Promise(resolve => resolve({}));
   }
 
-  function getLayout(filePath) {
+  getLayout(filePath) {
     let directory = path.dirname(filePath);
 
     while (! directory.endsWith('src') && directory != '/') {
@@ -133,22 +129,22 @@ function build({ buildDir = 'docs' } = {}) {
     return new Promise(resolve => resolve(page => html`${page}`));
   }
 
-  function renderJsFile(file) {
+  renderJsFile(file) {
     const renderers = require(file).default;
 
     let pages = [ ];
     if (renderers.constructor.name === 'TemplateResult') {
       pages.push({
-        path: getBuildFilePath(file),
+        path: this.getBuildFilePath(file),
         html: renderToString(renderers)
       });
     } else {
       Object.keys(renderers).forEach(key => {
         const renderer = renderers[key];
-        let filePath = replaceFileName(getPageContextPath(file), key + '.html');
+        let filePath = this.replaceFileName(this.getPageContextPath(file), key + '.html');
 
         pages.push({
-          path: getBuildPath(filePath),
+          path: this.getBuildPath(filePath),
           html: renderToString(renderer)
         });
       });
@@ -163,29 +159,29 @@ function build({ buildDir = 'docs' } = {}) {
     });
   }
 
-  function replaceFileName(filePath, fileName) {
+  replaceFileName(filePath, fileName) {
     let directory = filePath.slice(0, filePath.lastIndexOf('/'))
     return path.join(directory, fileName);
   }
 
-  function replaceExtension(filePath, extension) {
+  replaceExtension(filePath, extension) {
     let newFilePath = path.basename(filePath, path.extname(filePath)) + '.' + extension;
     return path.join(path.dirname(filePath), newFilePath);
   }
 
-  function getBuildFilePath(file) {
-    return getBuildPath(replaceExtension(getPageContextPath(file), 'html'));
+  getBuildFilePath(file) {
+    return this.getBuildPath(this.replaceExtension(this.getPageContextPath(file), 'html'));
   }
 
-  function getPageContextPath(pagePath) {
+  getPageContextPath(pagePath) {
     return pagePath.split('/pages')[1];
   }
 
-  function getSrcPath(srcPath = '') {
+  getSrcPath(srcPath = '') {
     return path.join(__dirname, '../src', srcPath);
   }
 
-  function getBuildPath(buildPath = '') {
-    return path.join(__dirname, '..', buildDir, buildPath);
+  getBuildPath(buildPath = '') {
+    return path.join(__dirname, '..', this.buildDir, buildPath);
   }
 }
