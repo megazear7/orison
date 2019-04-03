@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export default function fileWalker(dir, fileCallback, directoryCallback) {
+export default function fileWalker(dir, fileCallback = function() {}, directoryCallback = function() {}) {
   fs.readdir(dir, (err, list) => {
     if (err) return directoryCallback(err);
 

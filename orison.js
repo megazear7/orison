@@ -1,3 +1,5 @@
-import build from './bin/build.js'
+import Orison from './bin/build.js'
 
-build();
+const orison = new Orison();
+
+orison.build();

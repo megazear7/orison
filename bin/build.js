@@ -7,8 +7,28 @@ import fileWalker from './file-walker.js';
 import md from 'markdown-it';
 import { ncp } from 'ncp';
 
-export default function({ buildDir = 'docs' } = {}) {
+const protectedFileNames = [ 'CNAME' ];
+
+export default class OrisonGenerator {
+  constructor({ buildDir = 'docs' } = {}) {
+    this.buildDir = buildDir;
+  }
+
+  build() {
+    build({
+      buildDir: this.buildDir
+    });
+  }
+}
+
+function build({ buildDir = 'docs' } = {}) {
   var global = JSON.parse(fs.readFileSync(getSrcPath('global.json')));
+
+  fileWalker(getBuildPath(),
+    (err, file) => {
+      if (! protectedFileNames.includes(path.basename(file))) fs.unlinkSync(file);
+    }
+  );
 
   if (!fs.existsSync(getBuildPath())){
     fs.mkdirSync(getBuildPath());
