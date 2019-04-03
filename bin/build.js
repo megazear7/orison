@@ -95,19 +95,12 @@ export default class OrisonGenerator {
     return new Promise(resolve => resolve(page => html`${page}`));
   }
 
-  replaceFileName(filePath, fileName) {
-    let directory = filePath.slice(0, filePath.lastIndexOf('/'))
-    return path.join(directory, fileName);
-  }
 
   replaceExtension(filePath, extension) {
     let newFilePath = path.basename(filePath, path.extname(filePath)) + '.' + extension;
     return path.join(path.dirname(filePath), newFilePath);
   }
 
-  getBuildFilePath(file) {
-    return this.getBuildPath(this.replaceExtension(this.getPageContextPath(file), 'html'));
-  }
 
   getPageContextPath(pagePath) {
     return pagePath.split('/pages')[1];
@@ -149,7 +142,7 @@ class OrisonFile {
       .then(layout =>
         renderToString(layout(template)))
       .then(html =>
-        fs.writeFile(this.orison.getBuildFilePath(this.file), html, err => err && console.log(err)));
+        fs.writeFile(this.buildFilePath, html, err => err && console.log(err)));
     });
   }
 
@@ -158,7 +151,7 @@ class OrisonFile {
     .then(layout =>
       renderToString(layout(html`${unsafeHTML(this.markdownHtml)}`)))
     .then(html =>
-      fs.writeFile(this.orison.getBuildFilePath(this.file), html, err => err && console.log(err)));
+      fs.writeFile(this.buildFilePath, html, err => err && console.log(err)));
   }
 
   renderJsFile() {
@@ -175,10 +168,10 @@ class OrisonFile {
     return fs.readFileSync(this.file).toString();
   }
 
-  getIndexPath(fileName) {
+  get buildFilePath() {
     return this.orison.getBuildPath(
-             this.orison.replaceFileName(
-               this.orison.getPageContextPath(this.file), fileName + '.html'));
+             this.orison.replaceExtension(
+               this.orison.getPageContextPath(this.file), 'html'));
   }
 
   get jsPages() {
@@ -186,12 +179,23 @@ class OrisonFile {
 
     return renderers.constructor.name === 'TemplateResult'
       ? [{
-          path: this.orison.getBuildFilePath(this.file),
+          path: this.buildFilePath,
           html: renderToString(renderers)
         }]
       : Object.keys(renderers).map(key => ({
           path: this.getIndexPath(key),
           html: renderToString(renderers[key])
         }));
+  }
+
+  getIndexPath(fileName) {
+    return this.orison.getBuildPath(
+             this.replaceFileName(fileName + '.html'));
+  }
+
+  replaceFileName(fileName) {
+    const filePath = this.orison.getPageContextPath(this.file);
+    const directory = filePath.slice(0, filePath.lastIndexOf('/'))
+    return path.join(directory, fileName);
   }
 }
