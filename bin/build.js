@@ -28,6 +28,8 @@ export default function({ buildDir = 'docs' } = {}) {
         renderMdFile(file);
       } else if (file.endsWith('.js')) {
         renderJsFile(file);
+      } else if (file.endsWith('.html')) {
+        renderHtmlFile(file);
       }
     },
     (err, directory) => {
@@ -40,12 +42,28 @@ export default function({ buildDir = 'docs' } = {}) {
     }
   );
 
+  function renderHtmlFile(file) {
+    getData(file)
+    .then(data => {
+      // the data variable is used in the evaled lit-html template literal.
+      const template = eval('html`' + fs.readFileSync(file).toString() + '`');
+
+      getLayout(file)
+      .then(layout => renderToString(layout(template)))
+      .then(html => {
+        fs.writeFile(getBuildFilePath(file), html, err => {
+          if (err) console.log(err);
+        });
+      });
+    });
+  }
+
   function renderMdFile(file) {
     const markdown = fs.readFileSync(file).toString();
     const htmlString = md().render(markdown);
 
     getLayout(file)
-    .then(layout => renderToString(layout.default(html`${unsafeHTML(htmlString)}`)))
+    .then(layout => renderToString(layout(html`${unsafeHTML(htmlString)}`)))
     .then(html => {
       fs.writeFile(getBuildFilePath(file), html, err => {
         if (err) console.log(err);
@@ -53,19 +71,36 @@ export default function({ buildDir = 'docs' } = {}) {
     });
   }
 
+  function getData(filePath) {
+    let directory = path.dirname(filePath);
+
+    while (! directory.endsWith('src') && directory != '/') {
+      console.log(directory);
+      let jsonFilePath = path.join(directory, 'data.json');
+
+      if (fs.existsSync(jsonFilePath)) {
+        return import(jsonFilePath);
+      } else {
+        directory = path.dirname(directory);
+      }
+    }
+
+    return new Promise(resolve => resolve({}));
+  }
+
   function getLayout(filePath) {
     let directory = path.dirname(filePath);
 
-    while (directory != 'src') {
+    while (! directory.endsWith('src') && directory != '/') {
       let jsLayoutPath = path.join(directory, 'layout.js');
       let htmlLayoutPath = path.join(directory, 'layout.html');
 
       if (fs.existsSync(jsLayoutPath)) {
-        return import(jsLayoutPath);
+        return import(jsLayoutPath).then(layout => layout.default);
       } else if (fs.existsSync(htmlLayoutPath)) {
         return new Promise((resolve, reject) => {
           fs.readFile(htmlLayoutPath, 'utf8', (err, htmlString) => {
-            if (err) throw err;
+            if (err) reject(err);
             resolve(html`${unsafeHTML(htmlString)}`);
           });
         });
@@ -74,9 +109,7 @@ export default function({ buildDir = 'docs' } = {}) {
       }
     }
 
-    return new Promise((resolve, reject) => {
-      resolve(page => html`${page}`);
-    });
+    return new Promise(resolve => resolve(page => html`${page}`));
   }
 
   function renderJsFile(file) {
