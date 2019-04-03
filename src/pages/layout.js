@@ -6,6 +6,8 @@ export default page => html`
   <head>
     <meta charset="UTF-8" />
     <title>Example</title>
+    <script src="app.js"></script>
+    <link rel="stylesheet" type="text/css" href="app.css">
   </head>
   <body>
     <div>Header</div>

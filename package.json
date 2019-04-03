@@ -8,7 +8,8 @@
     "esm": "^3.2.20",
     "express": "^4.16.4",
     "lit-html": "^1.0.0",
-    "markdown-it": "^8.4.2"
+    "markdown-it": "^8.4.2",
+    "ncp": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {

@@ -3,8 +3,15 @@ import index from '../src/pages/index.js';
 import fileWalker from './file-walker.js';
 import fs from 'fs';
 import md from 'markdown-it';
+import { ncp } from 'ncp';
 
 export default function({ buildDir = 'docs' } = {}) {
+  ncp(__dirname + '/../src/static', __dirname + '/../' + buildDir, function (err) {
+   if (err) {
+     return console.error(err);
+   }
+  });
+
   fileWalker(__dirname + '/../src/pages',
     (err, file) => {
       if (err) throw err;
