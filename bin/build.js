@@ -28,7 +28,7 @@ export default class OrisonGenerator {
       fs.mkdirSync(this.getBuildPath());
     }
 
-    ncp(this.getSrcPath('static'), this.getBuildPath(), function (err) {
+    ncp(this.getSrcPath('static'), this.getBuildPath(), err => {
      if (err) {
        return console.error(err);
      }
@@ -54,53 +54,6 @@ export default class OrisonGenerator {
       }
     );
   }
-
-  getData(filePath) {
-    let directory = path.dirname(filePath);
-
-    while (! directory.endsWith('src') && directory != '/') {
-      let jsonFilePath = path.join(directory, 'data.json');
-
-      if (fs.existsSync(jsonFilePath)) {
-        return import(jsonFilePath);
-      } else {
-        directory = path.dirname(directory);
-      }
-    }
-
-    return new Promise(resolve => resolve({}));
-  }
-
-  getLayout(filePath) {
-    let directory = path.dirname(filePath);
-
-    while (! directory.endsWith('src') && directory != '/') {
-      let jsLayoutPath = path.join(directory, 'layout.js');
-      let htmlLayoutPath = path.join(directory, 'layout.html');
-
-      if (fs.existsSync(jsLayoutPath)) {
-        return import(jsLayoutPath).then(layout => layout.default);
-      } else if (fs.existsSync(htmlLayoutPath)) {
-        return new Promise((resolve, reject) => {
-          fs.readFile(htmlLayoutPath, 'utf8', (err, htmlString) => {
-            if (err) reject(err);
-            resolve(html`${unsafeHTML(htmlString)}`);
-          });
-        });
-      } else {
-        directory = path.dirname(directory);
-      }
-    }
-
-    return new Promise(resolve => resolve(page => html`${page}`));
-  }
-
-
-  replaceExtension(filePath, extension) {
-    let newFilePath = path.basename(filePath, path.extname(filePath)) + '.' + extension;
-    return path.join(path.dirname(filePath), newFilePath);
-  }
-
 
   getPageContextPath(pagePath) {
     return pagePath.split('/pages')[1];
@@ -132,13 +85,13 @@ class OrisonFile {
   }
 
   renderHtmlFile() {
-    this.orison.getData(this.file)
+    this.getData()
     .then(data => {
       // The global and data variables are used in the evaled lit-html template literal.
       const global = this.orison.global
       const template = eval('html`' + fs.readFileSync(this.file).toString() + '`');
 
-      this.orison.getLayout(this.file)
+      this.getLayout()
       .then(layout =>
         renderToString(layout(template)))
       .then(html =>
@@ -147,7 +100,7 @@ class OrisonFile {
   }
 
   renderMdFile() {
-    this.orison.getLayout(this.file)
+    this.getLayout()
     .then(layout =>
       renderToString(layout(html`${unsafeHTML(this.markdownHtml)}`)))
     .then(html =>
@@ -160,6 +113,46 @@ class OrisonFile {
         fs.writeFile(page.path, html, err => err && console.log(err))));
   }
 
+  getLayout() {
+    let directory = path.dirname(this.file);
+
+    while (! directory.endsWith('src') && directory != '/') {
+      let jsLayoutPath = path.join(directory, 'layout.js');
+      let htmlLayoutPath = path.join(directory, 'layout.html');
+
+      if (fs.existsSync(jsLayoutPath)) {
+        return import(jsLayoutPath).then(layout => layout.default);
+      } else if (fs.existsSync(htmlLayoutPath)) {
+        return new Promise((resolve, reject) => {
+          fs.readFile(htmlLayoutPath, 'utf8', (err, htmlString) => {
+            if (err) reject(err);
+            resolve(html`${unsafeHTML(htmlString)}`);
+          });
+        });
+      } else {
+        directory = path.dirname(directory);
+      }
+    }
+
+    return new Promise(resolve => resolve(page => html`${page}`));
+  }
+
+  getData() {
+    let directory = path.dirname(this.file);
+
+    while (! directory.endsWith('src') && directory != '/') {
+      let jsonFilePath = path.join(directory, 'data.json');
+
+      if (fs.existsSync(jsonFilePath)) {
+        return import(jsonFilePath);
+      } else {
+        directory = path.dirname(directory);
+      }
+    }
+
+    return new Promise(resolve => resolve({}));
+  }
+
   get markdownHtml() {
     return md().render(this.markdown);
   }
@@ -169,9 +162,7 @@ class OrisonFile {
   }
 
   get buildFilePath() {
-    return this.orison.getBuildPath(
-             this.orison.replaceExtension(
-               this.orison.getPageContextPath(this.file), 'html'));
+    return this.orison.getBuildPath(this.replaceExtension('html'));
   }
 
   get jsPages() {
@@ -186,6 +177,12 @@ class OrisonFile {
           path: this.getIndexPath(key),
           html: renderToString(renderers[key])
         }));
+  }
+
+  replaceExtension(extension) {
+    const filePath = this.orison.getPageContextPath(this.file);
+    const newFilePath = path.basename(filePath, path.extname(filePath)) + '.' + extension;
+    return path.join(path.dirname(filePath), newFilePath);
   }
 
   getIndexPath(fileName) {
