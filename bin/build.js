@@ -8,6 +8,8 @@ import md from 'markdown-it';
 import { ncp } from 'ncp';
 
 export default function({ buildDir = 'docs' } = {}) {
+  var global = JSON.parse(fs.readFileSync(getSrcPath('global.json')));
+
   if (!fs.existsSync(getBuildPath())){
     fs.mkdirSync(getBuildPath());
   }
@@ -45,7 +47,7 @@ export default function({ buildDir = 'docs' } = {}) {
   function renderHtmlFile(file) {
     getData(file)
     .then(data => {
-      // the data variable is used in the evaled lit-html template literal.
+      // The global and data variable is used in the evaled lit-html template literal.
       const template = eval('html`' + fs.readFileSync(file).toString() + '`');
 
       getLayout(file)
@@ -75,7 +77,6 @@ export default function({ buildDir = 'docs' } = {}) {
     let directory = path.dirname(filePath);
 
     while (! directory.endsWith('src') && directory != '/') {
-      console.log(directory);
       let jsonFilePath = path.join(directory, 'data.json');
 
       if (fs.existsSync(jsonFilePath)) {
