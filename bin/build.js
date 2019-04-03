@@ -10,11 +10,22 @@ import { ncp } from 'ncp';
 export default class OrisonGenerator {
   constructor({
       buildDir = 'docs',
-      protectedFileNames = [ 'CNAME' ]
+      protectedFileNames = [ 'CNAME' ],
+      globalMetadataFile = 'global.json',
+      staticDirectory = 'static',
+      pagesDirectory = 'pages',
+      srcDirectory = 'src',
+      layoutFileBasename = 'layout',
+      dataFileBasename = 'data'
     } = {}) {
     this.buildDir = buildDir;
     this.protectedFileNames = protectedFileNames;
-    this.global = JSON.parse(fs.readFileSync(this.getSrcPath('global.json')));
+    this.staticDirectory = staticDirectory;
+    this.pagesDirectory = pagesDirectory;
+    this.srcDirectory = srcDirectory;
+    this.layoutFileBasename = layoutFileBasename;
+    this.dataFileBasename = dataFileBasename;
+    this.global = JSON.parse(fs.readFileSync(this.getSrcPath(globalMetadataFile)));
   }
 
   build() {
@@ -28,17 +39,17 @@ export default class OrisonGenerator {
       fs.mkdirSync(this.getBuildPath());
     }
 
-    ncp(this.getSrcPath('static'), this.getBuildPath(), err => {
+    ncp(this.getSrcPath(this.staticDirectory), this.getBuildPath(), err => {
      if (err) {
        return console.error(err);
      }
     });
 
-    fileWalker(this.getSrcPath('pages'),
+    fileWalker(this.getSrcPath(this.pagesDirectory),
       (err, file) => {
         if (err) {
           throw err;
-        } else if (file.includes('/layout.js')) {
+        } else if (file.endsWith(this.layoutFileBasename)) {
           return;
         } else {
           (new OrisonFile(this, file)).render();
@@ -56,11 +67,11 @@ export default class OrisonGenerator {
   }
 
   getPageContextPath(pagePath) {
-    return pagePath.split('/pages')[1];
+    return pagePath.split('/' + this.pagesDirectory)[1];
   }
 
   getSrcPath(srcPath = '') {
-    return path.join(__dirname, '../src', srcPath);
+    return path.join(__dirname, '../', this.srcDirectory, srcPath);
   }
 
   getBuildPath(buildPath = '') {
@@ -116,9 +127,9 @@ class OrisonFile {
   getLayout() {
     let directory = path.dirname(this.file);
 
-    while (! directory.endsWith('src') && directory != '/') {
-      let jsLayoutPath = path.join(directory, 'layout.js');
-      let htmlLayoutPath = path.join(directory, 'layout.html');
+    while (! directory.endsWith(this.orison.srcDirectory) && directory != '/') {
+      let jsLayoutPath = path.join(directory, this.orison.layoutFileBasename + '.js');
+      let htmlLayoutPath = path.join(directory, this.orison.layoutFileBasename + '.html');
 
       if (fs.existsSync(jsLayoutPath)) {
         return import(jsLayoutPath).then(layout => layout.default);
@@ -140,8 +151,8 @@ class OrisonFile {
   getData() {
     let directory = path.dirname(this.file);
 
-    while (! directory.endsWith('src') && directory != '/') {
-      let jsonFilePath = path.join(directory, 'data.json');
+    while (! directory.endsWith(this.orison.srcDirectory) && directory != '/') {
+      let jsonFilePath = path.join(directory, this.orison.dataFileBasename + '.json');
 
       if (fs.existsSync(jsonFilePath)) {
         return import(jsonFilePath);
