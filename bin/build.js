@@ -1,24 +1,25 @@
+import fs from 'fs';
+import path from 'path';
 import { renderToString } from '@popeindustries/lit-html-server';
 import index from '../src/pages/index.js';
 import fileWalker from './file-walker.js';
-import fs from 'fs';
 import md from 'markdown-it';
 import { ncp } from 'ncp';
 
 export default function({ buildDir = 'docs' } = {}) {
-  ncp(__dirname + '/../src/static', __dirname + '/../' + buildDir, function (err) {
+  if (!fs.existsSync(getBuildPath())){
+    fs.mkdirSync(getBuildPath());
+  }
+
+  ncp(getSrcPath('static'), getBuildPath(), function (err) {
    if (err) {
      return console.error(err);
    }
   });
 
-  fileWalker(__dirname + '/../src/pages',
+  fileWalker(getSrcPath('pages'),
     (err, file) => {
       if (err) throw err;
-
-      if (!fs.existsSync(__dirname + '/../' + buildDir)){
-        fs.mkdirSync(__dirname + '/../' + buildDir);
-      }
 
       if (file.includes('/layout.js')) {
         return;
@@ -29,7 +30,8 @@ export default function({ buildDir = 'docs' } = {}) {
       }
     },
     (err, directory) => {
-      const newPath = __dirname + '/../' + buildDir + directory.slice(__dirname.length).slice('/pages'.length)
+      const newPath = getBuildPath(directory.split('/pages')[1]);
+      console.log(newPath);
       if (!fs.existsSync(newPath)){
         fs.mkdir(newPath, err => {
           if (err) console.log(err);
@@ -42,7 +44,7 @@ export default function({ buildDir = 'docs' } = {}) {
     let markdown = fs.readFileSync(file).toString();
     let html = md().render(markdown);
 
-    fs.writeFile(__dirname + '/..' + getBuildPath(file), html, err => {
+    fs.writeFile(getBuildFilePath(file), html, err => {
       if (err) console.log(err);
     });
   }
@@ -53,18 +55,16 @@ export default function({ buildDir = 'docs' } = {}) {
     let pages = [ ];
     if (renderers.constructor.name === 'TemplateResult') {
       pages.push({
-        path: getBuildPath(file),
+        path: getBuildFilePath(file),
         html: renderToString(renderers)
       });
     } else {
       Object.keys(renderers).forEach(key => {
         const renderer = renderers[key];
-        let path = '/' + buildDir + file.slice(__dirname.length).slice('/pages'.length);
-        path = path.slice(0, path.lastIndexOf('/'))
-        path = path + '/' + key + '.html';
+        let filePath = replaceFileName(file.split('/pages')[1], key + '.html');
 
         pages.push({
-          path: path,
+          path: getBuildPath(filePath),
           html: renderToString(renderer)
         });
       });
@@ -72,14 +72,27 @@ export default function({ buildDir = 'docs' } = {}) {
 
     pages.forEach(page => {
       page.html.then(html => {
-        fs.writeFile(__dirname + '/..' + page.path, html, err => {
+        fs.writeFile(page.path, html, err => {
           if (err) console.log(err);
         });
       });
     });
   }
 
-  function getBuildPath(file) {
-    return '/' + buildDir + file.slice(__dirname.length).slice('/pages'.length).replace('.js', '.html');
+  function replaceFileName(filePath, fileName) {
+    let directory = filePath.slice(0, filePath.lastIndexOf('/'))
+    return path.join(directory, fileName);
+  }
+
+  function getBuildFilePath(file) {
+    return __dirname + '/..' + '/' + buildDir + file.slice(__dirname.length).slice('/pages'.length).replace('.js', '.html');
+  }
+
+  function getSrcPath(srcPath = '') {
+    return path.join(__dirname, '../src', srcPath);
+  }
+
+  function getBuildPath(buildPath = '') {
+    return path.join(__dirname, '..', buildDir, buildPath);
   }
 }
