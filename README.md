@@ -20,7 +20,7 @@ Requires [Node.js](https://nodejs.org/en/) 11.0.0+
 
 ### TODO
 
-1. Need to provide someway of doing markdown partials. Markdown pages should auto include layouts.
+1. Need to provide someway of doing markdown partials.
 1. Provide .html pages and partials which are pulled in as strings and rendered as lit-html templates. These .html pages should auto include layouts.
 1. Delete everything in buildDir except the CNAME. Make the file names that get skipped a configurable array.
 1. Update the example /src files to be documentation of this project.
