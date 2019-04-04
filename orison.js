@@ -1,4 +1,4 @@
-import Orison from './bin/build.js'
+import Orison from './bin/orison-generator.js'
 
 const orison = new Orison();
 

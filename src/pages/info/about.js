@@ -1,8 +1,8 @@
-const { html } = require('@popeindustries/lit-html-server');
-import { OrisonFile } from '../../../bin/build.js';
-const file = new OrisonFile(__filename);
+import { html } from '@popeindustries/lit-html-server';
+import OrisonFile from '../../../bin/orison-file.js';
 
 export default async function() {
+  const file = new OrisonFile(__filename);
   const data = await file.getData();
   const layout = await file.getLayout();
 
