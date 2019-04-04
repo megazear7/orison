@@ -122,20 +122,6 @@ export class OrisonRenderer {
   renderJsFile() {
     this.jsPages.forEach(page => {
       page.html.then(html => {
-        /*
-        console.log('');
-        console.log('');
-        console.log('---------------');
-        console.log('');
-        console.log('');
-        console.log(page.path);
-        console.log(html);
-        console.log('');
-        console.log('');
-        console.log('');
-        console.log('');
-        */
-
         fs.writeFile(page.path, html, err => err && console.log(err))
       });
     });
@@ -218,8 +204,13 @@ export class OrisonFile {
   }
 
   getData() {
+    console.log('');
+    console.log('');
+    console.log(this.file);
     let directory = path.dirname(this.file);
+    console.log(directory);
     let jsonFilePath = path.join(directory, this.dataFileBasename + '.json');
+    console.log(jsonFilePath);
 
     return fs.existsSync(jsonFilePath)
       ? import(jsonFilePath)
