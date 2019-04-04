@@ -150,18 +150,11 @@ class OrisonFile {
 
   getData() {
     let directory = path.dirname(this.file);
+    let jsonFilePath = path.join(directory, this.orison.dataFileBasename + '.json');
 
-    while (! directory.endsWith(this.orison.srcDirectory) && directory != '/') {
-      let jsonFilePath = path.join(directory, this.orison.dataFileBasename + '.json');
-
-      if (fs.existsSync(jsonFilePath)) {
-        return import(jsonFilePath);
-      } else {
-        directory = path.dirname(directory);
-      }
-    }
-
-    return new Promise(resolve => resolve({}));
+    return fs.existsSync(jsonFilePath))
+      ? import(jsonFilePath)
+      : new Promise(resolve => resolve({}));
   }
 
   get markdownHtml() {
