@@ -3,13 +3,13 @@ import fs from 'fs';
 import path from 'path';
 import { unsafeHTML } from '@popeindustries/lit-html-server/directives/unsafe-html.js';
 import { html, renderToString } from '@popeindustries/lit-html-server';
-import OrisonFile from './orison-file.js';
+import OrisonDirectory from './orison-directory.js';
 
 export default class OrisonRenderer {
   constructor(orison, file) {
     this.orison = orison;
     this.file = file;
-    this.orisonFile = new OrisonFile(file, orison.srcDirectory, orison.layoutFileBasename, orison.dataFileBasename);
+    this.orisonFile = new OrisonDirectory(path.dirname(file), orison.srcDirectory, orison.layoutFileBasename, orison.dataFileBasename);
   }
 
   render() {

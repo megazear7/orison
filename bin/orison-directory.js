@@ -1,16 +1,16 @@
 import path from 'path';
 import fs from 'fs';
 
-export default class OrisonFile {
-  constructor(file, srcDirectory = 'src', layoutFileBasename = 'layout', dataFileBasename = 'data') {
-    this.file = file;
+export default class OrisonDirectory {
+  constructor(path, srcDirectory = 'src', layoutFileBasename = 'layout', dataFileBasename = 'data') {
+    this.path = path;
     this.srcDirectory = srcDirectory;
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
   }
 
   getLayout() {
-    let directory = path.dirname(this.file);
+    let directory = this.path;
 
     while (! directory.endsWith(this.srcDirectory) && directory != '/') {
       let jsLayoutPath = path.join(directory, this.layoutFileBasename + '.js');
@@ -34,11 +34,14 @@ export default class OrisonFile {
   }
 
   getData() {
-    let directory = path.dirname(this.file);
-    let jsonFilePath = path.join(directory, this.dataFileBasename + '.json');
+    let jsonFilePath = path.join(this.path, this.dataFileBasename + '.json');
 
     return fs.existsSync(jsonFilePath)
       ? import(jsonFilePath)
       : new Promise(resolve => resolve({}));
+  }
+
+  getParent() {
+    return new OrisonDirectory(path.dirname(this.path), this.srcDirectory, this.layoutFileBasename, this.dataFileBasename);
   }
 }
