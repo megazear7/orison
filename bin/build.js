@@ -142,15 +142,22 @@ export class OrisonRenderer {
   get jsPages() {
     const fileExport = require(this.file).default;
 
-    return Array.isArray(fileExport)
-      ? fileExport.map(({name, html}) => ({
-          path: this.getIndexPath(name),
-          html: Promise.resolve(html).then(renderer => renderToString(renderer))
-        }))
-      : [{
-          path: this.buildFilePath,
-          html: Promise.resolve(fileExport).then(renderer => renderToString(renderer))
-        }];
+    if (Array.isArray(fileExport)) {
+      return fileExport.map(({name, html}) => ({
+        path: this.getIndexPath(name),
+        html: Promise.resolve(html).then(renderer => renderToString(renderer))
+      }));
+    } else if (fileExport instanceof Function) {
+      return [{
+        path: this.buildFilePath,
+        html: Promise.resolve(fileExport()).then(renderer => renderToString(renderer))
+      }]
+    } else {
+      return [{
+        path: this.buildFilePath,
+        html: Promise.resolve(fileExport).then(renderer => renderToString(renderer))
+      }];
+    }
   }
 
   replaceExtension(extension) {
@@ -204,13 +211,8 @@ export class OrisonFile {
   }
 
   getData() {
-    console.log('');
-    console.log('');
-    console.log(this.file);
     let directory = path.dirname(this.file);
-    console.log(directory);
     let jsonFilePath = path.join(directory, this.dataFileBasename + '.json');
-    console.log(jsonFilePath);
 
     return fs.existsSync(jsonFilePath)
       ? import(jsonFilePath)
