@@ -1,6 +1,7 @@
 const { html } = require('@popeindustries/lit-html-server');
-import layout from '../layout.js';
+import { OrisonFile } from '../../../bin/build.js';
+const file = new OrisonFile(__dirname);
 
-export default layout(html`
+export default file.getLayout().then(layout => layout(html`
   <p>About page</p>
-`);
+`));
