@@ -1,8 +1,8 @@
 {
   "name": "orison",
   "version": "1.0.0",
-  "description": "A static site generator built on top of lit-html",
-  "main": "index.js",
+  "description": "A static site generator built on top of lit-html.",
+  "main": "bin/orison.js",
   "dependencies": {
     "@popeindustries/lit-html-server": "^1.1.1",
     "esm": "^3.2.20",
@@ -17,6 +17,6 @@
     "build": "node -r esm ./orison.js",
     "serve": "node -r esm ./bin/server.js"
   },
-  "author": "",
+  "author": "Alex Lockhart",
   "license": "ISC"
 }

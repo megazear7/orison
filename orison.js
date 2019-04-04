@@ -1,5 +1,5 @@
-import Orison from './bin/orison-generator.js'
+import { OrisonGenerator } from './bin/orison.js'
 
-const orison = new Orison();
+const orison = new OrisonGenerator();
 
 orison.build();

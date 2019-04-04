@@ -20,10 +20,7 @@ Requires [Node.js](https://nodejs.org/en/) 11.0.0+
 
 ### TODO
 
-1. Provide some convenience methods for getting context information from pages, layouts, and partials. I.e. an easy way to get the matching layout, data.json, and global.json, and maybe even a way to crawl the tree to the root and doing parent / children type of stuff with the data.json files.
 1. Update the example /src files to be documentation of this project.
-1. Update the package definition.
-1. Make the /bin/build file the default module export
 1. Make a installable cli utility
 
 Partial definition

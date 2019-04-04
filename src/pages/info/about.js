@@ -1,5 +1,5 @@
 import { html } from '@popeindustries/lit-html-server';
-import OrisonDirectory from '../../../bin/orison-directory.js';
+import { OrisonDirectory } from '../../../bin/orison.js';
 
 export default async function() {
   const file = new OrisonDirectory(__dirname);
