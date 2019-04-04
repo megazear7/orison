@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs';
+import path, { join } from 'path';
+import fs, { lstatSync, readdirSync } from 'fs';
 
 export default class OrisonDirectory {
   constructor(path, srcDirectory = 'src', layoutFileBasename = 'layout', dataFileBasename = 'data') {
@@ -43,5 +43,14 @@ export default class OrisonDirectory {
 
   getParent() {
     return new OrisonDirectory(path.dirname(this.path), this.srcDirectory, this.layoutFileBasename, this.dataFileBasename);
+  }
+
+  getChildren() {
+    const isDirectory = source => lstatSync(source).isDirectory();
+
+    return readdirSync(this.path)
+      .map(name => join(this.path, name))
+      .filter(isDirectory)
+      .map(directory => new OrisonDirectory(directory, this.srcDirectory, this.layoutFileBasename, this.dataFileBasename));
   }
 }
