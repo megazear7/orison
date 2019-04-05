@@ -9,7 +9,9 @@
 ## TODO
 
 1. Update to use node import style instead of esm.
-1. Make the renderer's render method just return the html. The js method should except some argument that specifies which JS file to return in case there is more than 1. Then it should have a write method which writes the rendered files. The generator will use this write method. The orison server will use the render method to get the html for the request. It will have to turn in the request path to src file path.
+1. Use correct HTTP codes (404 specifically)
+1. Create 500 error page.
+1. Make the url extension configurable and default to '.html'
 1. Update the example /src files to be documentation of this project.
 1. Make a installable cli utility
 

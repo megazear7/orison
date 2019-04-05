@@ -37,50 +37,74 @@ export default class OrisonRenderer {
       dataFileBasename });
   }
 
+  writeFile(file) {
+    console.log(file.path.slice(this.buildPath.length));
+    file.html.then(html => fs.writeFile(file.path, html, err => err && console.log(err)));
+  }
+
+  write() {
+    const renderResult = this.render();
+
+    return Array.isArray(renderResult)
+      ? renderResult.forEach(file => this.writeFile(file))
+      : this.writeFile(renderResult);
+  }
+
+  html(segment) {
+    const renderResult = this.render();
+
+    return Array.isArray(renderResult)
+      ? renderResult.find(page = page.path.endsWith(segment)).html
+      : renderResult.html;
+  }
+
   render() {
     if (this.file.endsWith('.md')) {
-      this.renderMdFile();
+      return this.renderMdFile();
     } else if (this.file.endsWith('.js')) {
-      this.renderJsFile();
+      return this.renderJsFile();
     } else if (this.file.endsWith('.html')) {
-      this.renderHtmlFile();
+      return this.renderHtmlFile();
     }
   }
 
   renderHtmlFile() {
-    this.orisonFile.getData()
-    .then(data => {
-      // The global and data variables are used in the evaled lit-html template literal.
-      const global = this.globalData;
-      const template = eval('html`' + fs.readFileSync(this.file).toString() + '`');
+    const global = this.globalData;
 
-      this.orisonFile.getLayout()
-      .then(layout =>
-        renderToString(layout(template)))
-      .then(html => {
-        console.log(this.relativeBuildFilePath);
-        fs.writeFile(this.buildFilePath, html, err => err && console.log(err))
-      });
-    });
+    return {
+      path: this.buildFilePath,
+      html: this.orisonFile.getData()
+        .then(data => this.orisonFile.getLayout()
+          .then(layout => renderToString(layout(eval('html`' + fs.readFileSync(this.file).toString() + '`')))))
+    };
   }
 
   renderMdFile() {
-    this.orisonFile.getLayout()
-    .then(layout =>
-      renderToString(layout(html`${unsafeHTML(this.markdownHtml)}`)))
-    .then(html => {
-      console.log(this.relativeBuildFilePath);
-      fs.writeFile(this.buildFilePath, html, err => err && console.log(err))
-    });
+    return {
+      path: this.buildFilePath,
+      html: this.orisonFile.getLayout().then(layout => renderToString(layout(html`${unsafeHTML(this.markdownHtml)}`)))
+    };
   }
 
   renderJsFile() {
-    this.jsPages.forEach(page => {
-      page.html.then(html => {
-        console.log(page.path.slice(this.buildPath.length));
-        fs.writeFile(page.path, html, err => err && console.log(err))
-      });
-    });
+    const fileExport = require(this.file).default;
+
+    if (Array.isArray(fileExport)) {
+      return fileExport.map(({name, html}) => ({
+        path: this.getIndexPath(name),
+        html: Promise.resolve(html).then(renderer => renderToString(renderer))
+      }));
+    } else if (fileExport instanceof Function) {
+      return {
+        path: this.buildFilePath,
+        html: Promise.resolve(fileExport()).then(renderer => renderToString(renderer))
+      }
+    } else {
+      return {
+        path: this.buildFilePath,
+        html: Promise.resolve(fileExport).then(renderer => renderToString(renderer))
+      };
+    }
   }
 
   get markdownHtml() {
@@ -101,27 +125,6 @@ export default class OrisonRenderer {
 
   get relativeBuildFilePath() {
     return this.buildFilePath.slice(this.buildPath.length);
-  }
-
-  get jsPages() {
-    const fileExport = require(this.file).default;
-
-    if (Array.isArray(fileExport)) {
-      return fileExport.map(({name, html}) => ({
-        path: this.getIndexPath(name),
-        html: Promise.resolve(html).then(renderer => renderToString(renderer))
-      }));
-    } else if (fileExport instanceof Function) {
-      return [{
-        path: this.buildFilePath,
-        html: Promise.resolve(fileExport()).then(renderer => renderToString(renderer))
-      }]
-    } else {
-      return [{
-        path: this.buildFilePath,
-        html: Promise.resolve(fileExport).then(renderer => renderToString(renderer))
-      }];
-    }
   }
 
   get pageContextPath() {

@@ -60,8 +60,8 @@ export default class OrisonGenerator {
           throw err;
         } else if (file.endsWith(this.layoutFileBasename + '.js')) {
           return;
-        } else {
-          (new OrisonRenderer({file, rootPath: this.rootPath})).render();
+        } else if (file.endsWith('.js') || file.endsWith('.html') || file.endsWith('.md')) {
+          (new OrisonRenderer({file, rootPath: this.rootPath})).write();
         }
       },
       (err, directory) => {
