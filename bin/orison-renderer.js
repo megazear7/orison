@@ -32,8 +32,10 @@ export default class OrisonRenderer {
       this.orisonFile.getLayout()
       .then(layout =>
         renderToString(layout(template)))
-      .then(html =>
-        fs.writeFile(this.buildFilePath, html, err => err && console.log(err)));
+      .then(html => {
+        console.log(this.relativeBuildFilePath);
+        fs.writeFile(this.buildFilePath, html, err => err && console.log(err))
+      });
     });
   }
 
@@ -41,13 +43,16 @@ export default class OrisonRenderer {
     this.orisonFile.getLayout()
     .then(layout =>
       renderToString(layout(html`${unsafeHTML(this.markdownHtml)}`)))
-    .then(html =>
-      fs.writeFile(this.buildFilePath, html, err => err && console.log(err)));
+    .then(html => {
+      console.log(this.relativeBuildFilePath);
+      fs.writeFile(this.buildFilePath, html, err => err && console.log(err))
+    });
   }
 
   renderJsFile() {
     this.jsPages.forEach(page => {
       page.html.then(html => {
+        console.log(page.path.slice(this.orison.getBuildPath().length));
         fs.writeFile(page.path, html, err => err && console.log(err))
       });
     });
@@ -63,6 +68,10 @@ export default class OrisonRenderer {
 
   get buildFilePath() {
     return this.orison.getBuildPath(this.replaceExtension('html'));
+  }
+
+  get relativeBuildFilePath() {
+    return this.buildFilePath.slice(this.orison.getBuildPath().length);
   }
 
   get jsPages() {

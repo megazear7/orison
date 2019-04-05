@@ -42,6 +42,7 @@ export default class OrisonGenerator {
      }
     });
 
+    console.log(`Generating to ${this.buildDir} from ${this.srcDirectory}:`);
     fileWalker(this.getSrcPath(this.pagesDirectory),
       (err, file) => {
         if (err) {
