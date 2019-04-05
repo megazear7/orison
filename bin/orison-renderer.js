@@ -6,10 +6,25 @@ import { html, renderToString } from '@popeindustries/lit-html-server';
 import OrisonDirectory from './orison-directory.js';
 
 export default class OrisonRenderer {
-  constructor(orison, file) {
-    this.orison = orison;
+  constructor({
+      file,
+      rootPath,
+      globalData = {},
+      srcDirectory = 'src',
+      layoutFileBasename = 'layout',
+      dataFileBasename = 'data',
+      pagesDirectory = 'pages',
+      buildDir = 'docs',
+    }) {
     this.file = file;
-    this.orisonFile = new OrisonDirectory(path.dirname(file), orison.srcDirectory, orison.layoutFileBasename, orison.dataFileBasename);
+    this.rootPath = rootPath;
+    this.globalData = globalData;
+    this.srcDirectory = srcDirectory;
+    this.layoutFileBasename = layoutFileBasename;
+    this.dataFileBasename = dataFileBasename;
+    this.pagesDirectory = pagesDirectory;
+    this.buildDir = buildDir;
+    this.orisonFile = new OrisonDirectory(path.dirname(file), srcDirectory, layoutFileBasename, dataFileBasename);
   }
 
   render() {
@@ -26,7 +41,7 @@ export default class OrisonRenderer {
     this.orisonFile.getData()
     .then(data => {
       // The global and data variables are used in the evaled lit-html template literal.
-      const global = this.orison.global;
+      const global = this.globalData;
       const template = eval('html`' + fs.readFileSync(this.file).toString() + '`');
 
       this.orisonFile.getLayout()
@@ -52,7 +67,7 @@ export default class OrisonRenderer {
   renderJsFile() {
     this.jsPages.forEach(page => {
       page.html.then(html => {
-        console.log(page.path.slice(this.orison.getBuildPath().length));
+        console.log(page.path.slice(this.buildPath.length));
         fs.writeFile(page.path, html, err => err && console.log(err))
       });
     });
@@ -66,12 +81,16 @@ export default class OrisonRenderer {
     return fs.readFileSync(this.file).toString();
   }
 
+  get buildPath() {
+    return path.join(this.rootPath, this.buildDir);
+  }
+
   get buildFilePath() {
-    return this.orison.getBuildPath(this.replaceExtension('html'));
+    return path.join(this.rootPath, this.buildDir, this.replaceExtension('html'));
   }
 
   get relativeBuildFilePath() {
-    return this.buildFilePath.slice(this.orison.getBuildPath().length);
+    return this.buildFilePath.slice(this.buildPath.length);
   }
 
   get jsPages() {
@@ -95,19 +114,22 @@ export default class OrisonRenderer {
     }
   }
 
+  get pageContextPath() {
+    return this.file.split('/' + this.pagesDirectory)[1];
+  }
+
   replaceExtension(extension) {
-    const filePath = this.orison.getPageContextPath(this.file);
+    const filePath = this.pageContextPath;
     const newFilePath = path.basename(filePath, path.extname(filePath)) + '.' + extension;
     return path.join(path.dirname(filePath), newFilePath);
   }
 
   getIndexPath(fileName) {
-    return this.orison.getBuildPath(
-             this.replaceFileName(fileName + '.html'));
+    return path.join(this.rootPath, this.buildDir, this.replaceFileName(fileName + '.html'));
   }
 
   replaceFileName(fileName) {
-    const filePath = this.orison.getPageContextPath(this.file);
+    const filePath = this.pageContextPath;
     const directory = filePath.slice(0, filePath.lastIndexOf('/'))
     return path.join(directory, fileName);
   }

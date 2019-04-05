@@ -6,6 +6,7 @@ import OrisonRenderer from './orison-renderer.js';
 
 export default class OrisonGenerator {
   constructor({
+      rootPath,
       buildDir = 'docs',
       protectedFileNames = [ 'CNAME' ],
       globalMetadataFile = 'global.json',
@@ -22,6 +23,7 @@ export default class OrisonGenerator {
     this.srcDirectory = srcDirectory;
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
+    this.rootPath = rootPath;
     this.global = JSON.parse(fs.readFileSync(this.getSrcPath(globalMetadataFile)));
   }
 
@@ -50,7 +52,7 @@ export default class OrisonGenerator {
         } else if (file.endsWith(this.layoutFileBasename + '.js')) {
           return;
         } else {
-          (new OrisonRenderer(this, file)).render();
+          (new OrisonRenderer({file, rootPath: this.rootPath})).render();
         }
       },
       (err, directory) => {
