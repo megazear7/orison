@@ -71,10 +71,10 @@ export default class OrisonGenerator {
   }
 
   getSrcPath(srcPath = '') {
-    return path.join(__dirname, '../', this.srcDirectory, srcPath);
+    return path.join(this.rootPath, this.srcDirectory, srcPath);
   }
 
   getBuildPath(buildPath = '') {
-    return path.join(__dirname, '..', this.buildDir, buildPath);
+    return path.join(this.rootPath, this.buildDir, buildPath);
   }
 }
