@@ -11,7 +11,7 @@ import {
   DEFAULT_LAYOUT_BASENAME,
   DEFAULT_PROTECTED_FILES,
   DEFAULT_GLOBAL_METADATA_FILENAME,
-  DEFAULT_STATIC_DIR } from './orison.js';
+  DEFAULT_STATIC_DIR } from './orison-esm.js';
 
 export default class OrisonGenerator {
   constructor({

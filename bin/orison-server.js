@@ -8,7 +8,7 @@ import {
   DEFAULT_STATIC_DIR,
   DEFAULT_INDEX_BASENAME,
   DEFAULT_404_FILENAME,
-  DEFAULT_PORT } from './orison.js';
+  DEFAULT_PORT } from './orison-esm.js';
 
 export default class  {
   constructor(

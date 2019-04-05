@@ -9,7 +9,7 @@ import {
   DEFAULT_BUILD_DIR,
   DEFAULT_PAGES_DIR,
   DEFAULT_DATA_BASENAME,
-  DEFAULT_LAYOUT_BASENAME } from './orison.js';
+  DEFAULT_LAYOUT_BASENAME } from './orison-esm.js';
 
 export default class OrisonRenderer {
   constructor({

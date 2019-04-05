@@ -14,9 +14,9 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node -r esm ./orison.js --build",
-    "serve": "node -r esm ./orison.js --serve",
-    "static": "node -r esm ./orison.js --static"
+    "build": "node ./orison.js --build",
+    "serve": "node ./orison.js --serve",
+    "static": "node ./orison.js --static"
   },
   "author": "Alex Lockhart",
   "license": "ISC"
