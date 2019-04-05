@@ -12,51 +12,35 @@
 1. Create 500 error page.
 1. Make the url extension configurable and default to '.html'
 1. Update the example /src files to be documentation of this project.
-1. Make a installable cli utility
 
-## Install
-
-```
-npm run install
-```
-
-## Build
+## Command Line Usage
 
 ```
-npm run build
+npm install -g orison
+orison build
+orison serve
+orison static
 ```
 
-## Run Server
-
-This will render the page for the given request as the request comes through.
+## Programatic Usage
 
 ```
-npm run serve
+npm install orison
 ```
-
-## Serve Static Build
-
-This will server the prebuilt static files.
-
-```
-npm run static
-```
-
-## Usage
 
 CommonJS Modules are available from './bin/orison.js' and ES6 Modules are available from './bin/orison-esm.js'
 
 Here is an example of building the src directory into the docs directory.
 
 ```js
-const { OrisonGenerator } = require('./bin/orison.js');
+const { OrisonGenerator } = require('orison');
 const orisonGenerator = new OrisonGenerator({ rootPath: __dirname });
 orisonGenerator.build();
 ```
 
 Here is an example of serving files and rendering the file during each request.
 ```js
-const { OrisonServer } = require('./bin/orison.js');
+const { OrisonServer } = require('orison');
 const orisonServer = new OrisonServer(__dirname);
 orisonServer.start();
 ```
@@ -64,31 +48,30 @@ orisonServer.start();
 Here is an example of serving the statically built files.
 
 ```js
-const { OrisonStaticServer } = require('./bin/orison.js');
+const { OrisonStaticServer } = require('orison');
 const orisonStaticServer = new OrisonStaticServer();
 orisonStaticServer.start();
 ```
 
 Or you could create a file that builds, serves, or serves static based on provided command line arguments.
 
-###
 ```js
-const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('./bin/orison.js');
+const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
 
-if (process.argv.includes('--build')) (new OrisonGenerator({ rootPath: __dirname })).build();
-if (process.argv.includes('--serve')) (new OrisonServer(__dirname)).start();
-if (process.argv.includes('--static')) (new OrisonStaticServer()).start();
+if (process.argv.includes('build')) (new OrisonGenerator({ rootPath: __dirname })).build();
+if (process.argv.includes('serve')) (new OrisonServer(__dirname)).start();
+if (process.argv.includes('static')) (new OrisonStaticServer()).start();
 ```
 
 Then you can build, serve, or serve static with these commands:
 
 ```bash
-$ node ./orison.js --build
-$ node ./orison.js --serve
-$ node ./orison.js --static
+$ node ./orison.js build
+$ node ./orison.js serve
+$ node ./orison.js static
 ```
 
-## Development
+## Development With Orison
 
 ### Creating Pages
 
@@ -135,4 +118,34 @@ data => html`
   ${data}
   ...
 }
+```
+
+# Development on this project
+
+## Install
+
+```
+npm run install
+```
+
+## Build
+
+```
+npm run build
+```
+
+## Run Server
+
+This will render the page for the given request as the request comes through.
+
+```
+npm run serve
+```
+
+## Serve Static Build
+
+This will server the prebuilt static files.
+
+```
+npm run static
 ```
