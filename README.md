@@ -44,6 +44,8 @@ npm run static
 
 ## Usage
 
+CommonJS Modules are available from './bin/orison.js' and ES6 Modules are available from './bin/orison-esm.js'
+
 Here is an example of building the src directory into the docs directory.
 
 ```js
