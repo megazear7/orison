@@ -24,7 +24,7 @@ export default class OrisonGenerator {
       srcDirectory = DEFAULT_SRC_DIR,
       layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
       dataFileBasename = DEFAULT_DATA_BASENAME
-    } = {}) {
+    }) {
     this.buildDir = buildDir;
     this.protectedFileNames = protectedFileNames;
     this.staticDirectory = staticDirectory;

@@ -2,7 +2,7 @@ import { html } from '@popeindustries/lit-html-server';
 import { OrisonDirectory } from '../../../bin/orison.js';
 
 export default async function() {
-  const file = new OrisonDirectory(__dirname);
+  const file = new OrisonDirectory({ path: __dirname });
   const data = await file.getData();
   const layout = await file.getLayout();
   const parent = file.getParent();

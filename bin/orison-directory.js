@@ -6,7 +6,12 @@ import {
   DEFAULT_LAYOUT_BASENAME } from './orison.js';
 
 export default class OrisonDirectory {
-  constructor(path, srcDirectory = DEFAULT_SRC_DIR, layoutFileBasename = DEFAULT_LAYOUT_BASENAME, dataFileBasename = DEFAULT_DATA_BASENAME) {
+  constructor({
+      path,
+      srcDirectory = DEFAULT_SRC_DIR,
+      layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
+      dataFileBasename = DEFAULT_DATA_BASENAME
+    }) {
     this.path = path;
     this.srcDirectory = srcDirectory;
     this.layoutFileBasename = layoutFileBasename;
@@ -46,15 +51,21 @@ export default class OrisonDirectory {
   }
 
   getParent() {
-    return new OrisonDirectory(path.dirname(this.path), this.srcDirectory, this.layoutFileBasename, this.dataFileBasename);
+    return new OrisonDirectory({
+      path: path.dirname(this.path),
+      srcDirectory: this.srcDirectory,
+      layoutFileBasename: this.layoutFileBasename,
+      dataFileBasename: this.dataFileBasename });
   }
 
   getChildren() {
-    const isDirectory = source => lstatSync(source).isDirectory();
-
     return readdirSync(this.path)
       .map(name => join(this.path, name))
-      .filter(isDirectory)
-      .map(directory => new OrisonDirectory(directory, this.srcDirectory, this.layoutFileBasename, this.dataFileBasename));
+      .filter(source => lstatSync(source).isDirectory())
+      .map(directory => new OrisonDirectory({
+        path: directory,
+        srcDirectory: this.srcDirectory,
+        layoutFileBasename: this.layoutFileBasename,
+        dataFileBasename: this.dataFileBasename }));
   }
 }

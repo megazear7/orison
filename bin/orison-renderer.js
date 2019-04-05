@@ -30,7 +30,11 @@ export default class OrisonRenderer {
     this.dataFileBasename = dataFileBasename;
     this.pagesDirectory = pagesDirectory;
     this.buildDir = buildDir;
-    this.orisonFile = new OrisonDirectory(path.dirname(file), srcDirectory, layoutFileBasename, dataFileBasename);
+    this.orisonFile = new OrisonDirectory({
+      path: path.dirname(file),
+      srcDirectory,
+      layoutFileBasename,
+      dataFileBasename });
   }
 
   render() {
