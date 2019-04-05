@@ -2,26 +2,95 @@
 
 [Orison Documentation](https://orison.alexlockhart.me)
 
-* [lit-html](https://github.com/Polymer/lit-html) based static site generator.
-* [lit-html-server](https://github.com/popeindustries/lit-html-server) for server side rendering with lit-html
-Requires [Node.js](https://nodejs.org/en/) 11.0.0+
+* Can be used as a server or a static site generator.
+* Uses [lit-html](https://github.com/Polymer/lit-html) for rendering.
+* [lit-html-server](https://github.com/popeindustries/lit-html-server) for server side rendering with lit-html.
+
+## TODO
+
+1. Update to use node import style instead of esm.
+1. Make the renderer's render method just return the html. The js method should except some argument that specifies which JS file to return in case there is more than 1. Then it should have a write method which writes the rendered files. The generator will use this write method. The orison server will use the render method to get the html for the request. It will have to turn in the request path to src file path.
+1. Update the example /src files to be documentation of this project.
+1. Make a installable cli utility
 
 ## Install
 
-`npm run install`
+```
+npm run install
+```
 
 ## Build
 
-`npm run build`
+```
+npm run build
+```
 
-## Serve
+## Run Server
 
-`npm run serve`
+This will render the page for the given request as the request comes through.
 
-### TODO
+```
+npm run serve
+```
 
-1. Update the example /src files to be documentation of this project.
-1. Make a installable cli utility
+## Serve Static Build
+
+This will server the prebuilt static files.
+
+```
+npm run static
+```
+
+## Usage
+
+Here is an example of building the src directory into the docs directory.
+
+```js
+import { OrisonGenerator } from './bin/orison.js'
+
+const orisonGenerator = new OrisonGenerator({ rootPath: __dirname });
+orisonGenerator.build();
+```
+
+Here is an example of serving files and rendering the file during each request.
+```js
+import { OrisonServer } from './bin/orison.js'
+
+const orisonServer = new OrisonServer(__dirname);
+orisonServer.start();
+```
+
+Here is an example of serving the statically built files.
+
+```js
+import { OrisonStaticServer } from './bin/orison.js'
+
+const orisonStaticServer = new OrisonStaticServer();
+orisonStaticServer.start();
+```
+
+Or you could create a file that builds, serves, or serves static based on provided command line arguments.
+
+###
+```js
+import { OrisonGenerator, OrisonServer, OrisonStaticServer } from './bin/orison.js'
+
+if (process.argv.includes('--build')) (new OrisonGenerator({ rootPath: __dirname })).build();
+if (process.argv.includes('--serve')) (new OrisonServer(__dirname)).start();
+if (process.argv.includes('--static')) (new OrisonStaticServer()).start();
+```
+
+Then you can build, serve, or serve static with these commands:
+
+```bash
+$ node -r esm ./orison.js --build
+$ node -r esm ./orison.js --serve
+$ node -r esm ./orison.js --static
+```
+
+## Development
+
+### Creating Pages
 
 Partial definition
 ```
@@ -35,18 +104,35 @@ html`...`
 
 Index page definition
 ```
-{
-  'path-segment-1': html`...`
-  'path-segment-2': html`...`
+[
+  {
+    path: 'path-segment-1',
+    html: html`...`
+  },
+  {
+    path: 'path-segment-2',
+    html: html`...`
+  }
   ...
-}
+]
 ```
 
-Layout definition:
+### Creating Layouts
+
 ```
 page => html`
   ...
   ${page}
+  ...
+}
+```
+
+### Creating Partials
+
+```
+data => html`
+  ...
+  ${data}
   ...
 }
 ```

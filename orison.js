@@ -1,5 +1,5 @@
-import { OrisonGenerator } from './bin/orison.js'
+import { OrisonGenerator, OrisonServer, OrisonStaticServer } from './bin/orison.js'
 
-const orison = new OrisonGenerator({ rootPath: __dirname });
-
-orison.build();
+if (process.argv.includes('--build')) (new OrisonGenerator({ rootPath: __dirname })).build();
+if (process.argv.includes('--serve')) (new OrisonServer(__dirname)).start();
+if (process.argv.includes('--static')) (new OrisonStaticServer()).start();
