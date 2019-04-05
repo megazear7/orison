@@ -73,19 +73,13 @@ $ node ./orison.js static
 
 ## Development With Orison
 
-### Creating Pages
-
-Partial definition
-```
-data => html`...`
-```
-
-Single page definition
+### Single pages
 ```
 html`...`
 ```
 
-Index page definition
+### Multiple pages
+
 ```
 [
   {
@@ -100,7 +94,7 @@ Index page definition
 ]
 ```
 
-### Creating Layouts
+### Layouts
 
 ```
 page => html`
@@ -110,14 +104,10 @@ page => html`
 }
 ```
 
-### Creating Partials
+### Partials
 
 ```
-data => html`
-  ...
-  ${data}
-  ...
-}
+data => html`...`
 ```
 
 # Development on this project
