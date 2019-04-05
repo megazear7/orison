@@ -3,18 +3,27 @@ import path from 'path';
 import fileWalker from './file-walker.js';
 import { ncp } from 'ncp';
 import OrisonRenderer from './orison-renderer.js';
+import {
+  DEFAULT_SRC_DIR,
+  DEFAULT_BUILD_DIR,
+  DEFAULT_PAGES_DIR,
+  DEFAULT_DATA_BASENAME,
+  DEFAULT_LAYOUT_BASENAME,
+  DEFAULT_PROTECTED_FILES,
+  DEFAULT_GLOBAL_METADATA_FILENAME,
+  DEFAULT_STATIC_DIR } from './orison.js';
 
 export default class OrisonGenerator {
   constructor({
       rootPath,
-      buildDir = 'docs',
-      protectedFileNames = [ 'CNAME' ],
-      globalMetadataFile = 'global.json',
-      staticDirectory = 'static',
-      pagesDirectory = 'pages',
-      srcDirectory = 'src',
-      layoutFileBasename = 'layout',
-      dataFileBasename = 'data'
+      buildDir = DEFAULT_BUILD_DIR,
+      protectedFileNames = DEFAULT_PROTECTED_FILES,
+      globalMetadataFile = DEFAULT_GLOBAL_METADATA_FILENAME,
+      staticDirectory = DEFAULT_STATIC_DIR,
+      pagesDirectory = DEFAULT_PAGES_DIR,
+      srcDirectory = DEFAULT_SRC_DIR,
+      layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
+      dataFileBasename = DEFAULT_DATA_BASENAME
     } = {}) {
     this.buildDir = buildDir;
     this.protectedFileNames = protectedFileNames;

@@ -1,8 +1,12 @@
 import path, { join } from 'path';
 import fs, { lstatSync, readdirSync } from 'fs';
+import {
+  DEFAULT_SRC_DIR,
+  DEFAULT_DATA_BASENAME,
+  DEFAULT_LAYOUT_BASENAME } from './orison.js';
 
 export default class OrisonDirectory {
-  constructor(path, srcDirectory = 'src', layoutFileBasename = 'layout', dataFileBasename = 'data') {
+  constructor(path, srcDirectory = DEFAULT_SRC_DIR, layoutFileBasename = DEFAULT_LAYOUT_BASENAME, dataFileBasename = DEFAULT_DATA_BASENAME) {
     this.path = path;
     this.srcDirectory = srcDirectory;
     this.layoutFileBasename = layoutFileBasename;

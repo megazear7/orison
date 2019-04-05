@@ -4,17 +4,23 @@ import path from 'path';
 import { unsafeHTML } from '@popeindustries/lit-html-server/directives/unsafe-html.js';
 import { html, renderToString } from '@popeindustries/lit-html-server';
 import OrisonDirectory from './orison-directory.js';
+import {
+  DEFAULT_SRC_DIR,
+  DEFAULT_BUILD_DIR,
+  DEFAULT_PAGES_DIR,
+  DEFAULT_DATA_BASENAME,
+  DEFAULT_LAYOUT_BASENAME } from './orison.js';
 
 export default class OrisonRenderer {
   constructor({
       file,
       rootPath,
       globalData = {},
-      srcDirectory = 'src',
-      layoutFileBasename = 'layout',
-      dataFileBasename = 'data',
-      pagesDirectory = 'pages',
-      buildDir = 'docs',
+      srcDirectory = DEFAULT_SRC_DIR,
+      layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
+      dataFileBasename = DEFAULT_DATA_BASENAME,
+      pagesDirectory = DEFAULT_PAGES_DIR,
+      buildDir = DEFAULT_BUILD_DIR,
     }) {
     this.file = file;
     this.rootPath = rootPath;
