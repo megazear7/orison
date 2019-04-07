@@ -32,12 +32,17 @@ export default class  {
 
     this.app.get('*', (req, res) => {
       console.log(req.path);
-      const srcPath = this.srcPath(req.path);
-      console.log(srcPath);
+      const srcPath = this.srcPath(req.path, code => res.status(code));
       if (srcPath !== undefined) {
         const segment = req.path.substr(req.path.lastIndexOf('/') + 1);
         const renderer = new OrisonRenderer({file: srcPath, rootPath: this.rootPath});
-        renderer.html(segment).then(html => res.send(html));
+        renderer.html(segment)
+        .then(html => res.send(html))
+        .catch(e => {
+          console.log(e);
+          res.status(500);
+          res.send('500 Error');
+        });
       } else {
         res.send('404 - create a 404 page at ' + path.join(this.pagesPath, this.page404));
       }
@@ -46,7 +51,7 @@ export default class  {
     this.app.listen(this.port, () => console.log(`Example app listening on port ${this.port}!`));
   }
 
-  srcPath(requestPath) {
+  srcPath(requestPath, setStatus) {
     const fullRequestPath = path.join(this.rootPath, this.pagesPath, requestPath);
 
     if (fs.existsSync(fullRequestPath)) {
@@ -78,6 +83,7 @@ export default class  {
     }
 
     const path404 = path.join(this.rootPath, this.pagesPath, this.page404);
+    setStatus(404);
     if (fs.existsSync(path404)) {
       return path404;
     } else {

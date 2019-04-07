@@ -100,6 +100,7 @@ export default class OrisonRenderer {
         html: Promise.resolve(fileExport()).then(renderer => renderToString(renderer))
       }
     } else {
+      console.log(fileExport);
       return {
         path: this.buildFilePath,
         html: Promise.resolve(fileExport).then(renderer => renderToString(renderer))

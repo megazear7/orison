@@ -1,0 +1,9 @@
+### Layouts
+
+```
+page => html`
+  ...
+  ${page}
+  ...
+}
+```

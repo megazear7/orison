@@ -1,7 +1,3 @@
-# Orison
-
-
-
 ## Programatic Usage
 
 ```
@@ -49,73 +45,4 @@ Then you can build, serve, or serve static with these commands:
 $ node ./orison.js build
 $ node ./orison.js serve
 $ node ./orison.js static
-```
-
-## Development With Orison
-
-### Single pages
-```
-html`...`
-```
-
-### Multiple pages
-
-```
-[
-  {
-    path: 'path-segment-1',
-    html: html`...`
-  },
-  {
-    path: 'path-segment-2',
-    html: html`...`
-  }
-  ...
-]
-```
-
-### Layouts
-
-```
-page => html`
-  ...
-  ${page}
-  ...
-}
-```
-
-### Partials
-
-```
-data => html`...`
-```
-
-# Development on this project
-
-## Install
-
-```
-npm run install
-```
-
-## Build
-
-```
-npm run build
-```
-
-## Run Server
-
-This will render the page for the given request as the request comes through.
-
-```
-npm run serve
-```
-
-## Serve Static Build
-
-This will server the prebuilt static files.
-
-```
-npm run static
 ```

@@ -8,7 +8,7 @@
 
 ## TODO
 
-1. Use correct HTTP codes (404 specifically)
+1. On the second request the orison server fails I think because we are using the readFileSync method.
 1. Create 500 error page.
 1. Make the url extension configurable and default to '.html'
 1. Update the example /src files to be documentation of this project.

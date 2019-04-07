@@ -1,0 +1,5 @@
+### Partials
+
+```
+data => html`...`
+```
