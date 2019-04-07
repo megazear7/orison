@@ -1,3 +1,8 @@
+import md from 'markdown-it';
+import fs from 'fs';
+import { html } from '@popeindustries/lit-html-server';
+import { unsafeHTML } from '@popeindustries/lit-html-server/directives/unsafe-html.js';
+
 export { default as OrisonGenerator } from './orison-generator.js';
 export { default as OrisonRenderer } from './orison-renderer.js';
 export { default as OrisonDirectory } from './orison-directory.js';
@@ -15,3 +20,5 @@ export const DEFAULT_GLOBAL_METADATA_FILENAME = 'global.json';
 export const DEFAULT_404_FILENAME = '404.html';
 export const DEFAULT_STATIC_DIR = 'static';
 export const DEFAULT_PORT = 3000;
+
+export const markdown = mdPath => html`${unsafeHTML(md().render(fs.readFileSync(mdPath).toString()))}`;
