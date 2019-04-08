@@ -6,24 +6,24 @@ export default page => html`
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>OrisonJS Docs</title>
+    <title>OrisonJS</title>
     <script src="/app.js"></script>
     <link rel="stylesheet" type="text/css" href="/app.css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="OrisonJS documentation">
+    <meta name="description" content="Orison server and static stite generator documentation">
     <link rel="icon" href="icons/favicon.ico">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#fa5d0f">
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Orison Docs">
+    <meta name="application-name" content="OrisonJS">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Orison Docs">
+    <meta name="apple-mobile-web-app-title" content="OrisonJS">
 
     <!-- Homescreen icons -->
     <link rel="apple-touch-icon" href="icons/icon-640x640.png">

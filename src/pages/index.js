@@ -5,7 +5,7 @@ import { markdown } from '../../bin/orison-esm.js';
 
 export default () => layout(html`
   <section class="bold">
-    ${title('Orison')}
+    ${title('OrisonJS')}
     <p>A static site generator and server based upon lit-html</p>
   </section>
   <section>${markdown('./src/partials/documentation/cli.md')}</section>
