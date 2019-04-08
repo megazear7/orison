@@ -1,9 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
 html {
   --primary-color: #fa5d0f;
   --secondary-color: #ffce27;
   --tertiary-color: #d13405;
   --app-section-even-color: #f5f5f5;
   --app-section-odd-color: #fff;
+  --grey: #ccc;
+  --border-radius: 5px;
+  --content-width: 600px;
 
   font-size: 16px;
   margin: 0;
@@ -31,11 +38,18 @@ section {
 }
 
 section > * {
-  max-width: 600px;
+  max-width: var(--content-width);
   margin-right: auto;
   margin-left: auto;
 }
 
 section:nth-of-type(even) {
   background: var(--app-section-even-color);
+}
+
+pre {
+  padding: 1rem;
+  background: var(--grey);
+  border-radius: var(--border-radius);
+  overflow-x: scroll;
 }
