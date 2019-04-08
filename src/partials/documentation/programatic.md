@@ -34,9 +34,9 @@ Or you could create a file that builds, serves, or serves static based on provid
 ```js
 const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
 
-if (process.argv.includes('build')) (new OrisonGenerator({ rootPath: __dirname })).build();
-if (process.argv.includes('serve')) (new OrisonServer({ rootPath: __dirname })).start();
-if (process.argv.includes('static')) (new OrisonStaticServer()).start();
+if (process.argv.includes('build')) new OrisonGenerator({ rootPath: __dirname }).build();
+if (process.argv.includes('serve')) new OrisonServer({ rootPath: __dirname }).start();
+if (process.argv.includes('static')) new OrisonStaticServer().start();
 ```
 
 Then you can build, serve, or serve static with these commands:
