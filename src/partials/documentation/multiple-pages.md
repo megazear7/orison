@@ -1,9 +1,4 @@
-### Single pages
-```
-export default () => html`...`
-```
-
-### Multiple pages
+## Multiple pages
 
 ```
 export default () => [

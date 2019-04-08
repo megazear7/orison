@@ -10,7 +10,6 @@ export default page => html`
     <script src="/app.js"></script>
     <link rel="stylesheet" type="text/css" href="/app.css">
 
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="OrisonJS documentation">
     <link rel="icon" href="icons/favicon.ico">

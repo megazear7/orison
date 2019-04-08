@@ -7,7 +7,6 @@
     <script src="/app.js"></script>
     <link rel="stylesheet" type="text/css" href="/app.css">
 
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="OrisonJS documentation">
     <link rel="icon" href="icons/favicon.ico">
@@ -41,9 +40,12 @@
   </head>
   <body>
     
-  <section>
+  <section class="bold">
+    
   <h1>Orison</h1>
-</section>
+
+    <p>A static site generator and server based upon lit-html</p>
+  </section>
   <section><h2>Command Line Usage</h2>
 <pre><code>npm install -g orison
 orison build
@@ -83,10 +85,11 @@ $ node ./orison.js serve
 $ node ./orison.js static
 </code></pre>
 </section>
-  <section><h3>Single pages</h3>
+  <section><h2>Single pages</h2>
 <pre><code>export default () =&gt; html`...`
 </code></pre>
-<h3>Multiple pages</h3>
+</section>
+  <section><h2>Multiple pages</h2>
 <pre><code>export default () =&gt; [
   {
     path: 'path-segment-1',
@@ -100,11 +103,11 @@ $ node ./orison.js static
 ]
 </code></pre>
 </section>
-  <section><h3>Partials</h3>
+  <section><h2>Partials</h2>
 <pre><code>export default data =&gt; html`...`
 </code></pre>
 </section>
-  <section><h3>Layouts</h3>
+  <section><h2>Layouts</h2>
 <pre><code>export default page =&gt; html`
   ...
   ${page}
@@ -114,9 +117,16 @@ $ node ./orison.js static
 </section>
 
     
-  <section>
-    <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-  </section>
+  <footer>
+    <p>
+      Icons made by
+      <a href="https://www.freepik.com/" title="Freepik">Freepik</a>
+      from
+      <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+      is licensed by
+      <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+    </p>
+  </footer>
 
   </body>
 </html>

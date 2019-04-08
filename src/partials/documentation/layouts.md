@@ -1,4 +1,4 @@
-### Layouts
+## Layouts
 
 ```
 export default page => html`
