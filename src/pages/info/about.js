@@ -1,7 +1,7 @@
 import { html } from '@popeindustries/lit-html-server';
 import { OrisonDirectory } from '../../../bin/orison.js';
 
-export default async function() {
+export default async () => {
   const file = new OrisonDirectory({ path: __dirname });
   const data = await file.getData();
   const layout = await file.getLayout();
@@ -15,4 +15,4 @@ export default async function() {
     <p>${childPaths}</p>
     <a href="${data.link.url}">${data.link.title}</a>
   `);
-}
+};

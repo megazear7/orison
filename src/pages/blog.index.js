@@ -1,7 +1,7 @@
 const { html } = require('@popeindustries/lit-html-server');
 import layout from './layout.js';
 
-export default [
+export default () => [
   {
     name: 'blog-a',
     html: layout(html`<p>Blog A</p>`),
