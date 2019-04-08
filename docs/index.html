@@ -43,9 +43,9 @@ orisonStaticServer.start();
 <p>Or you could create a file that builds, serves, or serves static based on provided command line arguments.</p>
 <pre><code class="language-js">const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
 
-if (process.argv.includes('build')) (new OrisonGenerator({ rootPath: __dirname })).build();
-if (process.argv.includes('serve')) (new OrisonServer({ rootPath: __dirname })).start();
-if (process.argv.includes('static')) (new OrisonStaticServer()).start();
+if (process.argv.includes('build')) new OrisonGenerator({ rootPath: __dirname }).build();
+if (process.argv.includes('serve')) new OrisonServer({ rootPath: __dirname }).start();
+if (process.argv.includes('static')) new OrisonStaticServer().start();
 </code></pre>
 <p>Then you can build, serve, or serve static with these commands:</p>
 <pre><code class="language-bash">$ node ./orison.js build
@@ -82,6 +82,7 @@ $ node ./orison.js static
 }
 </code></pre>
 
+  <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
     <div>Footer</div>
   </body>
