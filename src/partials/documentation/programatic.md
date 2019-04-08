@@ -17,7 +17,7 @@ orisonGenerator.build();
 Here is an example of serving files and rendering the file during each request.
 ```js
 const { OrisonServer } = require('orison');
-const orisonServer = new OrisonServer(__dirname);
+const orisonServer = new OrisonServer({ rootPath: __dirname });
 orisonServer.start();
 ```
 
@@ -35,7 +35,7 @@ Or you could create a file that builds, serves, or serves static based on provid
 const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
 
 if (process.argv.includes('build')) (new OrisonGenerator({ rootPath: __dirname })).build();
-if (process.argv.includes('serve')) (new OrisonServer(__dirname)).start();
+if (process.argv.includes('serve')) (new OrisonServer({ rootPath: __dirname })).start();
 if (process.argv.includes('static')) (new OrisonStaticServer()).start();
 ```
 

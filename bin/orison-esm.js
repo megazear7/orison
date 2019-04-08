@@ -15,5 +15,6 @@ export const DEFAULT_PROTECTED_FILES = [ 'CNAME' ];
 export const DEFAULT_GLOBAL_METADATA_FILENAME = 'global.json';
 export const DEFAULT_404_FILENAME = '404.html';
 export const DEFAULT_500_FILENAME = '500.html';
+export const DEFAULT_STRIP_HTML = true;
 export const DEFAULT_STATIC_DIR = 'static';
 export const DEFAULT_PORT = 3000;

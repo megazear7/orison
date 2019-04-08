@@ -9,23 +9,26 @@ import {
   DEFAULT_INDEX_BASENAME,
   DEFAULT_404_FILENAME,
   DEFAULT_500_FILENAME,
+  DEFAULT_STRIP_HTML,
   DEFAULT_PORT } from './orison-esm.js';
 
 export default class  {
-  constructor(
+  constructor({
       rootPath,
       pagesPath = path.join(DEFAULT_SRC_DIR, DEFAULT_PAGES_DIR),
       staticPath = path.join(DEFAULT_SRC_DIR, DEFAULT_STATIC_DIR),
       indexFileBasename = DEFAULT_INDEX_BASENAME,
       page404 = DEFAULT_404_FILENAME,
       page500 = DEFAULT_500_FILENAME,
-      port = DEFAULT_PORT) {
+      stripHtml = DEFAULT_STRIP_HTML,
+      port = DEFAULT_PORT }) {
     this.rootPath = rootPath;
     this.pagesPath = pagesPath;
     this.staticPath = staticPath;
     this.indexFileBasename = indexFileBasename;
     this.page404 = page404;
     this.page500 = page500;
+    this.stripHtml = stripHtml;
     this.port = DEFAULT_PORT;
     this.app = express();
   }
@@ -78,17 +81,22 @@ export default class  {
           return mdIndexFilePath;
         }
       }
-    } else if (! fullRequestPath.includes(`/${DEFAULT_INDEX_BASENAME}.`)) {
-      const jsFilePath = path.format({ ...path.parse(fullRequestPath), ext: '.js', base: undefined});
-      const htmlFilePath = path.format({ ...path.parse(fullRequestPath), ext: '.html', base: undefined});
-      const mdFilePath = path.format({ ...path.parse(fullRequestPath), ext: '.md', base: undefined});
+    }
 
-      if (fs.existsSync(jsFilePath)) {
-        return jsFilePath;
-      } else if (fs.existsSync(htmlFilePath)) {
-        return htmlFilePath;
-      } else if (fs.existsSync(mdFilePath)) {
-        return mdFilePath;
+    if ((fullRequestPath.includes('.html') && ! this.stripHtml) || (! fullRequestPath.includes('.html') && this.stripHtml)) {
+      const strippedRequestPath = this.stripHtml ? fullRequestPath.replace('.html', '') : fullRequestPath;
+      if (! strippedRequestPath.includes(`/${DEFAULT_INDEX_BASENAME}.`)) {
+        const jsFilePath = path.format({ ...path.parse(strippedRequestPath), ext: '.js', base: undefined});
+        const htmlFilePath = path.format({ ...path.parse(strippedRequestPath), ext: '.html', base: undefined});
+        const mdFilePath = path.format({ ...path.parse(strippedRequestPath), ext: '.md', base: undefined});
+
+        if (fs.existsSync(jsFilePath)) {
+          return jsFilePath;
+        } else if (fs.existsSync(htmlFilePath)) {
+          return htmlFilePath;
+        } else if (fs.existsSync(mdFilePath)) {
+          return mdFilePath;
+        }
       }
     }
 
