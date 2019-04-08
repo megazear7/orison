@@ -32,7 +32,7 @@ orisonGenerator.build();
 </code></pre>
 <p>Here is an example of serving files and rendering the file during each request.</p>
 <pre><code class="language-js">const { OrisonServer } = require('orison');
-const orisonServer = new OrisonServer(__dirname);
+const orisonServer = new OrisonServer({ rootPath: __dirname });
 orisonServer.start();
 </code></pre>
 <p>Here is an example of serving the statically built files.</p>
@@ -44,7 +44,7 @@ orisonStaticServer.start();
 <pre><code class="language-js">const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
 
 if (process.argv.includes('build')) (new OrisonGenerator({ rootPath: __dirname })).build();
-if (process.argv.includes('serve')) (new OrisonServer(__dirname)).start();
+if (process.argv.includes('serve')) (new OrisonServer({ rootPath: __dirname })).start();
 if (process.argv.includes('static')) (new OrisonStaticServer()).start();
 </code></pre>
 <p>Then you can build, serve, or serve static with these commands:</p>
@@ -54,10 +54,10 @@ $ node ./orison.js static
 </code></pre>
 
   <h3>Single pages</h3>
-<pre><code>html`...`
+<pre><code>export default () =&gt; html`...`
 </code></pre>
 <h3>Multiple pages</h3>
-<pre><code>[
+<pre><code>export default () =&gt; [
   {
     path: 'path-segment-1',
     html: html`...`
@@ -71,11 +71,11 @@ $ node ./orison.js static
 </code></pre>
 
   <h3>Partials</h3>
-<pre><code>data =&gt; html`...`
+<pre><code>export default data =&gt; html`...`
 </code></pre>
 
   <h3>Layouts</h3>
-<pre><code>page =&gt; html`
+<pre><code>export default page =&gt; html`
   ...
   ${page}
   ...
