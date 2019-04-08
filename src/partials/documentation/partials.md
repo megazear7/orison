@@ -1,5 +1,5 @@
 ### Partials
 
 ```
-data => html`...`
+export default data => html`...`
 ```

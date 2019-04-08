@@ -73,13 +73,13 @@ $ node ./orison.js static
 
 ### Single pages
 ```
-html`...`
+export default () => html`...`
 ```
 
 ### Multiple pages
 
 ```
-[
+export default () => [
   {
     path: 'path-segment-1',
     html: html`...`
@@ -95,7 +95,7 @@ html`...`
 ### Layouts
 
 ```
-page => html`
+export default page => html`
   ...
   ${page}
   ...
@@ -105,7 +105,7 @@ page => html`
 ### Partials
 
 ```
-data => html`...`
+export default data => html`...`
 ```
 
 # Development on this project

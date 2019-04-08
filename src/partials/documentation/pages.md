@@ -1,12 +1,12 @@
 ### Single pages
 ```
-html`...`
+export default () => html`...`
 ```
 
 ### Multiple pages
 
 ```
-[
+export default () => [
   {
     path: 'path-segment-1',
     html: html`...`

@@ -1,7 +1,7 @@
 ### Layouts
 
 ```
-page => html`
+export default page => html`
   ...
   ${page}
   ...
