@@ -42,18 +42,13 @@ export default class  {
         renderer.html(segment)
         .then(html => res.send(html))
         .catch(e => {
-          console.log(e);
+          console.error(e);
           res.status(500);
           const page500 = path.join(this.rootPath, this.pagesPath, this.page500);
 
           if (fs.existsSync(page500)) {
-            const renderer = new OrisonRenderer({file: page500, rootPath: this.rootPath});
-            renderer.html(segment)
-            .then(html => res.send(html))
-            .catch(e => {
-              log.error(e);
-              res.send('500 Error');
-            });
+            const html500 = fs.readFileSync(page500).toString();
+            res.send(html500);
           } else {
             res.send('500 - create a 500 page at ' + path.join(this.pagesPath, this.page500));
           }
