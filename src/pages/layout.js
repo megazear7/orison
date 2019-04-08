@@ -1,4 +1,5 @@
 const { html } = require('@popeindustries/lit-html-server');
+import footer from '../partials/footer.js';
 
 export default page => html`
 <!DOCTYPE html>
@@ -42,9 +43,8 @@ export default page => html`
     <meta property="og:image" content="icons/icon-512x512.png" />
   </head>
   <body>
-    <div>Header</div>
     ${page}
-    <div>Footer</div>
+    ${footer()}
   </body>
 </html>
 `;
