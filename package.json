@@ -7,6 +7,7 @@
     "@popeindustries/lit-html-server": "^1.1.1",
     "esm": "^3.2.20",
     "express": "^4.16.4",
+    "highlightjs": "^9.12.0",
     "lit-html": "^1.0.0",
     "markdown-it": "^8.4.2",
     "ncp": "^2.0.0"

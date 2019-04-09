@@ -1,6 +1,6 @@
 ## Programatic Usage
 
-```
+```bash
 npm install orison
 ```
 
@@ -42,7 +42,7 @@ if (process.argv.includes('static')) new OrisonStaticServer().start();
 Then you can build, serve, or serve static with these commands:
 
 ```bash
-$ node ./orison.js build
-$ node ./orison.js serve
-$ node ./orison.js static
+node ./orison.js build
+node ./orison.js serve
+node ./orison.js static
 ```

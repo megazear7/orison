@@ -1,6 +1,6 @@
 ## Multiple pages
 
-```
+```js
 export default () => [
   {
     path: 'path-segment-1',

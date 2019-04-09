@@ -10,6 +10,10 @@ export default page => html`
     <script src="/app.js"></script>
     <link rel="stylesheet" type="text/css" href="/app.css">
 
+    <link rel="stylesheet" href="/highlightjs/github.css">
+    <script src="/highlightjs/highlight.pack.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Orison server and static stite generator documentation">
     <link rel="icon" href="icons/favicon.ico">

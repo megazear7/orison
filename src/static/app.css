@@ -6,9 +6,9 @@ html {
   --primary-color: #fa5d0f;
   --secondary-color: #ffce27;
   --tertiary-color: #d13405;
-  --app-section-even-color: #f5f5f5;
+  --app-section-even-color: #e5e5e5;
   --app-section-odd-color: #fff;
-  --grey: #ccc;
+  --grey: #bbb;
   --border-radius: 5px;
   --content-width: 600px;
 
@@ -55,13 +55,6 @@ section:nth-of-type(even) {
 section.bold {
   border-top: 3px solid var(--primary-color);
   background-color: var(--secondary-color);
-}
-
-pre {
-  padding: 1rem;
-  background: var(--grey);
-  border-radius: var(--border-radius);
-  overflow-x: scroll;
 }
 
 footer {
