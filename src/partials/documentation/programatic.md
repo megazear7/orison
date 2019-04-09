@@ -1,11 +1,15 @@
 ## Programatic Usage
 
+Instead of installing OrisonJS as a command line utility you can install it as a project dependency. Then you can interact with a configurable and programatic API for building and serving your site.
+
 ```bash
 npm install orison
 ```
 
 You can require the CommonJS module from 'orison'.
 ES6 Modules are available from './node_modules/orison/bin/orison-esm.js'
+
+### Static site generation
 
 Here is an example of programmatically building the src directory into the docs directory.
 
@@ -15,13 +19,7 @@ const orisonGenerator = new OrisonGenerator({ rootPath: __dirname });
 orisonGenerator.build();
 ```
 
-Here is an example of serving files and rendering the file during each request.
-```js
-const { OrisonServer } = require('orison');
-const orisonServer = new OrisonServer({ rootPath: __dirname });
-orisonServer.start();
-```
-
+### Static serving
 Here is an example of serving the statically built files.
 
 ```js
@@ -29,6 +27,17 @@ const { OrisonStaticServer } = require('orison');
 const orisonStaticServer = new OrisonStaticServer();
 orisonStaticServer.start();
 ```
+
+### Server side generation
+
+Here is an example of serving files and rendering the file during each request.
+```js
+const { OrisonServer } = require('orison');
+const orisonServer = new OrisonServer({ rootPath: __dirname });
+orisonServer.start();
+```
+
+### Custom command line utility 
 
 Or you could create a file that builds, serves, or serves static based on provided command line arguments.
 
