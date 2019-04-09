@@ -6,9 +6,9 @@ html {
   --primary-color: #fa5d0f;
   --secondary-color: #ffce27;
   --tertiary-color: #d13405;
-  --app-section-even-color: #e5e5e5;
-  --app-section-odd-color: #fff;
-  --grey: #bbb;
+  --grey: #eee;
+  --app-section-even-color: #fff;
+  --app-section-odd-color: var(--grey);
   --border-radius: 5px;
   --content-width: 600px;
 
@@ -42,14 +42,14 @@ section {
   background: var(--app-section-odd-color);
 }
 
+section:nth-of-type(even) {
+  background: var(--app-section-even-color);
+}
+
 section > * {
   max-width: var(--content-width);
   margin-right: auto;
   margin-left: auto;
-}
-
-section:nth-of-type(even) {
-  background: var(--app-section-even-color);
 }
 
 section.bold {
@@ -59,7 +59,7 @@ section.bold {
 
 footer {
   padding: 3rem 1rem;
-  background: var(--grey);
+  background: var(--secondary-color);
 }
 
 footer * {

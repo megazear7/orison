@@ -50,6 +50,12 @@
 
     <p>A static site generator and server based upon lit-html</p>
   </section>
+  </section>
+    <p>
+      OrisonJS will interpret a source directory, rendering the contents as html files.
+      It can be utilized as a static site generator, rendering the html as a build step or it can be utilized as a webserver rendering the html on the fly for server side rendering.
+    </p>
+  </section>
   <section><h2>Command Line Usage</h2>
 <pre><code class="language-bash">npm install -g orison
 orison build
@@ -60,8 +66,9 @@ orison static
   <section><h2>Programatic Usage</h2>
 <pre><code class="language-bash">npm install orison
 </code></pre>
-<p>CommonJS Modules are available from './bin/orison.js' and ES6 Modules are available from './bin/orison-esm.js'</p>
-<p>Here is an example of building the src directory into the docs directory.</p>
+<p>You can require the CommonJS module from 'orison'.
+ES6 Modules are available from './node_modules/orison/bin/orison-esm.js'</p>
+<p>Here is an example of programmatically building the src directory into the docs directory.</p>
 <pre><code class="language-js">const { OrisonGenerator } = require('orison');
 const orisonGenerator = new OrisonGenerator({ rootPath: __dirname });
 orisonGenerator.build();

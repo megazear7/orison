@@ -4,9 +4,10 @@
 npm install orison
 ```
 
-CommonJS Modules are available from './bin/orison.js' and ES6 Modules are available from './bin/orison-esm.js'
+You can require the CommonJS module from 'orison'.
+ES6 Modules are available from './node_modules/orison/bin/orison-esm.js'
 
-Here is an example of building the src directory into the docs directory.
+Here is an example of programmatically building the src directory into the docs directory.
 
 ```js
 const { OrisonGenerator } = require('orison');
