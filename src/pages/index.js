@@ -16,6 +16,7 @@ export default () => layout(html`
   </section>
   <section>${markdown('./src/partials/documentation/cli.md')}</section>
   <section>${markdown('./src/partials/documentation/programatic.md')}</section>
+  <section>${markdown('./src/partials/documentation/getting-started.md')}</section>
   <section>${markdown('./src/partials/documentation/single-pages.md')}</section>
   <section>${markdown('./src/partials/documentation/multiple-pages.md')}</section>
   <section>${markdown('./src/partials/documentation/partials.md')}</section>

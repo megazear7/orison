@@ -50,10 +50,10 @@
 
     <p>A static site generator and server based upon lit-html</p>
   </section>
-  </section>
+  <section>
     <p>
       OrisonJS will interpret a source directory, rendering the contents as html files.
-      It can be utilized as a static site generator, rendering the html as a build step or it can be utilized as a webserver rendering the html on the fly for server side rendering.
+      It can be utilized as a static site generator, rendering the html as a build step or it can be utilized as a web server rendering the html on the fly for server side rendering.
     </p>
   </section>
   <section><h2>Command Line Usage</h2>
@@ -95,6 +95,83 @@ if (process.argv.includes('static')) new OrisonStaticServer().start();
 node ./orison.js serve
 node ./orison.js static
 </code></pre>
+</section>
+  <section><h2>Getting started</h2>
+<p>Any .js, .html, or .md file under the /src/pages directory will be rendered as an html file.</p>
+<p>JavaScript pages should return a lit-html template. Html files will be interpreted as a lit-html template. Markdown files will be rendered as is.</p>
+<p>Here is an example JavaScript page:</p>
+<pre><code class="language-js">// /src/pages/example.js
+const { html } = require('@popeindustries/lit-html-server');
+
+export default () =&gt; html`
+  &lt;h1&gt;This is an example page&lt;/h1&gt;
+`;
+</code></pre>
+<p>Or you could define this same page with an html file instead of a JavaScript file:</p>
+<pre><code class="language-html">&lt;!-- /src/pages/example.html --&gt;
+&lt;h1&gt;This is an example page&lt;/h1&gt;
+</code></pre>
+<p>Or you could write this same page as a markdown file:</p>
+<pre><code class="language-md"># This is an example page
+</code></pre>
+<p>Layouts can be used to provide html that should exist on every page. Layouts should export a method which takes a page template and then renders a full html page. For example if you could create the following layout.js file:</p>
+<pre><code class="language-js">// /src/pages/layout.js
+const { html } = require('@popeindustries/lit-html-server');
+
+export default page =&gt; html`
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;title&gt;OrisonJS&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;Website header&lt;/div&gt;
+    ${page}
+    &lt;div&gt;Website footer&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+`;
+</code></pre>
+<p>Then you could use this layout in a page in order to produce a full html file:</p>
+<pre><code class="language-js">// /src/pages/example.js
+const { html } = require('@popeindustries/lit-html-server');
+import layout from './layout.js';
+
+export default () =&gt; layout(html`
+  &lt;h1&gt;This is an example page&lt;/h1&gt;
+`);
+</code></pre>
+<p>Any pages defined as a .html file will automatically be inserted into the closest layout.js file that exists within the /src/pages directory structure.</p>
+<p>Any file named with the &quot;index&quot; basename will be returned by the server for the url that matches the directory that it is in. For example the following file will be available at localhost:3000 when the server is running, <em>not</em> localhost:3000/index.html. Most web servers that serve static files will behave in the same way.</p>
+<pre><code class="language-js">// /src/pages/index.js
+const { html } = require('@popeindustries/lit-html-server');
+import layout from './layout.js';
+
+export default () =&gt; layout(html`
+  &lt;h1&gt;This is an example page&lt;/h1&gt;
+`);
+</code></pre>
+<p>If you need reusable chunks of html you can create partials under /src/partials. These partial files should export a method which excepts some paramters and returns an html template. For example we could create the following file:</p>
+<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+
+export default title =&gt; html`
+  &lt;h1&gt;${title}&lt;/h1&gt;
+`;
+</code></pre>
+<p>And then use this partial in our page and resuse wherever it is needed.</p>
+<pre><code class="language-js">// /src/pages/index.js
+const { html } = require('@popeindustries/lit-html-server');
+import layout from './layout.js';
+import title from '../partials/title.js';
+
+export default () =&gt; layout(html`
+  ${title('This is an example page')}
+`);
+</code></pre>
+<p>Finally, any files in the /src/static directory will get copied as is into the src directory during the build. If running the live server these will be available at the same location under the root of the url. So for example the following css and js files will be available at the specified url:</p>
+<p>/src/static/main.css =&gt; localhost:3000/main.css
+/src/static/main.js =&gt; localhost:3000/main.js</p>
 </section>
   <section><h2>Single pages</h2>
 <pre><code class="language-js">export default () =&gt; html`...`

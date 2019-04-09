@@ -1,4 +1,4 @@
-## Pages
+## Getting started
 
 Any .js, .html, or .md file under the /src/pages directory will be rendered as an html file.
 
@@ -24,7 +24,7 @@ Or you could define this same page with an html file instead of a JavaScript fil
 
 Or you could write this same page as a markdown file:
 
-```
+```md
 # This is an example page
 ```
 
@@ -85,3 +85,21 @@ export default title => html`
   <h1>${title}</h1>
 `;
 ```
+
+And then use this partial in our page and resuse wherever it is needed.
+
+```js
+// /src/pages/index.js
+const { html } = require('@popeindustries/lit-html-server');
+import layout from './layout.js';
+import title from '../partials/title.js';
+
+export default () => layout(html`
+  ${title('This is an example page')}
+`);
+```
+
+Finally, any files in the /src/static directory will get copied as is into the src directory during the build. If running the live server these will be available at the same location under the root of the url. So for example the following css and js files will be available at the specified url:
+
+/src/static/main.css => localhost:3000/main.css
+/src/static/main.js => localhost:3000/main.js
