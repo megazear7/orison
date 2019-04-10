@@ -25,7 +25,7 @@
 
 1. data.json
 1. Markdown partials
-1. Example API integration
+1. Example API integration with Contentful https://app.contentful.com/spaces/8blvhwbk2pug/entries
 1. Update text color to be rgba(0,0,0,0.8) so that it isn't such a stark black on yellow or black on white.
 
 # Development on this project
