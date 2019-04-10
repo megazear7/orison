@@ -1,7 +1,7 @@
 const { html } = require('@popeindustries/lit-html-server');
 import layout from './layout.js';
 import title from '../partials/title.js';
-import { markdown } from '../../bin/orison-esm.js';
+import { markdown } from 'orison';
 
 export default () => layout(html`
   <section>${markdown('./src/partials/getting-started.md')}</section>
