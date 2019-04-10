@@ -5,7 +5,7 @@
   "main": "bin/orison.js",
   "dependencies": {
     "@popeindustries/lit-html-server": "^1.1.1",
-    "esm": "^3.2.20",
+    "esm": "^3.2.22",
     "express": "^4.16.4",
     "highlightjs": "^9.12.0",
     "lit-html": "^1.0.0",
