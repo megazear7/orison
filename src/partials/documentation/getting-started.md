@@ -1,6 +1,6 @@
 ## Getting started
 
-A OrisonJS project should have a `src` directory in the root of the project with three sub directories
+An OrisonJS project should have a `src` directory in the root of the project with three sub directories
 
 - /src/pages
 - /src/partials

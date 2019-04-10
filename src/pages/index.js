@@ -8,6 +8,13 @@ export default () => layout(html`
     ${title('OrisonJS')}
     <p>A static site generator and server based upon lit-html</p>
   </section>
+  <section>${markdown('./src/partials/documentation/cli.md')}</section>
+  <section>${markdown('./src/partials/documentation/getting-started.md')}</section>
+  <section>${markdown('./src/partials/documentation/programatic.md')}</section>
+  <section>${markdown('./src/partials/documentation/single-pages.md')}</section>
+  <section>${markdown('./src/partials/documentation/multiple-pages.md')}</section>
+  <section>${markdown('./src/partials/documentation/partials.md')}</section>
+  <section>${markdown('./src/partials/documentation/layouts.md')}</section>
   <section>
     <p>
       OrisonJS will interpret a source directory, rendering the contents as html files.
@@ -23,11 +30,4 @@ export default () => layout(html`
       <li><a href="https://github.com/markdown-it/markdown-it">markdown-it</a></li>
     </ol>
   </section>
-  <section>${markdown('./src/partials/documentation/cli.md')}</section>
-  <section>${markdown('./src/partials/documentation/getting-started.md')}</section>
-  <section>${markdown('./src/partials/documentation/programatic.md')}</section>
-  <section>${markdown('./src/partials/documentation/single-pages.md')}</section>
-  <section>${markdown('./src/partials/documentation/multiple-pages.md')}</section>
-  <section>${markdown('./src/partials/documentation/partials.md')}</section>
-  <section>${markdown('./src/partials/documentation/layouts.md')}</section>
 `);

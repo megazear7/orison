@@ -1,7 +1,5 @@
 ## Command Line Usage
 
-# Note while GitHub pages
-
 ```bash
 npm install -g orison
 orison init my-project
