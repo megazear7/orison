@@ -1,4 +1,4 @@
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from '@popeindustries/lit-html-server';
 import layout from './layout.js';
 import title from '../partials/title.js';
 import { markdown } from 'orison';

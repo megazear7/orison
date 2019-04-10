@@ -1,4 +1,4 @@
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from '@popeindustries/lit-html-server';
 import footer from '../partials/footer.js';
 import header from '../partials/header.js';
 
