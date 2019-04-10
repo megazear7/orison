@@ -94,11 +94,6 @@ export default class OrisonRenderer {
         path: this.getIndexPath(name),
         html: Promise.resolve(html).then(renderer => renderToString(renderer))
       }));
-    } else if (fileExport instanceof Function) {
-      return {
-        path: this.buildFilePath,
-        html: Promise.resolve(fileExport()).then(renderer => renderToString(renderer))
-      }
     } else {
       return {
         path: this.buildFilePath,
