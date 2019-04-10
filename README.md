@@ -1,5 +1,7 @@
 # Orison
 
+> Status: pre-release
+
 [Orison Documentation](https://orison.alexlockhart.me)
 
 * Can be used as a static site generator or server.
