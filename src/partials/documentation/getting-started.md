@@ -97,6 +97,7 @@ export default () => layout(html`
 If you need reusable chunks of html you can create partials under /src/partials. These partial files should export a method which excepts some paramters and returns an html template. For example we could create the following file:
 
 ```js
+// /src/partials/title.js
 const { html } = require('@popeindustries/lit-html-server');
 
 export default title => html`
