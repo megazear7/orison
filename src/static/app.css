@@ -67,3 +67,7 @@ footer * {
   margin-left: auto;
   max-width: var(--content-width);
 }
+
+.logo {
+  float: right;
+}

@@ -6,6 +6,7 @@ import { markdown } from '../../bin/orison-esm.js';
 export default () => layout(html`
   <section class="bold">
     ${title('OrisonJS')}
+    <img src="/icons/icon-256x256.png" class="logo">
     <p>A static site generator and server based upon lit-html</p>
     <p>Status: pre-release</p>
     <p>
@@ -22,11 +23,7 @@ export default () => layout(html`
   <section>${markdown('./src/partials/documentation/layouts.md')}</section>
   <section>
     <p>
-      OrisonJS will interpret a source directory, rendering the contents as html files.
-      It can be utilized as a static site generator, rendering the html as a build step or it can be utilized as a web server rendering the html on the fly for server side rendering.
-    </p>
-    <p>
-      It utilized the following JavaScript libraries:
+      OrisonJS utilizes the following JavaScript libraries:
     </p>
     <ol>
       <li><a href="https://github.com/popeindustries/lit-html-server">lit-html-server</a></li>
