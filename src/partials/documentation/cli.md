@@ -4,6 +4,7 @@
 npm install -g orison
 orison init my-project
 cd my-project
+npm install
 
 # Build changes to your project to the /docs directory:
 orison build
