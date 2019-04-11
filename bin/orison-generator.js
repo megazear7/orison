@@ -33,46 +33,17 @@ export default class OrisonGenerator {
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
     this.rootPath = rootPath;
-    this.global = JSON.parse(fs.readFileSync(this.getPagesPath(globalMetadataFile)));
+
+    const globalMetadataFilePath = this.getPagesPath(globalMetadataFile)
+    this.global = fs.existsSync(globalMetadataFilePath)
+      ? JSON.parse(fs.readFileSync(globalMetadataFilePath))
+      : { };
   }
 
   build() {
-    if (fs.existsSync(this.getBuildPath())){
-      fileWalker(this.getBuildPath(),
-        (err, file) => {
-          if (! this.protectedFileNames.includes(path.basename(file))) fs.unlinkSync(file);
-        }
-      );
-    } else {
-      fs.mkdirSync(this.getBuildPath());
-    }
-
-    ncp(this.getSrcPath(this.staticDirectory), this.getBuildPath(), err => {
-     if (err) {
-       return console.error(err);
-     }
-    });
-
-    console.log(`Generating to ${this.buildDir} from ${this.srcDirectory}:`);
-    fileWalker(this.getSrcPath(this.pagesDirectory),
-      (err, file) => {
-        if (err) {
-          throw err;
-        } else if (file.endsWith(this.layoutFileBasename + '.js')) {
-          return;
-        } else if (file.endsWith('.js') || file.endsWith('.html') || file.endsWith('.md')) {
-          (new OrisonRenderer({file, rootPath: this.rootPath})).write();
-        }
-      },
-      (err, directory) => {
-        const newPath = this.getBuildPath(this.getPageContextPath(directory));
-        if (!fs.existsSync(newPath)){
-          fs.mkdir(newPath, err => {
-            if (err) console.log(err);
-          });
-        }
-      }
-    );
+    this.prepBuildDir();
+    this.copyStaticFiles();
+    this.generatePages();
   }
 
   getPageContextPath(pagePath) {
@@ -89,5 +60,69 @@ export default class OrisonGenerator {
 
   getBuildPath(buildPath = '') {
     return path.join(this.rootPath, this.buildDir, buildPath);
+  }
+
+  generatePages() {
+    console.log(`Generating to ${this.buildDir} from ${this.srcDirectory}:`);
+    fileWalker(this.getSrcPath(this.pagesDirectory),
+      file => {
+        if (this.isSourcePage(file)) (new OrisonRenderer({file, rootPath: this.rootPath})).write();
+      },
+      directory => {
+        const newPath = this.getBuildPath(this.getPageContextPath(directory));
+        if (!fs.existsSync(newPath)) fs.mkdirSync(newPath);
+      }
+    );
+  }
+
+  isSourcePage(file) {
+    return ! file.endsWith(this.layoutFileBasename + '.js') &&
+           ( file.endsWith('.js') || file.endsWith('.html') || file.endsWith('.md') );
+  }
+
+  copyStaticFiles() {
+    ncp(this.getSrcPath(this.staticDirectory), this.getBuildPath(), err => {
+      if (err) throw err;
+    });
+  }
+
+  prepBuildDir() {
+    if (fs.existsSync(this.getBuildPath())) {
+      this.cleanBuildDir();
+    } else {
+      fs.mkdirSync(this.getBuildPath());
+    }
+  }
+
+  cleanBuildDir() {
+    this.deleteBuildFiles();
+    this.deleteBuildDirectories();
+  }
+
+  deleteBuildFiles() {
+    fileWalker(this.getBuildPath(),
+      file => {
+        if (! this.protectedFileNames.includes(path.basename(file))) {
+          try {
+            fs.unlinkSync(file);
+          } catch {
+            console.debug('Could not delete build file: ' + file);
+          }
+        }
+      }
+    );
+  }
+
+  deleteBuildDirectories() {
+    fileWalker(this.getBuildPath(),
+      () => { },
+      directory => {
+        try {
+          fs.unlinkSync(directory);
+        } catch {
+          console.debug('Could not delete build directory: ' + directory);
+        }
+      }
+    );
   }
 }
