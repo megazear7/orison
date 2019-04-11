@@ -13,20 +13,19 @@
 ## Functionality TODO
 
 1. Do html partials work?
-1. orison init my-project
-1. orison init --github-pages my-project
 1. orison init --firebase my-project
 1. orison init --netlify my-project
 1. orison init --js my-project # This should create js pages and partials
 1. orison init --html my-project # This should create html pages partials
 1. orison init --md my-project # This should create md pages pages and partials
+1. npx orison serve does not work from a separate project
 
 ## Documentation TODO
 
 1. data.json
 1. Markdown partials
 1. Example API integration with Contentful https://app.contentful.com/spaces/8blvhwbk2pug/entries
-1. Update text color to be rgba(0,0,0,0.8) so that it isn't such a stark black on yellow or black on white.
+1. Steps for deploying a project to Github. These steps should go in the github template project and also in the main documentation.
 
 # Development on this project
 
