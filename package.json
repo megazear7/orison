@@ -1,6 +1,6 @@
 {
   "name": "orison",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A static site generator built on top of lit-html.",
   "main": "bin/orison.js",
   "dependencies": {
