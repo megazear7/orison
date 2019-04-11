@@ -4,6 +4,7 @@ export { default as OrisonDirectory } from './orison-directory.js';
 export { default as OrisonServer } from './orison-server.js';
 export { default as OrisonStaticServer } from './orison-static-server.js';
 export { default as markdown } from './markdown.js';
+export { html, renderToString } from '@popeindustries/lit-html-server';
 
 export const DEFAULT_SRC_DIR = 'src';
 export const DEFAULT_BUILD_DIR = 'docs';
