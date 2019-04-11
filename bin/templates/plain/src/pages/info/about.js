@@ -1,5 +1,4 @@
-import { html } from '@popeindustries/lit-html-server';
-import { OrisonDirectory } from 'orison';
+import { html, OrisonDirectory } from 'orison';
 
 export default async () => {
   const file = new OrisonDirectory({ path: __dirname });

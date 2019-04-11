@@ -1,4 +1,4 @@
-import { html } from '@popeindustries/lit-html-server';
+import { html } from 'orison';
 import layout from './layout.js';
 
 export default () => [

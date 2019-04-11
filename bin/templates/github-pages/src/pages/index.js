@@ -1,7 +1,6 @@
-import { html } from '@popeindustries/lit-html-server';
+import { html, markdown } from 'orison';
 import layout from './layout.js';
 import title from '../partials/title.js';
-import { markdown } from 'orison';
 
 export default () => layout(html`
   <section>${markdown('./src/partials/getting-started.md')}</section>
