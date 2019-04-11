@@ -6,9 +6,11 @@ An OrisonJS project should have a `src` directory in the root of the project wit
 - /src/partials
 - /src/static  
 
-The `orison build` command will render the page templates under /src/pages into the /docs directory.
-The `orison static` command will statically serve the built files under /docs.
-The `orison serve` command will render the pages under /src/pages at localhost:3000.
+The `npx orison build` command will render the page templates under /src/pages into the /docs directory.
+The `npx orison static` command will statically serve the built files under /docs.
+The `npx orison serve` command will render the pages under /src/pages at localhost:3000.
+
+Alert: I plan on removing the need for using npx. For the moment if you try to build, serve, or statically serve your project through the globally installed orison command there will be two different versions being used; your projects and the globally installed version. This causes an error. I am working to resolve this.
 
 ### Creating your first page
 

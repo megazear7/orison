@@ -9,7 +9,7 @@ npm install
 ## Build
 
 ```
-orison build
+npm run build
 ```
 
 ## Deploy

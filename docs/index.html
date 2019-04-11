@@ -56,20 +56,23 @@
       <a href="https://www.npmjs.com/package/orison">npm</a>
     </p>
   </section>
-  <section><h2>Command Line Usage</h2>
+  <section><h2>Setup</h2>
 <pre><code class="language-bash">npm install -g orison
 orison init my-project
 cd my-project
 npm install
 
-# Build changes to your project to the /docs directory:
-orison build
+# Build the /src directory into the /docs directory
+npx orison build
 
-# Serve the files in the /docs directory:
-orison static
+# Serve the files from the /docs directory
+npx orison static
 
-# Build the html files on the fly from the /src directory:
-orison serve
+# Your new website is available at localhost:3000
+</code></pre>
+<p>You can also serve your changes live without needing to rebuild with the serve command:</p>
+<pre><code class="language-bash"># Build the html files on the fly from the /src directory
+npx orison serve
 </code></pre>
 </section>
   <section><h2>Getting started</h2>
@@ -79,9 +82,10 @@ orison serve
 <li>/src/partials</li>
 <li>/src/static</li>
 </ul>
-<p>The <code>orison build</code> command will render the page templates under /src/pages into the /docs directory.
-The <code>orison static</code> command will statically serve the built files under /docs.
-The <code>orison serve</code> command will render the pages under /src/pages at localhost:3000.</p>
+<p>The <code>npx orison build</code> command will render the page templates under /src/pages into the /docs directory.
+The <code>npx orison static</code> command will statically serve the built files under /docs.
+The <code>npx orison serve</code> command will render the pages under /src/pages at localhost:3000.</p>
+<p>Alert: I plan on removing the need for using npx. For the moment if you try to build, serve, or statically serve your project through the globally installed orison command there will be two different versions being used; your projects and the globally installed version. This causes an error. I am working to resolve this.</p>
 <h3>Creating your first page</h3>
 <p>Any JavaScript, HTML, or Markdown files under the /src/pages directory will be rendered as an html file at the same location but under the /docs directory.</p>
 <p>JavaScript pages should return a lit-html template. Html files will be interpreted as a lit-html template. Markdown files will be rendered as is.</p>

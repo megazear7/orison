@@ -14,7 +14,7 @@ export default () => layout(html`
       <a href="https://www.npmjs.com/package/orison">npm</a>
     </p>
   </section>
-  <section>${markdown('./src/partials/documentation/cli.md')}</section>
+  <section>${markdown('./src/partials/documentation/setup.md')}</section>
   <section>${markdown('./src/partials/documentation/getting-started.md')}</section>
   <section>${markdown('./src/partials/documentation/programatic.md')}</section>
   <section>${markdown('./src/partials/documentation/single-pages.md')}</section>
