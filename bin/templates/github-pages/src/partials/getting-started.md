@@ -2,14 +2,6 @@
 
 > With Orison For Github Pages
 
-## Setup
-
-Assuming you have already run `orison init --github-pages my-site`:
-
-1. `cd my-site`
-1. `npm install`
-1. `npm run build`
-
 ## Make changes
 
 1. Make changes under /src based upon the [OrisonJS documentation](https://orison.alexlockhart.me)
