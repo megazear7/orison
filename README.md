@@ -13,6 +13,7 @@
 ## Functionality TODO
 
 1. Do html partials work?
+1. Build and serve fragments of pages, i.e. only the content in the page file itself without the layout. This will allow loading in these pages on navigation instead of reloading the whole page. The could be accessible at something like /my/page.fragment.html
 1. orison init --firebase my-project
 1. orison init --netlify my-project
 1. orison init --js my-project # This should create js pages and partials
