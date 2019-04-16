@@ -6,7 +6,7 @@
 
 1. Make changes under /src based upon the [OrisonJS documentation](https://orison.alexlockhart.me)
 1. Build the changes to /docs with `npm run build`
-1. Test your changes by running `npm run static` and going to localhost:3000
+1. Test your changes by running `npm run serve` and going to localhost:3000
 
 ## Deploy
 

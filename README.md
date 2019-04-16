@@ -12,13 +12,13 @@
 
 ## Functionality TODO
 
-1. Do html partials work?
+1. Provide an export similiar to the markdown export that renders html partials.
+1. Add a production flag to turn off things like node module cache clearing.
 1. orison init --firebase my-project
 1. orison init --netlify my-project
 1. orison init --js my-project # This should create js pages and partials
 1. orison init --html my-project # This should create html pages partials
 1. orison init --md my-project # This should create md pages pages and partials
-1. npx orison serve does not work from a separate project
 
 ## Documentation TODO
 
