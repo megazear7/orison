@@ -87,6 +87,7 @@ export default class OrisonRenderer {
   }
 
   renderJsFile() {
+    delete require.cache[require.resolve(this.file)];
     const fileExport = require(this.file).default();
 
     if (Array.isArray(fileExport)) {
