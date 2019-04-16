@@ -46,7 +46,7 @@ section:nth-of-type(even) {
   background: var(--app-section-even-color);
 }
 
-section > * {
+section > *, header > *, footer > * {
   max-width: var(--content-width);
   margin-right: auto;
   margin-left: auto;
@@ -60,10 +60,4 @@ section.bold {
 footer {
   padding: 3rem 1rem;
   background: var(--secondary-color);
-}
-
-footer * {
-  margin-right: auto;
-  margin-left: auto;
-  max-width: var(--content-width);
 }

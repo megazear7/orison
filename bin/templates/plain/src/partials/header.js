@@ -2,6 +2,6 @@ import { html } from 'orison';
 
 export default () => html`
   <header>
-    <p>Header</p>
+    <h2>OrisonJS Starter Kit</h2>
   </header>
 `;

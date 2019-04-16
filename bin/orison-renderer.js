@@ -87,7 +87,9 @@ export default class OrisonRenderer {
   }
 
   renderJsFile() {
-    delete require.cache[require.resolve(this.file)];
+    if (process.env.NODE_ENV !== 'production') {
+      this.clearSrcModuleCache();
+    )
     const fileExport = require(this.file).default();
 
     if (Array.isArray(fileExport)) {
@@ -103,12 +105,22 @@ export default class OrisonRenderer {
     }
   }
 
+  clearSrcModuleCache() {
+    Object.keys(require.cache)
+    .filter(modulePath => modulePath.startsWith(this.srcPath))
+    .forEach(modulePath => delete require.cache[require.resolve(modulePath)]);
+  }
+
   get markdownHtml() {
     return md().render(this.markdown);
   }
 
   get markdown() {
     return fs.readFileSync(this.file).toString();
+  }
+
+  get srcPath() {
+    return path.join(this.rootPath, this.srcDirectory);
   }
 
   get buildPath() {

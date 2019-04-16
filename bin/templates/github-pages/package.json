@@ -11,6 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "orison build",
     "serve": "orison serve",
+    "prod": "NODE_ENV=production orison serve",
     "static": "orison static"
   },
   "author": "",
