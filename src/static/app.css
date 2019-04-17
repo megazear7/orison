@@ -13,7 +13,7 @@ html {
   --content-width: 600px;
 
   font-size: 18px;
-  line-height: 1.5rem;
+  line-height: 2rem;
   color: rgba(0, 0, 0, 0.8);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -32,11 +32,23 @@ h1 {
 
 h2 {
   color: var(--primary-color);
-  font-size: 2rem;
+  font-size: 2.5rem;
+}
+
+h3 {
+  color: var(--tertiary-color);
+  font-size: 1.75rem;
 }
 
 p {
+  text-align: justify;
   font-size: 1rem;
+}
+
+p code {
+  padding: 0.3rem;
+  color: #333;
+  background: #f8f8f8;
 }
 
 section {

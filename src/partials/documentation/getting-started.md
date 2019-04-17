@@ -107,7 +107,7 @@ export default title => html`
 `;
 ```
 
-And then use this partial in our page and resuse wherever it is needed.
+And then use this partial in our page and reuse wherever it is needed.
 
 ```js
 // /src/pages/index.js
@@ -120,9 +120,11 @@ export default () => layout(html`
 `);
 ```
 
+Note that because the partial's definition is outside of the page hierarchy and needs to be capable of accepting parameters it must be defined as a JS file and not an html file.
+
 ### The static directory
 
 Finally, any files in the /src/static directory will get copied as is into the src directory during the build. If running the live server these will be available at the same location under the root of the url. So for example the following css and js files will be available at the specified url:
 
-/src/static/main.css => localhost:3000/main.css
-/src/static/main.js => localhost:3000/main.js
+* /src/static/main.css => localhost:3000/main.css
+* /src/static/main.js => localhost:3000/main.js
