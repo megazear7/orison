@@ -89,7 +89,7 @@ export default class OrisonRenderer {
   renderJsFile() {
     if (process.env.NODE_ENV !== 'production') {
       this.clearSrcModuleCache();
-    )
+    }
     const fileExport = require(this.file).default();
 
     if (Array.isArray(fileExport)) {
