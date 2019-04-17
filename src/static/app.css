@@ -39,34 +39,29 @@ p {
 }
 
 section {
-  padding: 1rem;
-  background: var(--app-section-odd-color);
-}
-
-section:nth-of-type(even) {
   background: var(--app-section-even-color);
 }
 
-section > * {
+section:nth-of-type(even) {
+  background: var(--app-section-odd-color);
+}
+
+section > *, footer > *, header > * {
+  padding: 1rem;
   max-width: var(--content-width);
   margin-right: auto;
   margin-left: auto;
 }
 
-section.bold {
+header {
   border-top: 3px solid var(--primary-color);
   background-color: var(--secondary-color);
 }
 
 footer {
-  padding: 3rem 1rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   background: var(--secondary-color);
-}
-
-footer * {
-  margin-right: auto;
-  margin-left: auto;
-  max-width: var(--content-width);
 }
 
 .logo {
