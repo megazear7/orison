@@ -95,12 +95,14 @@ export default class OrisonRenderer {
     if (Array.isArray(fileExport)) {
       return fileExport.map(({name, html}) => ({
         path: this.getIndexPath(name),
-        html: Promise.resolve(html).then(renderer => renderToString(renderer))
+        html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(html)])
+                     .then(values => new LayoutRenderer(values).render())
       }));
     } else {
       return {
         path: this.buildFilePath,
-        html: Promise.resolve(fileExport).then(renderer => renderToString(renderer))
+        html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(fileExport)])
+                     .then(values => new LayoutRenderer(values).render())
       };
     }
   }
@@ -153,5 +155,16 @@ export default class OrisonRenderer {
     const filePath = this.pageContextPath;
     const directory = filePath.slice(0, filePath.lastIndexOf('/'))
     return path.join(directory, fileName);
+  }
+}
+
+class LayoutRenderer {
+  constructor(array) {
+    this.layout = array[0];
+    this.page = array[1];
+  }
+
+  render() {
+    return renderToString(this.layout(this.page));
   }
 }

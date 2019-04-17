@@ -66,17 +66,7 @@ export default page => html`
 `;
 ```
 
-Then you could use this layout in a page in order to produce a full html file:
-
-```js
-// /src/pages/example.js
-const { html } = require('@popeindustries/lit-html-server');
-import layout from './layout.js';
-
-export default () => layout(html`
-  <h1>This is an example page</h1>
-`);
-```
+The closest layout to the rendered page will be used for that page. So for example if you have only one layout.js file and it is directly in the /src/pages directory, it will be used for rendering every page. If a layout.js exists closer in the /src/pages directory hierarchy to the rendered page, it will be used instead.
 
 Any pages defined as an HTML file will automatically be inserted into the closest layout.js file that exists within the /src/pages directory structure.
 
@@ -87,11 +77,10 @@ Any file named with the "index" basename will be returned by the server for the 
 ```js
 // /src/pages/index.js
 const { html } = require('@popeindustries/lit-html-server');
-import layout from './layout.js';
 
-export default () => layout(html`
+export default () => html`
   <h1>This is an example page</h1>
-`);
+`;
 ```
 
 ### Making reusable partials
@@ -112,12 +101,11 @@ And then use this partial in our page and reuse wherever it is needed.
 ```js
 // /src/pages/index.js
 const { html } = require('@popeindustries/lit-html-server');
-import layout from './layout.js';
 import title from '../partials/title.js';
 
-export default () => layout(html`
+export default () => html`
   ${title('This is an example page')}
-`);
+`;
 ```
 
 Note that because the partial's definition is outside of the page hierarchy and needs to be capable of accepting parameters it must be defined as a JS file and not an html file.

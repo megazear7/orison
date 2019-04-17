@@ -44,18 +44,21 @@
   </head>
   <body>
     
-  <section class="bold">
+  <header>
     
   <h1>OrisonJS</h1>
 
     <img src="/icons/icon-256x256.png" class="logo">
     <p>A static site generator and server based upon lit-html</p>
-    <p>Status: pre-release</p>
     <p>
+      Status: pre-release
+      <br>
       <a href="https://github.com/megazear7/orison">Github</a> -
       <a href="https://www.npmjs.com/package/orison">npm</a>
     </p>
-  </section>
+  </header>
+
+    
   <section><h2>Setup</h2>
 <pre><code class="language-bash">npm install -g orison
 orison init my-project
@@ -153,7 +156,7 @@ export default title =&gt; html`
   &lt;h1&gt;${title}&lt;/h1&gt;
 `;
 </code></pre>
-<p>And then use this partial in our page and resuse wherever it is needed.</p>
+<p>And then use this partial in our page and reuse wherever it is needed.</p>
 <pre><code class="language-js">// /src/pages/index.js
 const { html } = require('@popeindustries/lit-html-server');
 import layout from './layout.js';
@@ -163,10 +166,13 @@ export default () =&gt; layout(html`
   ${title('This is an example page')}
 `);
 </code></pre>
+<p>Note that because the partial's definition is outside of the page hierarchy and needs to be capable of accepting parameters it must be defined as a JS file and not an html file.</p>
 <h3>The static directory</h3>
 <p>Finally, any files in the /src/static directory will get copied as is into the src directory during the build. If running the live server these will be available at the same location under the root of the url. So for example the following css and js files will be available at the specified url:</p>
-<p>/src/static/main.css =&gt; localhost:3000/main.css
-/src/static/main.js =&gt; localhost:3000/main.js</p>
+<ul>
+<li>/src/static/main.css =&gt; localhost:3000/main.css</li>
+<li>/src/static/main.js =&gt; localhost:3000/main.js</li>
+</ul>
 </section>
   <section><h2>Programatic Usage</h2>
 <p>Instead of installing OrisonJS as a command line utility you can install it as a project dependency. Then you can interact with a configurable and programatic API for building and serving your site.</p>

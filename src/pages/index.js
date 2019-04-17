@@ -1,9 +1,7 @@
-const { html } = require('@popeindustries/lit-html-server');
-import layout from './layout.js';
+import { html } from '@popeindustries/lit-html-server';
 import { markdown } from '../../bin/orison-esm.js';
 
-export default () => layout(html`
-
+export default () => html`
   <section>${markdown('./src/partials/documentation/setup.md')}</section>
   <section>${markdown('./src/partials/documentation/getting-started.md')}</section>
   <section>${markdown('./src/partials/documentation/programatic.md')}</section>
@@ -22,4 +20,4 @@ export default () => layout(html`
       <li><a href="https://github.com/markdown-it/markdown-it">markdown-it</a></li>
     </ol>
   </section>
-`);
+`;

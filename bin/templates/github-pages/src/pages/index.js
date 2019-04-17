@@ -1,8 +1,7 @@
 import { html, markdown } from 'orison';
-import layout from './layout.js';
 import title from '../partials/title.js';
 
-export default () => layout(html`
+export default () => html`
   <section>${markdown('./src/partials/getting-started.md')}</section>
   <section>
     <h3>Here are some example pages</h3>
@@ -15,4 +14,4 @@ export default () => layout(html`
       <li><a href="/info/about.html">/info/about.html</a></li>
     </ul>
   </section>
-`);
+`;
