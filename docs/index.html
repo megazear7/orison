@@ -163,6 +163,22 @@ export default () =&gt; html`
 <li>/src/static/main.css =&gt; localhost:3000/main.css</li>
 <li>/src/static/main.js =&gt; localhost:3000/main.js</li>
 </ul>
+<h3>Fragments</h3>
+<p>Each page will also have a corresponding &quot;fragment&quot; built. A fragment is the same content as the page, but without the layout applied. This allows you to do client side navigation, loading in page content from the browser JavaScript without requiring full page refreshes. This also allows you to use the system as an API for content.</p>
+<p>For example for the following urls:</p>
+<ol>
+<li>/index.html</li>
+<li>/info/about.html</li>
+<li>/my-first-blog-post.html</li>
+<li>/another-blog-post.html</li>
+</ol>
+<p>There will also be these urls with the same page content but without the layout applied:</p>
+<ol>
+<li>/index.fragment.html</li>
+<li>/info/about.fragment.html</li>
+<li>/my-first-blog-post.fragment.html</li>
+<li>/another-blog-post.fragment.html</li>
+</ol>
 </section>
   <section><h2>Programatic Usage</h2>
 <p>Instead of installing OrisonJS as a command line utility you can install it as a project dependency. Then you can interact with a configurable and programatic API for building and serving your site.</p>
