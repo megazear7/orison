@@ -54,7 +54,7 @@ export default class OrisonRenderer {
     const renderResult = this.render();
 
     return Array.isArray(renderResult)
-      ? renderResult.find(page = page.path.endsWith(segment)).html
+      ? renderResult.find(page => page.path.endsWith(segment)).html
       : renderResult.html;
   }
 
