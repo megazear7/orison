@@ -116,3 +116,21 @@ Finally, any files in the /src/static directory will get copied as is into the s
 
 * /src/static/main.css => localhost:3000/main.css
 * /src/static/main.js => localhost:3000/main.js
+
+### Fragments
+
+Each page will also have a corresponding "fragment" built. A fragment is the same content as the page, but without the layout applied. This allows you to do client side navigation, loading in page content from the browser JavaScript without requiring full page refreshes. This also allows you to use the system as an API for content.
+
+For example for the following urls:
+
+1. /index.html
+1. /info/about.html
+1. /my-first-blog-post.html
+1. /another-blog-post.html
+
+There will also be these urls with the same page content but without the layout applied:
+
+1. /index.fragment.html
+1. /info/about.fragment.html
+1. /my-first-blog-post.fragment.html
+1. /another-blog-post.fragment.html

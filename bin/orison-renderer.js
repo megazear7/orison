@@ -90,20 +90,30 @@ export default class OrisonRenderer {
     if (process.env.NODE_ENV !== 'production') {
       this.clearSrcModuleCache();
     }
-    const fileExport = require(this.file).default();
+    const fileExport = require(this.file).default;
 
-    if (Array.isArray(fileExport)) {
-      return fileExport.map(({name, html}) => ({
-        path: this.getIndexPath(name),
-        html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(html)])
-                     .then(values => new LayoutRenderer(values).render())
-      }));
+    if (Array.isArray(fileExport())) {
+      return [
+        ...fileExport().map(({name, html}) => ({
+          path: this.getIndexPath(name),
+          html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(html)])
+                       .then(values => new LayoutRenderer(values).render())
+        })),
+        ...fileExport().map(({name, html}) => ({
+          path: this.getIndexFragmentPath(name),
+          html: Promise.resolve(html).then(page => renderToString(page))
+        })),
+      ];
     } else {
-      return {
+      return [{
         path: this.buildFilePath,
-        html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(fileExport)])
+        html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(fileExport())])
                      .then(values => new LayoutRenderer(values).render())
-      };
+                     .catch(e => console.log(e))
+      }, {
+        path: this.buildFragmentPath,
+        html: Promise.resolve(fileExport()).then(page => renderToString(page))
+      }];
     }
   }
 
@@ -133,6 +143,10 @@ export default class OrisonRenderer {
     return path.join(this.rootPath, this.buildDir, this.replaceExtension('html'));
   }
 
+  get buildFragmentPath() {
+    return path.join(this.rootPath, this.buildDir, this.replaceExtension('fragment.html'));
+  }
+
   get relativeBuildFilePath() {
     return this.buildFilePath.slice(this.buildPath.length);
   }
@@ -149,6 +163,10 @@ export default class OrisonRenderer {
 
   getIndexPath(fileName) {
     return path.join(this.rootPath, this.buildDir, this.replaceFileName(fileName + '.html'));
+  }
+
+  getIndexFragmentPath(fileName) {
+    return path.join(this.rootPath, this.buildDir, this.replaceFileName(fileName + '.fragment.html'));
   }
 
   replaceFileName(fileName) {

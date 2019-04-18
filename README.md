@@ -12,7 +12,7 @@
 
 ## Functionality TODO
 
-1. Build and serve fragments of pages, i.e. only the content in the page file itself without the layout. This will allow loading in these pages on navigation instead of reloading the whole page. The could be accessible at something like /my/page.fragment.html
+1. Make the fragments work the `orison serve`
 1. Provide a frontend component that can be loaded which will take over relative link navigation and do fragment loading.
 1. orison init --firebase my-project
 1. orison init --netlify my-project
