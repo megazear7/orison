@@ -67,15 +67,13 @@ section > *, footer > *, header > * {
 }
 
 header {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding: 1rem 1rem 3rem 1rem;
   border-top: 3px solid var(--primary-color);
   background-color: var(--secondary-color);
 }
 
 footer {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding: 3rem 1rem;
   background: var(--secondary-color);
 }
 

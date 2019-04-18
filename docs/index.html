@@ -127,25 +127,16 @@ export default page =&gt; html`
 &lt;/html&gt;
 `;
 </code></pre>
-<p>Then you could use this layout in a page in order to produce a full html file:</p>
-<pre><code class="language-js">// /src/pages/example.js
-const { html } = require('@popeindustries/lit-html-server');
-import layout from './layout.js';
-
-export default () =&gt; layout(html`
-  &lt;h1&gt;This is an example page&lt;/h1&gt;
-`);
-</code></pre>
+<p>The closest layout to the rendered page will be used for that page. So for example if you have only one layout.js file and it is directly in the /src/pages directory, it will be used for rendering every page. If a layout.js exists closer in the /src/pages directory hierarchy to the rendered page, it will be used instead.</p>
 <p>Any pages defined as an HTML file will automatically be inserted into the closest layout.js file that exists within the /src/pages directory structure.</p>
 <h3>Utilizing index files</h3>
 <p>Any file named with the &quot;index&quot; basename will be returned by the server for the url that matches the directory that it is in. For example the following file will be available at localhost:3000 when the server is running, <em>not</em> localhost:3000/index.html. Most web servers that serve static files will behave in the same way.</p>
 <pre><code class="language-js">// /src/pages/index.js
 const { html } = require('@popeindustries/lit-html-server');
-import layout from './layout.js';
 
-export default () =&gt; layout(html`
+export default () =&gt; html`
   &lt;h1&gt;This is an example page&lt;/h1&gt;
-`);
+`;
 </code></pre>
 <h3>Making reusable partials</h3>
 <p>If you need reusable chunks of html you can create partials under /src/partials. These partial files should export a method which excepts some paramters and returns an html template. For example we could create the following file:</p>
@@ -159,12 +150,11 @@ export default title =&gt; html`
 <p>And then use this partial in our page and reuse wherever it is needed.</p>
 <pre><code class="language-js">// /src/pages/index.js
 const { html } = require('@popeindustries/lit-html-server');
-import layout from './layout.js';
 import title from '../partials/title.js';
 
-export default () =&gt; layout(html`
+export default () =&gt; html`
   ${title('This is an example page')}
-`);
+`;
 </code></pre>
 <p>Note that because the partial's definition is outside of the page hierarchy and needs to be capable of accepting parameters it must be defined as a JS file and not an html file.</p>
 <h3>The static directory</h3>
