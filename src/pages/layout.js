@@ -17,8 +17,8 @@ export default page => html`
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Orison server and static stite generator documentation">
-    <link rel="icon" href="icons/favicon.ico">
-    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="/icons/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#fa5d0f">
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
@@ -48,7 +48,9 @@ export default page => html`
   </head>
   <body>
     ${header()}
-    ${page}
+    <main>
+      ${page}
+    </main>
     ${footer()}
   </body>
 </html>

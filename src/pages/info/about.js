@@ -9,9 +9,14 @@ export default async () => {
   const childPaths = parent.getChildren().map(orisonDir => orisonDir.path).join(', ');
 
   return html`
-    <p>About page</p>
-    <p>${parentData.title}</p>
-    <p>${childPaths}</p>
-    <a href="${data.link.url}">${data.link.title}</a>
+    <section>
+      <p>About page</p>
+      <p>${parentData.title}</p>
+      <p>
+        ${childPaths}
+        <br>
+        <a href="${data.link.url}">${data.link.title}</a>
+      </p>
+    </section>
   `;
 };
