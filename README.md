@@ -13,6 +13,7 @@
 ## Functionality TODO
 
 1. Pass a context object into the page export that contains the path and metadata. This way the user code does not have to calculate or find this information. A similar "layout context" object could be passed into the layout file export.
+1. Add navigation and updated client side routing to template projects.
 1. Add `orison generate:page /example/path` which generates a page at the specified path relative to /src/pages.
     1. `orison generate /example/path` Defalts to a JS page.
     1. `orison generate --page /example/path` Explicitly call out that you want to generate a page.
