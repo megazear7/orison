@@ -26,7 +26,7 @@ function replacePage(fragmentHtml) {
 }
 
 window.addEventListener('popstate', event => {
-  event.state.fragmentHtml
+  event.state && event.state.fragmentHtml
     ? replacePage(event.state.fragmentHtml)
     : loadFragment(document.location.pathname);
 });

@@ -1,6 +1,7 @@
 const { html } = require('@popeindustries/lit-html-server');
-import footer from '../partials/footer.js';
 import header from '../partials/header.js';
+import nav from '../partials/nav.js';
+import footer from '../partials/footer.js';
 
 export default page => html`
 <!DOCTYPE html>
@@ -48,6 +49,7 @@ export default page => html`
   </head>
   <body>
     ${header()}
+    ${nav()}
     <main>
       ${page}
     </main>

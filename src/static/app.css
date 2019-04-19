@@ -67,7 +67,7 @@ section > *, footer > *, header > * {
 }
 
 header {
-  padding: 1rem 1rem 3rem 1rem;
+  padding: 1rem;
   border-top: 3px solid var(--primary-color);
   background-color: var(--secondary-color);
 }
@@ -77,6 +77,20 @@ footer {
   background: var(--secondary-color);
 }
 
-.logo {
-  float: right;
+nav {
+  display: flex;
+  width: 100%;
+}
+
+nav a {
+  flex-grow: 1;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  background: var(--secondary-color);
+  color: var(--tertiary-color);
+}
+
+nav a:hover {
+  color: var(--primary-color);
 }
