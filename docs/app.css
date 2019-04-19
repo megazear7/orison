@@ -60,7 +60,7 @@ section:nth-of-type(even) {
   background: var(--app-section-odd-color);
 }
 
-section > *, footer > *, header > * {
+section > *, footer > *, header > *, nav > * {
   max-width: var(--content-width);
   margin-right: auto;
   margin-left: auto;
@@ -78,6 +78,10 @@ footer {
 }
 
 nav {
+  background: var(--secondary-color);
+}
+
+nav > div {
   display: flex;
   width: 100%;
 }
@@ -87,10 +91,15 @@ nav a {
   padding: 1rem;
   text-align: center;
   text-decoration: none;
-  background: var(--secondary-color);
   color: var(--tertiary-color);
 }
 
 nav a:hover {
   color: var(--primary-color);
+  border-bottom: 3px dashed var(--primary-color);
+}
+
+nav a.active {
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--primary-color);
 }

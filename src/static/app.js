@@ -25,6 +25,9 @@ function replacePage(fragmentHtml, path) {
   document.querySelector('main').innerHTML = fragmentHtml;
   document.querySelectorAll(`nav a`).forEach(link => link.classList.remove('active'));
   document.querySelector(`nav a[href="${path}"]`).classList.add('active');
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
 }
 
 window.addEventListener('popstate', event => {

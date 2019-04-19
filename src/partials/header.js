@@ -4,7 +4,9 @@ import title from './title.js';
 export default () => html`
   <header>
     ${title('OrisonJS')}
-    <img src="/icons/icon-256x256.png">
+    <div>
+      <img src="/icons/icon-256x256.png">
+    </div>
     <p>A static site generator and server based upon lit-html</p>
   </header>
 `;
