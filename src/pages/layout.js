@@ -49,9 +49,9 @@ export default page => html`
   </head>
   <body>
     ${header()}
-    ${nav()}
+    ${nav(page.path)}
     <main>
-      ${page}
+      ${page.html}
     </main>
     ${footer()}
   </body>

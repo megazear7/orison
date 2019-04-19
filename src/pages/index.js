@@ -1,5 +1,6 @@
 import { html } from '@popeindustries/lit-html-server';
 import { markdown } from '../../bin/orison-esm.js';
+import nav from '../partials/nav.js';
 
 export default () => html`
   <section>${markdown('./src/partials/documentation/setup.md')}</section>

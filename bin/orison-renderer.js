@@ -75,14 +75,20 @@ export default class OrisonRenderer {
       path: this.buildFilePath,
       html: this.orisonFile.getData()
         .then(data => this.orisonFile.getLayout()
-          .then(layout => renderToString(layout(eval('html`' + fs.readFileSync(this.file).toString() + '`')))))
+          .then(layout => renderToString(layout({
+            html: eval('html`' + fs.readFileSync(this.file).toString() + '`'),
+            path: this.pageContextPath
+          }))))
     };
   }
 
   renderMdFile() {
     return {
       path: this.buildFilePath,
-      html: this.orisonFile.getLayout().then(layout => renderToString(layout(html`${unsafeHTML(this.markdownHtml)}`)))
+      html: this.orisonFile.getLayout().then(layout => renderToString(layout({
+        html: html`${unsafeHTML(this.markdownHtml)}`,
+        path: this.pageContextPath
+      })))
     };
   }
 
@@ -97,7 +103,7 @@ export default class OrisonRenderer {
         ...fileExport().map(({name, html}) => ({
           path: this.getIndexPath(name),
           html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(html)])
-                       .then(values => new LayoutRenderer(values).render())
+                       .then(values => new LayoutRenderer(values, this.pageContextPath, name).render())
         })),
         ...fileExport().map(({name, html}) => ({
           path: this.getIndexFragmentPath(name),
@@ -108,7 +114,7 @@ export default class OrisonRenderer {
       return [{
         path: this.buildFilePath,
         html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(fileExport())])
-                     .then(values => new LayoutRenderer(values).render())
+                     .then(values => new LayoutRenderer(values, this.pageContextPath).render())
                      .catch(e => console.log(e))
       }, {
         path: this.buildFragmentPath,
@@ -177,12 +183,18 @@ export default class OrisonRenderer {
 }
 
 class LayoutRenderer {
-  constructor(array) {
+  constructor(array, path, name) {
     this.layout = array[0];
     this.page = array[1];
+    this.path = path;
+    this.name = name;
   }
 
   render() {
-    return renderToString(this.layout(this.page));
+    return renderToString(this.layout({
+      html: this.page,
+      path: this.path,
+      name: this.name
+    }));
   }
 }
