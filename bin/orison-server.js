@@ -66,12 +66,13 @@ export default class  {
 
   srcPath(requestPath, setStatus) {
     const fullRequestPath = path.join(this.rootPath, this.pagesPath, requestPath).replace('.fragment', '');
+    const indexFullRequestPath = fullRequestPath.replace('index.html', '');
 
-    if (fs.existsSync(fullRequestPath)) {
-      const stat = fs.statSync(fullRequestPath);
-      const jsIndexFilePath = path.join(fullRequestPath, this.indexFileBasename + '.js');
-      const htmlIndexFilePath = path.join(fullRequestPath, this.indexFileBasename + '.html');
-      const mdIndexFilePath = path.join(fullRequestPath, this.indexFileBasename + '.md');
+    if (fs.existsSync(indexFullRequestPath)) {
+      const stat = fs.statSync(indexFullRequestPath);
+      const jsIndexFilePath = path.join(indexFullRequestPath, this.indexFileBasename + '.js');
+      const htmlIndexFilePath = path.join(indexFullRequestPath, this.indexFileBasename + '.html');
+      const mdIndexFilePath = path.join(indexFullRequestPath, this.indexFileBasename + '.md');
       if (stat.isDirectory()) {
         if (fs.existsSync(jsIndexFilePath)) {
           return jsIndexFilePath;
