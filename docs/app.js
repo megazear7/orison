@@ -7,8 +7,32 @@ if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  document.body.addEventListener('click', function(event) {
+function loadFragment(path, callback) {
+  // Determine the fragment path
+  var fragmentPath = path.includes('.html')
+    ? path.replace('.html', '.fragment.html')
+    : path + 'index.fragment.html';
+
+  fetch(fragmentPath)
+  .then(res => res.text())
+  .then(fragmentHtml => {
+    replacePage(fragmentHtml);
+    if (typeof callback === 'function') callback(fragmentHtml);
+  });
+}
+
+function replacePage(fragmentHtml) {
+  document.querySelector('main').innerHTML = fragmentHtml;
+}
+
+window.addEventListener('popstate', event => {
+  event.state.fragmentHtml
+    ? replacePage(event.state.fragmentHtml)
+    : loadFragment(document.location.pathname);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.addEventListener('click', event => {
     var tag = event.target;
 
     // It's a left click on an <a href=...>.
@@ -20,20 +44,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Only do this for relative urls
         if (newPath.startsWith('/')) {
-          // Determine the fragment path
-          var fragment = newPath.includes('.html')
-            ? newPath.replace('.html', '.fragment.html')
-            : newPath + 'index.fragment.html';
-
           // Prevent the browser from doing the navigation.
           event.preventDefault();
-          fetch(fragment)
-          .then(res => res.text())
-          .then(html => {
-            // Update the <main> element with the fragment and push the new history state.
-            document.querySelector('main').innerHTML = html;
-            history.pushState(null, '', newPath);
-          });
+
+          loadFragment(newPath, fragmentHtml => history.pushState({ fragmentHtml }, '', newPath));
         }
       }
     }
