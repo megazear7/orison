@@ -65,7 +65,7 @@ export default class  {
   }
 
   srcPath(requestPath, setStatus) {
-    const fullRequestPath = path.join(this.rootPath, this.pagesPath, requestPath);
+    const fullRequestPath = path.join(this.rootPath, this.pagesPath, requestPath).replace('.fragment', '');
 
     if (fs.existsSync(fullRequestPath)) {
       const stat = fs.statSync(fullRequestPath);
