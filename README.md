@@ -23,7 +23,6 @@
     1. `orison g --partial /example/path`
     1. `orison generate --layout /example/path` Creates a layout in the specified directory
     1. `orison g --layout /example/path` Creates a layout in the specified directory
-1. Provide a frontend component that can be loaded which will take over relative link navigation and do fragment loading.
 1. orison init --firebase my-project
 1. orison init --netlify my-project
 1. orison init --js my-project # This should create js pages and partials
