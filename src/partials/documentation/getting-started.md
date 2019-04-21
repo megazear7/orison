@@ -59,7 +59,7 @@ export default page => html`
   </head>
   <body>
     <div>Website header</div>
-    ${page}
+    ${page.html}
     <div>Website footer</div>
   </body>
 </html>

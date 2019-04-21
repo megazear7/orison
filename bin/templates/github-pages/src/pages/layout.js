@@ -13,7 +13,7 @@ export default page => html`
   </head>
   <body>
     ${header()}
-    ${page}
+    ${page.html}
     ${footer()}
   </body>
 </html>
