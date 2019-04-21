@@ -16,18 +16,23 @@ function loadFragment(path, callback) {
   fetch(fragmentPath)
   .then(res => res.text())
   .then(fragmentHtml => {
-    replacePage(fragmentHtml);
+    replacePage(fragmentHtml, path);
     if (typeof callback === 'function') callback(fragmentHtml);
   });
 }
 
-function replacePage(fragmentHtml) {
+function replacePage(fragmentHtml, path) {
   document.querySelector('main').innerHTML = fragmentHtml;
+  document.querySelectorAll(`nav a`).forEach(link => link.classList.remove('active'));
+  document.querySelector(`nav a[href="${path}"]`).classList.add('active');
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
 }
 
 window.addEventListener('popstate', event => {
   event.state && event.state.fragmentHtml
-    ? replacePage(event.state.fragmentHtml)
+    ? replacePage(event.state.fragmentHtml, event.pathname)
     : loadFragment(document.location.pathname);
 });
 
