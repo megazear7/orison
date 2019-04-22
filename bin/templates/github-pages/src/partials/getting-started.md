@@ -1,7 +1,5 @@
 ## Getting Started
 
-> With Orison For Github Pages
-
 ### Make changes
 
 1. Make changes under /src based upon the [OrisonJS documentation](https://orison.alexlockhart.me)
