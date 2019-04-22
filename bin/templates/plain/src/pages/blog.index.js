@@ -3,14 +3,14 @@ import { html } from 'orison';
 export default () => [
   {
     name: 'blog-a',
-    html: html`<p>Blog A</p>`,
+    html: html`<section><p>Blog A</p></section>`,
   },
   {
     name: 'blog-b',
-    html: html`<p>Blog B</p>`,
+    html: html`<section><p>Blog B</p></section>`,
   },
   {
     name: 'blog-c',
-    html: html`<p>Blog C</p>`,
+    html: html`<section><p>Blog C</p></section>`,
   }
 ];

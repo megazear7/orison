@@ -1,5 +1,7 @@
 import { html } from 'orison';
 
 export default () => html`
-  <p>Blog listing page</p>
+  <section>
+    <p>Blog listing page</p>
+  </section>
 `;

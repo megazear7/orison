@@ -11,9 +11,9 @@ html {
   --app-section-odd-color: var(--grey);
   --border-radius: 5px;
   --content-width: 600px;
-
   font-size: 18px;
-  font-family: arial sans-serif;
+  color: rgba(0, 0, 0, 0.8);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -26,33 +26,49 @@ body {
 h1 {
   color: var(--tertiary-color);
   font-size: 4rem;
+  line-height: 1em;
 }
 
 h2 {
   color: var(--primary-color);
-  font-size: 2rem;
+  font-size: 2.5rem;
+  line-height: 1em;
+}
+
+h3 {
+  color: var(--tertiary-color);
+  font-size: 1.75rem;
+  line-height: 1em;
 }
 
 p {
+  text-align: justify;
   font-size: 1rem;
+}
+
+p code {
+  padding: 0.3rem;
+  color: #333;
+  background: #f8f8f8;
 }
 
 section {
   padding: 1rem;
-  background: var(--app-section-odd-color);
-}
-
-section:nth-of-type(even) {
   background: var(--app-section-even-color);
 }
 
-section > *, header > *, footer > * {
+section:nth-of-type(even) {
+  background: var(--app-section-odd-color);
+}
+
+section > *, footer > *, header > *, nav > * {
   max-width: var(--content-width);
   margin-right: auto;
   margin-left: auto;
 }
 
-section.bold {
+header {
+  padding: 1rem;
   border-top: 3px solid var(--primary-color);
   background-color: var(--secondary-color);
 }
@@ -60,4 +76,31 @@ section.bold {
 footer {
   padding: 3rem 1rem;
   background: var(--secondary-color);
+}
+
+nav {
+  background: var(--secondary-color);
+}
+
+nav > div {
+  display: flex;
+  width: 100%;
+}
+
+nav a {
+  flex-grow: 1;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  color: var(--tertiary-color);
+}
+
+nav a:hover {
+  color: var(--primary-color);
+  border-bottom: 3px dashed var(--primary-color);
+}
+
+nav a.active {
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--primary-color);
 }
