@@ -1,22 +1,13 @@
 import { html } from '@popeindustries/lit-html-server';
-import { OrisonDirectory } from '../../../bin/orison.js';
+import { mdString } from '../../../bin/orison-esm.js';
+import client from '../../contentful.js';
 
 export default async () => {
-  const file = new OrisonDirectory({ path: __dirname });
-  const data = await file.getData();
-  const parent = file.getParent();
-  const parentData = await parent.getData();
-  const childPaths = parent.getChildren().map(orisonDir => orisonDir.path).join(', ');
+  const entry = await client.getEntry("5yI7Sof8GKPflIWeG2O9RE");
 
   return html`
     <section>
-      <p>About page</p>
-      <p>${parentData.title}</p>
-      <p>
-        ${childPaths}
-        <br>
-        <a href="${data.link.url}">${data.link.title}</a>
-      </p>
+      ${mdString(entry.fields.body)}
     </section>
   `;
 };
