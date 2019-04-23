@@ -43,19 +43,17 @@ export default class OrisonRenderer {
   }
 
   write() {
-    const renderResult = this.render();
-
-    return Array.isArray(renderResult)
-      ? renderResult.forEach(file => this.writeFile(file))
-      : this.writeFile(renderResult);
+    return Promise.resolve(this.render()).then(renderResult =>
+      Array.isArray(renderResult)
+        ? renderResult.forEach(file => this.writeFile(file))
+        : this.writeFile(renderResult));
   }
 
   html(segment) {
-    const renderResult = this.render();
-
-    return Array.isArray(renderResult)
-      ? renderResult.find(page => page.path.endsWith(segment)).html
-      : renderResult.html;
+    return Promise.resolve(this.render()).then(renderResult =>
+      Array.isArray(renderResult)
+        ? renderResult.find(page => page.path.endsWith(segment)).html
+        : renderResult.html);
   }
 
   render() {
@@ -98,29 +96,34 @@ export default class OrisonRenderer {
     }
     const fileExport = require(this.file).default;
 
-    if (Array.isArray(fileExport())) {
-      return [
-        ...fileExport().map(({name, html}) => ({
-          path: this.getIndexPath(name),
-          html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(html)])
-                       .then(values => new LayoutRenderer(values, this.pageContextPath, name).render())
-        })),
-        ...fileExport().map(({name, html}) => ({
-          path: this.getIndexFragmentPath(name),
-          html: Promise.resolve(html).then(page => renderToString(page))
-        })),
-      ];
-    } else {
-      return [{
-        path: this.buildFilePath,
-        html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(fileExport())])
-                     .then(values => new LayoutRenderer(values, this.pageContextPath).render())
-                     .catch(e => console.log(e))
-      }, {
-        path: this.buildFragmentPath,
-        html: Promise.resolve(fileExport()).then(page => renderToString(page))
-      }];
-    }
+    return Promise.all([fileExport(), fileExport()]).then(fileExportResults => {
+      const exportCopy1 = fileExportResults[0];
+      const exportCopy2 = fileExportResults[1];
+
+      if (Array.isArray(exportCopy1)) {
+        return [
+          ...exportCopy1.map(({name, html}) => ({
+            path: this.getIndexPath(name),
+            html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(html)])
+                         .then(values => new LayoutRenderer(values, this.pageContextPath, name).render())
+          })),
+          ...exportCopy2.map(({name, html}) => ({
+            path: this.getIndexFragmentPath(name),
+            html: Promise.resolve(html).then(page => renderToString(page))
+          })),
+        ];
+      } else {
+        return [{
+          path: this.buildFilePath,
+          html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(exportCopy1)])
+                       .then(values => new LayoutRenderer(values, this.pageContextPath).render())
+                       .catch(e => console.log(e))
+        }, {
+          path: this.buildFragmentPath,
+          html: Promise.resolve(exportCopy2).then(page => renderToString(page))
+        }];
+      }
+    });
   }
 
   clearSrcModuleCache() {

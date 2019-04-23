@@ -1,16 +1,21 @@
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from '@popeindustries/lit-html-server';
+import { mdString } from '../../bin/orison-esm.js';
+import client from '../contentful.js';
 
-export default () => [
-  {
-    name: 'blog-a',
-    html: html`<p>Blog A</p>`,
-  },
-  {
-    name: 'blog-b',
-    html: html`<p>Blog B</p>`,
-  },
-  {
-    name: 'blog-c',
-    html: html`<p>Blog C</p>`,
-  }
-];
+export default async () => {
+  const entry = await client.getEntry("5yI7Sof8GKPflIWeG2O9RE");
+  const entries = await client.getEntries({
+    'content_type': 'blogPost'
+  });
+
+  return entries.items.map(entry => {
+    return {
+      name: entry.fields.slug,
+      html: html`
+        <section>
+          ${mdString(entry.fields.body)}
+        </section>
+      `
+    };
+  });
+};

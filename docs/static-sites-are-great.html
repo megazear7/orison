@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OrisonJS</title>
+    <script src="/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="/app.css">
+
+    <link rel="stylesheet" href="/highlightjs/github.css">
+    <script src="/highlightjs/highlight.pack.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Orison server and static stite generator documentation">
+    <link rel="icon" href="/icons/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#fa5d0f">
+
+    <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="OrisonJS">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OrisonJS">
+
+    <!-- Homescreen icons -->
+    <link rel="apple-touch-icon" href="icons/icon-640x640.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
+
+    <!-- Tile icon for Windows 8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="icons/icon-512x512.png">
+    <meta name="msapplication-TileColor" content="#fa5d0f">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Default twitter cards -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@username">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="orison">
+    <meta property="og:image" content="icons/icon-512x512.png" />
+  </head>
+  <body>
+    
+  <header>
+    
+  <h1>OrisonJS</h1>
+
+    <div>
+      <img src="/icons/icon-256x256.png">
+    </div>
+    <p>A static site generator and server based upon lit-html</p>
+  </header>
+
+    
+  <nav>
+    <div>
+      <a href="/" class="">Home</a>
+      <a href="/blog.html" class="">Blog</a>
+      <a href="/info/about.html" class="">About</a>
+    </div>
+  </nav>
+
+    <main>
+      
+        <section>
+          <h2>The case for the static site generator</h2>
+<p>More and more developers are jumping on the &quot;go static train&quot;, and rightfully so. Static pages are fast, lightweight, they scale well. They are more secure, and simple to maintain and they allow you to focus all your time and effort on the user interface. Often times, this dedication really shows.</p>
+<p>It just so happens that static site generators are mostly loved by developers, but not by the average Joe. They do not offer WYSIWYG, previewing on demo sites may take an update cycle, they are often based on markdown text files, and they require some knowledge of modern day repositories.</p>
+<p>Moreover, when teams are collaborating, it can get complicated quickly. Has this article already been proof-read or reviewed? Is this input valid? Are user permissions available, e.g. for administering adding and removing team members? Can this article be published at a future date? How can a large repository of content be categorized, organized, and searched? All these requirements have previously been more or less solved within the admin area of your CMS. But of course with all the baggage that made you leave the appserver-app-database-in-one-big-blob stack in the first place.</p>
+<h2>Content APIs to the rescue</h2>
+<p>An alternative is decoupling the content management aspect from the system. And then replacing the maintenance prone server with a cloud based web service offering. Effectively, instead of your CMS of old, you move to a <a href="https://www.contentful.com/r/knowledgebase/content-as-a-service/" title="Content Management as a Service (CMaaS)">Content Management as a Service (CMaaS)</a> world, with a content API to deliver all your content. That way, you get the all the <a href="http://www.digett.com/blog/01/16/2014/pairing-static-websites-cms" title="benefits of content management features">benefits of content management features</a> while still being able to embrace the static site generator mantra.</p>
+<p>It so happens that Contentful is offering just that kind of content API. A service that</p>
+<ul>
+<li>from the ground up has been designed to be fast, scalable, secure, and offer high uptime, so that you don’t have to worry about maintenance ever again.</li>
+<li>offers a powerful editor and lots of flexibility in creating templates for your documents that your editors can reuse and combine, so that no developers resources are required in everyday writing and updating tasks.</li>
+<li>separates content from presentation, so you can reuse your content repository for any device platform your heart desires. That way, you can COPE (&quot;create once, publish everywhere&quot;).</li>
+<li>offers webhooks that you can use to rebuild your static site in a fully automated fashion every time your content is modified.</li>
+</ul>
+<p>Extracted from the article <a href="https://www.contentful.com/r/knowledgebase/contentful-api-cms-static-site-generators/" title="CMS-functionality for static site generators">CMS-functionality for static site generators</a>. Read more about the <a href="https://www.contentful.com/developers/docs/tools/staticsitegenerators/" title="static site generators supported by Contentful">static site generators supported by Contentful</a>.</p>
+
+        </section>
+      
+    </main>
+    
+  <footer>
+    <p>
+      Status: pre-release
+      <br>
+      <a href="https://github.com/megazear7/orison">Github</a> -
+      <a href="https://www.npmjs.com/package/orison">npm</a>
+    </p>
+    <p>
+      Author: <a href="https://www.alexlockhart.me">Alex Lockhart</a>
+    </p>
+    <p>
+      Icons made by
+      <a href="https://www.freepik.com/" title="Freepik">Freepik</a>
+      from
+      <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+      is licensed by
+      <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+    </p>
+  </footer>
+
+  </body>
+</html>
