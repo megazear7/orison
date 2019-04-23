@@ -10,13 +10,12 @@ export default async () => {
     'fields.tags': 'orisonjs-blog'
   });
 
-  // <img src="${entry.fields.heroImage.fields.file.url}">
-
   return html`
     ${repeat(entries.items, entry => html`
       <section>
-        <div>
+        <div class="blog-overview">
           <h3>${entry.fields.title}</h3>
+          <img src="${entry.fields.heroImage.fields.file.url}">
           <p>${entry.fields.description}</p>
           <p><a href="/blog/${entry.fields.slug}.html">Read More</a></p>
         </div>

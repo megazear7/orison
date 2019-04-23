@@ -12,6 +12,8 @@
 
 ## Functionality TODO
 
+1. error page fragments for SPA?
+1. Index page fragments for SPA?
 1. Rendering arrays of pages from a single file and serving from the orison serve command is not working.
 1. Pass a context object into the page export that contains the path and metadata. This way the user code does not have to calculate or find this information. A similar "layout context" object could be passed into the layout file export.
 1. Add `orison generate:page /example/path` which generates a page at the specified path relative to /src/pages.

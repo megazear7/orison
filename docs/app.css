@@ -103,3 +103,7 @@ nav a.active {
   color: var(--primary-color);
   border-bottom: 3px solid var(--primary-color);
 }
+
+img {
+  max-width: 100%;
+}
