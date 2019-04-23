@@ -23,8 +23,14 @@ function loadFragment(path, callback) {
 
 function replacePage(fragmentHtml, path) {
   document.querySelector('main').innerHTML = fragmentHtml;
-  document.querySelectorAll(`nav a`).forEach(link => link.classList.remove('active'));
-  document.querySelector(`nav a[href="${path}"]`).classList.add('active');
+  document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(link => {
+    const hrefNoExt = link.getAttribute('href').replace('.html', '');
+    const pathNoExt = path.replace('.html', '')
+    if ((hrefNoExt != '/' && pathNoExt.startsWith(hrefNoExt)) || (hrefNoExt === '/' && pathNoExt === '/')) {
+      link.classList.add('active');
+    }
+  });
   document.querySelectorAll('pre code').forEach((block) => {
     hljs.highlightBlock(block);
   });

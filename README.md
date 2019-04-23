@@ -12,8 +12,8 @@
 
 ## Functionality TODO
 
+1. Rendering arrays of pages from a single file and serving from the orison serve command is not working.
 1. Pass a context object into the page export that contains the path and metadata. This way the user code does not have to calculate or find this information. A similar "layout context" object could be passed into the layout file export.
-1. Add navigation and updated client side routing to template projects.
 1. Add `orison generate:page /example/path` which generates a page at the specified path relative to /src/pages.
     1. `orison generate /example/path` Defalts to a JS page.
     1. `orison generate --page /example/path` Explicitly call out that you want to generate a page.
@@ -35,8 +35,8 @@
 
 1. data.json
 1. Markdown partials
-1. Example API integration with Contentful https://app.contentful.com/spaces/8blvhwbk2pug/entries
-1. Steps for deploying a project to Github. These steps should go in the github template project and also in the main documentation.
+1. Example API integration
+1. Steps for deploying a project to Github
 
 # Development on this project
 

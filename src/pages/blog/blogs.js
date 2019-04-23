@@ -14,6 +14,7 @@ export default async () => {
       name: entry.fields.slug,
       html: html`
         <section>
+          <h3>${entry.fields.title}</h3>
           ${mdString(entry.fields.body)}
         </section>
       `
