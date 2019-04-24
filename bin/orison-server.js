@@ -101,6 +101,11 @@ export default class  {
       }
     }
 
+    const listPath = path.join(fullRequestPath.slice(0, fullRequestPath.lastIndexOf('/')), 'list.js');
+    if (fs.existsSync(listPath)) {
+      return listPath;
+    }
+
     const path404 = path.join(this.rootPath, this.pagesPath, this.page404);
     setStatus(404);
     if (fs.existsSync(path404)) {
