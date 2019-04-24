@@ -14,6 +14,7 @@ function loadFragment(path, callback) {
     : path + 'index.fragment.html';
 
   fetch(fragmentPath)
+  .then(res => res.status === 404 ? fetch('/404.fragment.html') : res)
   .then(res => res.text())
   .then(fragmentHtml => {
     replacePage(fragmentHtml, path);

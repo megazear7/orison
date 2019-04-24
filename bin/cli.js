@@ -5,7 +5,7 @@ const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('./orison.
 
 if (process.argv.includes('build')) new OrisonGenerator({ rootPath: process.cwd() }).build();
 if (process.argv.includes('serve')) new OrisonServer({ rootPath: process.cwd() }).start();
-if (process.argv.includes('static')) new OrisonStaticServer().start();
+if (process.argv.includes('static')) new OrisonStaticServer({ rootPath: process.cwd() }).start();
 
 if (process.argv.length === 4 && process.argv.includes('init')) {
   ncp(__dirname + '/templates/plain', process.argv[3], err => {

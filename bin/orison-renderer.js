@@ -121,7 +121,7 @@ export default class OrisonRenderer {
       this.clearSrcModuleCache();
     }
     const fileExport = require(this.file).default;
-    const slug = segment.replace('.html', '').replace('.fragment', '');
+    const slug = segment ? segment.replace('.html', '').replace('.fragment', '') : undefined;
 
     return Promise.all([fileExport(slug), fileExport(slug)]).then(fileExportResults => {
       const exportCopy1 = fileExportResults[0];
