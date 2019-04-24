@@ -4,6 +4,7 @@ import path from 'path';
 import { unsafeHTML } from '@popeindustries/lit-html-server/directives/unsafe-html.js';
 import { html, renderToString } from '@popeindustries/lit-html-server';
 import OrisonDirectory from './orison-directory.js';
+import { mdString, mdFile } from './markdown.js';
 import {
   DEFAULT_SRC_DIR,
   DEFAULT_BUILD_DIR,
@@ -94,8 +95,11 @@ export default class OrisonRenderer {
         html: this.orisonFile.getData()
           .then(data => this.orisonFile.getLayout()
             .then(layout => renderToString(layout({
-              html: eval('html`' + fs.readFileSync(filePath).toString() + '`'),
-              path: this.pageContextPath
+              ...this.context(),
+              page: {
+                html: eval('html`' + fs.readFileSync(filePath).toString() + '`'),
+                path: this.pageContextPath
+              }
             }))))
       },
       {
@@ -111,8 +115,11 @@ export default class OrisonRenderer {
       {
         path: this.buildFilePath,
         html: this.orisonFile.getLayout().then(layout => renderToString(layout({
-          html: html`${unsafeHTML(this.markdownHtml)}`,
-          path: this.pageContextPath
+          ...this.context(),
+          page: {
+            html: html`${unsafeHTML(this.markdownHtml)}`,
+            path: this.pageContextPath
+          }
         })))
       },
       {
@@ -128,8 +135,9 @@ export default class OrisonRenderer {
     }
     const fileExport = require(this.file).default;
     const slug = segment ? segment.replace('.html', '').replace('.fragment', '') : undefined;
+    const context = this.context();
 
-    return Promise.all([fileExport(slug), fileExport(slug)]).then(fileExportResults => {
+    return Promise.all([fileExport(context, slug), fileExport(context, slug)]).then(fileExportResults => {
       const exportCopy1 = fileExportResults[0];
       const exportCopy2 = fileExportResults[1];
 
@@ -138,7 +146,7 @@ export default class OrisonRenderer {
           ...exportCopy1.map(({name, html}) => ({
             path: this.getIndexPath(name),
             html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(html)])
-                         .then(values => new LayoutRenderer(values, this.pageContextPath, name).render())
+                         .then(values => new LayoutRenderer(values, this.pageContextPath, name, context).render())
           })),
           ...exportCopy2.map(({name, html}) => ({
             path: this.getIndexFragmentPath(name),
@@ -149,7 +157,7 @@ export default class OrisonRenderer {
         return [{
           path: this.buildFilePath,
           html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(exportCopy1)])
-                       .then(values => new LayoutRenderer(values, this.pageContextPath).render())
+                       .then(values => new LayoutRenderer(values, this.pageContextPath, undefined, context).render())
                        .catch(e => console.log(e))
         }, {
           path: this.buildFragmentPath,
@@ -163,6 +171,13 @@ export default class OrisonRenderer {
     Object.keys(require.cache)
     .filter(modulePath => modulePath.startsWith(this.srcPath))
     .forEach(modulePath => delete require.cache[require.resolve(modulePath)]);
+  }
+
+  context() {
+    return {
+      mdString,
+      mdFile
+    };
   }
 
   get markdownHtml() {
@@ -219,18 +234,22 @@ export default class OrisonRenderer {
 }
 
 class LayoutRenderer {
-  constructor(array, path, name) {
+  constructor(array, path, name, context) {
     this.layout = array[0];
     this.page = array[1];
     this.path = path;
     this.name = name;
+    this.context = context;
   }
 
   render() {
     return renderToString(this.layout({
-      html: this.page,
-      path: this.path,
-      name: this.name
+      ...this.context,
+      page: {
+        html: this.page,
+        path: this.path,
+        name: this.name
+      }
     }));
   }
 }

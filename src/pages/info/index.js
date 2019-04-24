@@ -1,5 +1,5 @@
 const { html } = require('@popeindustries/lit-html-server');
 
-export default () => html`
+export default context => html`
   <p>Info page</p>
 `;

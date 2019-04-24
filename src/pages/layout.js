@@ -3,7 +3,7 @@ import header from '../partials/header.js';
 import nav from '../partials/nav.js';
 import footer from '../partials/footer.js';
 
-export default page => html`
+export default context => html`
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -49,9 +49,9 @@ export default page => html`
   </head>
   <body>
     ${header()}
-    ${nav(page.path)}
+    ${nav(context.page.path)}
     <main>
-      ${page.html}
+      ${context.page.html}
     </main>
     ${footer()}
   </body>
