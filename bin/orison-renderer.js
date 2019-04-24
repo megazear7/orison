@@ -59,7 +59,14 @@ export default class OrisonRenderer {
             return renderResult[0].html;
           }
         } else {
-          return this.renderHtmlFile(path404).html;
+          const page404Result = this.renderHtmlFile(path404);
+          if (page404Result.length > 1) {
+            if (segment.includes('.fragment')) {
+              return page404Result[1].html;
+            } else {
+              return page404Result[0].html;
+            }
+          }
         }
       } else {
         return renderResult.html;
@@ -81,15 +88,22 @@ export default class OrisonRenderer {
     const filePath = filePathOverride ? filePathOverride : this.file;
     const global = this.globalData;
 
-    return {
-      path: this.buildFilePath,
-      html: this.orisonFile.getData()
-        .then(data => this.orisonFile.getLayout()
-          .then(layout => renderToString(layout({
-            html: eval('html`' + fs.readFileSync(filePath).toString() + '`'),
-            path: this.pageContextPath
-          }))))
-    };
+    return [
+      {
+        path: this.buildFilePath,
+        html: this.orisonFile.getData()
+          .then(data => this.orisonFile.getLayout()
+            .then(layout => renderToString(layout({
+              html: eval('html`' + fs.readFileSync(filePath).toString() + '`'),
+              path: this.pageContextPath
+            }))))
+      },
+      {
+        path: this.buildFragmentPath,
+        html: this.orisonFile.getData().then(data =>
+          renderToString(eval('html`' + fs.readFileSync(filePath).toString() + '`'))),
+      }
+    ];
   }
 
   renderMdFile() {
