@@ -4,6 +4,7 @@ import nav from '../partials/nav.js';
 export default context => html`
   <section>${context.mdFile('./src/partials/documentation/setup.md')}</section>
   <section>${context.mdFile('./src/partials/documentation/getting-started.md')}</section>
+  <section>${context.mdFile('./src/partials/documentation/build.md')}</section>
   <section>${context.mdFile('./src/partials/documentation/programatic.md')}</section>
   <section>${context.mdFile('./src/partials/documentation/single-pages.md')}</section>
   <section>${context.mdFile('./src/partials/documentation/multiple-pages.md')}</section>

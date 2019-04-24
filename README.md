@@ -12,7 +12,11 @@
 
 ## TODO
 
-1. Update the context object with the global and local metadata files as well as methods for retrieving child pages, parent pages, etc...
+1. Update the context object with
+    1. Global metadata
+    1. Local metadata
+    1. lit-html `html` method and other helper methods
+    1. Parent and child data
 1. Add `orison generate` commands
 1. Add `orison init --firebase` option
 1. Add `orison init --netlify` option

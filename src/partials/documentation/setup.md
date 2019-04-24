@@ -10,14 +10,7 @@ npm install
 npx orison build
 
 # Serve the files from the /docs directory
-npx orison static
+npx orison serve
 
 # Your new website is available at localhost:3000
-```
-
-You can also serve your changes live without needing to rebuild with the serve command:
-
-```bash
-# Build the html files on the fly from the /src directory
-npx orison serve
 ```

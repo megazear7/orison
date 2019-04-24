@@ -13,7 +13,6 @@ function searchParams(slug) {
 }
 
 export default async (context, slug) => {
-  const entry = await client.getEntry("5yI7Sof8GKPflIWeG2O9RE");
   const entries = await client.getEntries(searchParams(slug));
 
   return entries.items.map(entry => {
