@@ -27,6 +27,7 @@ export default class  {
     this.staticPath = staticPath;
     this.indexFileBasename = indexFileBasename;
     this.page404 = page404;
+    this.path404 = path.join(this.rootPath, this.pagesPath, this.page404);
     this.page500 = page500;
     this.stripHtml = stripHtml;
     this.port = DEFAULT_PORT;
@@ -42,8 +43,14 @@ export default class  {
       if (srcPath !== undefined) {
         const segment = req.path.substr(req.path.lastIndexOf('/') + 1);
         const renderer = new OrisonRenderer({file: srcPath, rootPath: this.rootPath});
-        renderer.html(segment)
-        .then(html => res.send(html))
+        renderer.html(segment, this.path404)
+        .then(html => {
+          if (html) {
+            res.send(html)
+          } else {
+            res.send('404 - create a 404 page at ' + path.join(this.pagesPath, this.page404));
+          }
+        })
         .catch(e => {
           console.error(e);
           res.status(500);
@@ -106,10 +113,9 @@ export default class  {
       return listPath;
     }
 
-    const path404 = path.join(this.rootPath, this.pagesPath, this.page404);
     setStatus(404);
-    if (fs.existsSync(path404)) {
-      return path404;
+    if (fs.existsSync(this.path404)) {
+      return this.path404;
     } else {
       return undefined;
     }

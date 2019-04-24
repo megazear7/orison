@@ -49,24 +49,36 @@ export default class OrisonRenderer {
         : this.writeFile(renderResult));
   }
 
-  html(segment) {
-    return Promise.resolve(this.render()).then(renderResult =>
-      Array.isArray(renderResult)
-        ? renderResult.find(page => page.path.endsWith(segment)).html
-        : renderResult.html);
+  html(segment, path404) {
+    return Promise.resolve(this.render(segment)).then(renderResult => {
+      if (Array.isArray(renderResult)) {
+        if (renderResult.length > 1) {
+          if (segment.includes('.fragment')) {
+            return renderResult[1].html;
+          } else {
+            return renderResult[0].html;
+          }
+        } else {
+          return this.renderHtmlFile(path404).html;
+        }
+      } else {
+        return renderResult.html;
+      }
+    });
   }
 
-  render() {
+  render(segment) {
     if (this.file.endsWith('.md')) {
       return this.renderMdFile();
     } else if (this.file.endsWith('.js')) {
-      return this.renderJsFile();
+      return this.renderJsFile(segment);
     } else if (this.file.endsWith('.html')) {
       return this.renderHtmlFile();
     }
   }
 
-  renderHtmlFile() {
+  renderHtmlFile(filePathOverride) {
+    const filePath = filePathOverride ? filePathOverride : this.file;
     const global = this.globalData;
 
     return {
@@ -74,7 +86,7 @@ export default class OrisonRenderer {
       html: this.orisonFile.getData()
         .then(data => this.orisonFile.getLayout()
           .then(layout => renderToString(layout({
-            html: eval('html`' + fs.readFileSync(this.file).toString() + '`'),
+            html: eval('html`' + fs.readFileSync(filePath).toString() + '`'),
             path: this.pageContextPath
           }))))
     };
@@ -90,13 +102,14 @@ export default class OrisonRenderer {
     };
   }
 
-  renderJsFile() {
+  renderJsFile(segment) {
     if (process.env.NODE_ENV !== 'production') {
       this.clearSrcModuleCache();
     }
     const fileExport = require(this.file).default;
+    const slug = segment.replace('.html', '').replace('.fragment', '');
 
-    return Promise.all([fileExport(), fileExport()]).then(fileExportResults => {
+    return Promise.all([fileExport(slug), fileExport(slug)]).then(fileExportResults => {
       const exportCopy1 = fileExportResults[0];
       const exportCopy2 = fileExportResults[1];
 
