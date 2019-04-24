@@ -107,13 +107,19 @@ export default class OrisonRenderer {
   }
 
   renderMdFile() {
-    return {
-      path: this.buildFilePath,
-      html: this.orisonFile.getLayout().then(layout => renderToString(layout({
-        html: html`${unsafeHTML(this.markdownHtml)}`,
-        path: this.pageContextPath
-      })))
-    };
+    return [
+      {
+        path: this.buildFilePath,
+        html: this.orisonFile.getLayout().then(layout => renderToString(layout({
+          html: html`${unsafeHTML(this.markdownHtml)}`,
+          path: this.pageContextPath
+        })))
+      },
+      {
+        path: this.buildFragmentPath,
+        html: renderToString(html`${unsafeHTML(this.markdownHtml)}`)
+      }
+    ];
   }
 
   renderJsFile(segment) {
