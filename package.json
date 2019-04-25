@@ -1,6 +1,6 @@
 {
   "name": "orison",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "A static site generator built on top of lit-html.",
   "keywords": [ "Static site generation", "lit-html", "web development", "progressive web app", "single page application" ],
   "homepage": "https://orison.alexlockhart.me",
