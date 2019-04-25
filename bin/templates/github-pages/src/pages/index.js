@@ -1,8 +1,7 @@
-import { html, markdown } from 'orison';
-import title from '../partials/title.js';
+import { html } from 'orison';
 
-export default () => html`
-  <section>${markdown('./src/partials/getting-started.md')}</section>
+export default context => html`
+  <section>${context.mdFile('./src/partials/getting-started.md')}</section>
   <section>
     <h3>Here are some example pages</h3>
     <ul>
