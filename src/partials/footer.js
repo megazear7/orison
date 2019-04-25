@@ -7,7 +7,8 @@ export default () => html`
       Status: pre-release
       <br>
       <a href="https://github.com/megazear7/orison">Github</a> -
-      <a href="https://www.npmjs.com/package/orison">npm</a>
+      <a href="https://www.npmjs.com/package/orison">npm</a> -
+      <a href="/license.html">License</a>
     </p>
     <p>
       Author: <a href="https://www.alexlockhart.me">Alex Lockhart</a>
