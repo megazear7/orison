@@ -49,18 +49,20 @@ npm run install
 npm run build
 ```
 
-## Run Server
-
-This will render the page for the given request as the request comes through.
+## Develop
 
 ```
 npm run serve
+# Available at localhost:3000
 ```
 
-## Serve Static Build
-
-This will server the prebuilt static files.
+## Deploy
 
 ```
+npm run build
 npm run static
+# Test the production build at localhost:3000
+git add docs
+git commit -m "Deployment"
+git push origin master
 ```

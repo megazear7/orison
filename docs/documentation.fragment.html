@@ -1,0 +1,81 @@
+
+    <section><h2>Single pages</h2>
+<pre><code class="language-js">export default () =&gt; html`...`
+</code></pre>
+</section>
+    <section><h2>List pages</h2>
+<pre><code class="language-js">export default () =&gt; [
+  {
+    path: 'path-segment-1',
+    html: html`...`
+  },
+  {
+    path: 'path-segment-2',
+    html: html`...`
+  }
+  ...
+]
+</code></pre>
+</section>
+    <section><h2>Partials</h2>
+<pre><code class="language-js">export default data =&gt; html`...`
+</code></pre>
+</section>
+    <section><h2>Layouts</h2>
+<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+
+export default page =&gt; html`
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;title&gt;OrisonJS&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;Website header&lt;/div&gt;
+    ${page}
+    &lt;div&gt;Website footer&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+`;
+</code></pre>
+</section>
+    <section><h2>Programatic Usage</h2>
+<p>Instead of installing OrisonJS as a command line utility you can install it as a project dependency. Then you can interact with a configurable and programatic API for building and serving your site.</p>
+<pre><code class="language-bash">npm install orison
+</code></pre>
+<p>You can require the CommonJS module from 'orison'.
+ES6 Modules are available from './node_modules/orison/bin/orison-esm.js'</p>
+<h3>Static site generation</h3>
+<p>Here is an example of programmatically building the src directory into the docs directory.</p>
+<pre><code class="language-js">const { OrisonGenerator } = require('orison');
+const orisonGenerator = new OrisonGenerator({ rootPath: __dirname });
+orisonGenerator.build();
+</code></pre>
+<h3>Static serving</h3>
+<p>Here is an example of serving the statically built files.</p>
+<pre><code class="language-js">const { OrisonStaticServer } = require('orison');
+const orisonStaticServer = new OrisonStaticServer();
+orisonStaticServer.start();
+</code></pre>
+<h3>Server side generation</h3>
+<p>Here is an example of serving files and rendering the file during each request.</p>
+<pre><code class="language-js">const { OrisonServer } = require('orison');
+const orisonServer = new OrisonServer({ rootPath: __dirname });
+orisonServer.start();
+</code></pre>
+<h3>Custom command line utility</h3>
+<p>Or you could create a file that builds, serves, or serves static based on provided command line arguments.</p>
+<pre><code class="language-js">const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
+
+if (process.argv.includes('build')) new OrisonGenerator({ rootPath: __dirname }).build();
+if (process.argv.includes('serve')) new OrisonServer({ rootPath: __dirname }).start();
+if (process.argv.includes('static')) new OrisonStaticServer().start();
+</code></pre>
+<p>Then you can build, serve, or serve static with these commands:</p>
+<pre><code class="language-bash">node ./orison.js build
+node ./orison.js serve
+node ./orison.js static
+</code></pre>
+</section>
+  

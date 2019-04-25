@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OrisonJS</title>
+    <script src="/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="/app.css">
+
+    <link rel="stylesheet" href="/highlightjs/github.css">
+    <script src="/highlightjs/highlight.pack.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Orison server and static stite generator documentation">
+    <link rel="icon" href="/icons/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#fa5d0f">
+
+    <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="OrisonJS">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OrisonJS">
+
+    <!-- Homescreen icons -->
+    <link rel="apple-touch-icon" href="icons/icon-640x640.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
+
+    <!-- Tile icon for Windows 8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="icons/icon-512x512.png">
+    <meta name="msapplication-TileColor" content="#fa5d0f">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Default twitter cards -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@username">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="orison">
+    <meta property="og:image" content="icons/icon-512x512.png" />
+  </head>
+  <body>
+    
+  <header>
+    
+  <h1>OrisonJS</h1>
+
+    <div>
+      <img src="/icons/icon-256x256.png">
+    </div>
+    <p>A static site generator and server based upon lit-html</p>
+  </header>
+
+    
+  <nav>
+    <div>
+      <a href="/" class="">Getting Started</a>
+      <a href="/documentation.html" class="active">Documentation</a>
+      <a href="/blog.html" class="">Blog</a>
+    </div>
+  </nav>
+
+    <main>
+      
+    <section><h2>Single pages</h2>
+<pre><code class="language-js">export default () =&gt; html`...`
+</code></pre>
+</section>
+    <section><h2>List pages</h2>
+<pre><code class="language-js">export default () =&gt; [
+  {
+    path: 'path-segment-1',
+    html: html`...`
+  },
+  {
+    path: 'path-segment-2',
+    html: html`...`
+  }
+  ...
+]
+</code></pre>
+</section>
+    <section><h2>Partials</h2>
+<pre><code class="language-js">export default data =&gt; html`...`
+</code></pre>
+</section>
+    <section><h2>Layouts</h2>
+<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+
+export default page =&gt; html`
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;title&gt;OrisonJS&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;Website header&lt;/div&gt;
+    ${page}
+    &lt;div&gt;Website footer&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+`;
+</code></pre>
+</section>
+    <section><h2>Programatic Usage</h2>
+<p>Instead of installing OrisonJS as a command line utility you can install it as a project dependency. Then you can interact with a configurable and programatic API for building and serving your site.</p>
+<pre><code class="language-bash">npm install orison
+</code></pre>
+<p>You can require the CommonJS module from 'orison'.
+ES6 Modules are available from './node_modules/orison/bin/orison-esm.js'</p>
+<h3>Static site generation</h3>
+<p>Here is an example of programmatically building the src directory into the docs directory.</p>
+<pre><code class="language-js">const { OrisonGenerator } = require('orison');
+const orisonGenerator = new OrisonGenerator({ rootPath: __dirname });
+orisonGenerator.build();
+</code></pre>
+<h3>Static serving</h3>
+<p>Here is an example of serving the statically built files.</p>
+<pre><code class="language-js">const { OrisonStaticServer } = require('orison');
+const orisonStaticServer = new OrisonStaticServer();
+orisonStaticServer.start();
+</code></pre>
+<h3>Server side generation</h3>
+<p>Here is an example of serving files and rendering the file during each request.</p>
+<pre><code class="language-js">const { OrisonServer } = require('orison');
+const orisonServer = new OrisonServer({ rootPath: __dirname });
+orisonServer.start();
+</code></pre>
+<h3>Custom command line utility</h3>
+<p>Or you could create a file that builds, serves, or serves static based on provided command line arguments.</p>
+<pre><code class="language-js">const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
+
+if (process.argv.includes('build')) new OrisonGenerator({ rootPath: __dirname }).build();
+if (process.argv.includes('serve')) new OrisonServer({ rootPath: __dirname }).start();
+if (process.argv.includes('static')) new OrisonStaticServer().start();
+</code></pre>
+<p>Then you can build, serve, or serve static with these commands:</p>
+<pre><code class="language-bash">node ./orison.js build
+node ./orison.js serve
+node ./orison.js static
+</code></pre>
+</section>
+  
+    </main>
+    
+  <footer class="inverse">
+    <h3>OrisonJS</h3>
+    <p>
+      Status: pre-release
+      <br>
+      <a href="https://github.com/megazear7/orison">Github</a> -
+      <a href="https://www.npmjs.com/package/orison">npm</a>
+    </p>
+    <p>
+      Author: <a href="https://www.alexlockhart.me">Alex Lockhart</a>
+    </p>
+    <p>
+      Icons made by
+      <a href="https://www.freepik.com/" title="Freepik">Freepik</a>
+      from
+      <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+      are licensed by
+      <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+    </p>
+  </footer>
+
+  </body>
+</html>

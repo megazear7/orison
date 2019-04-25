@@ -1,4 +1,4 @@
-## Multiple pages
+## List pages
 
 ```js
 export default () => [

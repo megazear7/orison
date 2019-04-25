@@ -1,4 +1,4 @@
-## Getting started
+## Getting Started
 
 ### Project Organization
 
@@ -10,21 +10,21 @@ An OrisonJS project should have a `src` directory in the root of the project wit
 
 ### Using Orison
 
-- `orison init my-project`: Initialize a new project
-- `npx orison serve`: Serve the source files with live changes
-- `npx orison build`: Build the static site
-- `npx orison static`: Serve the static site
+- `orison init my-project` Initialize a new project
+- `npx orison serve` Serve the source files with live changes
+- `npx orison build` Build the static site
+- `npx orison static` Serve the static site
 
 ### Creating your first page
 
-Any JavaScript, HTML, or Markdown files under the /src/pages directory will be rendered as an html file at the same location but under the /docs directory.
+With a few exceptions for layouts and lists, any JavaScript, HTML, or Markdown files under the /src/pages directory will be rendered as an html file at the same location but under the /docs directory.
 
 JavaScript pages should return a lit-html template. Html files will be interpreted as a lit-html template. Markdown files will be rendered as is.
 
-Below is an example page at /src/pages/example.js. Notice that it exports a function which takes no parameters and returns a template.
+Below is an example page. Notice that it exports a function which takes no parameters and returns a template.
 
+#### /src/pages/example.js
 ```js
-// /src/pages/example.js
 const { html } = require('@popeindustries/lit-html-server');
 
 export default context => html`
@@ -34,13 +34,14 @@ export default context => html`
 
 Or you could define this same page with an html file instead of a JavaScript file:
 
+#### /src/pages/example.html
 ```html
-<!-- /src/pages/example.html -->
 <h1>This is an example page</h1>
 ```
 
 Or you could write this same page as a markdown file:
 
+#### /src/pages/example.md
 ```md
 # This is an example page
 ```
@@ -49,8 +50,8 @@ Or you could write this same page as a markdown file:
 
 Layouts can be used to provide html that should exist on every page. Layouts should export a method which takes a page template and then renders a full html page. For example if you could create the following layout.js file:
 
+#### /src/pages/layout.js
 ```js
-// /src/pages/layout.js
 const { html } = require('@popeindustries/lit-html-server');
 
 export default context => html`
@@ -77,8 +78,8 @@ Any pages defined as an HTML file will automatically be inserted into the closes
 
 Any file named with the "index" base name will be returned by the server for the url that matches the directory that it is in. For example the following file will be available at localhost:3000 when the server is running, _not_ localhost:3000/index.html. Most web servers that serve static files will behave in the same way.
 
+#### /src/pages/index.js
 ```js
-// /src/pages/index.js
 const { html } = require('@popeindustries/lit-html-server');
 
 export default context => html`
@@ -90,11 +91,12 @@ export default context => html`
 
 You can also have a single JS file produce multiple pages. This is useful for connecting to a content provider such as [Contentful](https://www.contentful.com) and producing a web page for each item from a query. In the example below we are creating a list of blog posts.
 
+#### /src/pages/list.js
 ```js
 import { html } from '@popeindustries/lit-html-server';
 import client from '../../contentful.js';
 
-function searchParams(slug) {
+export default async (context, slug) => {
   var params = {
     'content_type': 'blogPost',
     'fields.tags': 'orisonjs-blog'
@@ -102,34 +104,30 @@ function searchParams(slug) {
 
   if (slug) params['fields.slug'] = slug;
 
-  return params;
-}
-
-export default async (context, slug) => {
-  // Retrieve blog posts from out content provider. When building no url slug will be provided, as all returned entries will be created as html pages. When using the orison serve command, only the request page should be generated and so the corresponding url slug is provided to the list page.
   const entries = await client.getEntries(searchParams(slug));
 
-  return entries.items.map(entry => {
-    // Notice for each blog post found we provide a name that will be used to create the url and the associated html.
-    return {
-      name: entry.fields.slug,
-      html: html`
-        <section>
-          <h3>${entry.fields.title}</h3>
-          ${context.mdString(entry.fields.body)}
-        </section>
-      `
-    };
-  });
+  return entries.items.map(entry => ({
+    name: entry.fields.slug,
+    html: html`
+      <section>
+        <h3>${entry.fields.title}</h3>
+        ${context.mdString(entry.fields.body)}
+      </section>
+    `
+  }));
 };
 ```
+
+Notice that an array of url segments and html templates is returned. Each will corresponding to the given html page at the url created with the given name.
+
+When doing `npx orison build` no url slug will be provided because all returned entries will be created as html pages. When using the orison serve command, only the request page should be generated and so the corresponding url slug is provided to the list page, which should use this slug to retrieve and return only the page needed for the given url slug.
 
 ### Making reusable partials
 
 If you need reusable chunks of html you can create partials under /src/partials. These partial files should export a method which excepts some parameters and returns an html template. For example we could create the following file:
 
+#### /src/partials/title.js
 ```js
-// /src/partials/title.js
 const { html } = require('@popeindustries/lit-html-server');
 
 export default title => html`
@@ -139,8 +137,8 @@ export default title => html`
 
 And then use this partial in our page and reuse wherever it is needed.
 
+#### /src/pages/index.js
 ```js
-// /src/pages/index.js
 const { html } = require('@popeindustries/lit-html-server');
 import title from '../partials/title.js';
 

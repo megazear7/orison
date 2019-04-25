@@ -6,12 +6,14 @@ html {
   --primary-color: #fa5d0f;
   --secondary-color: #ffce27;
   --tertiary-color: #d13405;
+  --code-header-color: #a8a8a8;
+  --code-background-color: #f8f8f8;
   --grey: #eee;
   --app-section-even-color: #fff;
   --app-section-odd-color: var(--grey);
   --border-radius: 5px;
   --content-width: 600px;
-
+  --text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
   font-size: 18px;
   line-height: 2rem;
   color: rgba(0, 0, 0, 0.8);
@@ -28,27 +30,46 @@ body {
 h1 {
   color: var(--tertiary-color);
   font-size: 4rem;
+  text-shadow: var(--text-shadow);
+  font-weight: 500;
 }
 
 h2 {
   color: var(--primary-color);
   font-size: 2.5rem;
+  text-shadow: var(--text-shadow);
+  font-weight: 400;
 }
 
 h3 {
   color: var(--tertiary-color);
   font-size: 1.75rem;
+  text-shadow: var(--text-shadow);
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+h4 {
+  /* Careful. This is meant to be used as code block headers */
+  color: var(--code-header-color);
+  margin-bottom: 0;
+  background-color: var(--code-background-color);
+  padding: 0.5em;
+  border-bottom: 1px solid var(--code-header-color);
+  font-weight: 300;
+}
+
+h5 {
+  color: var(--tertiary-color);
+  font-size: 1.5rem;
 }
 
 p {
-  text-align: justify;
   font-size: 1rem;
 }
 
-p code {
-  padding: 0.3rem;
-  color: #333;
-  background: #f8f8f8;
+main p {
+  text-align: justify;
 }
 
 section {
@@ -64,6 +85,17 @@ section > *, footer > *, header > *, nav > * {
   max-width: var(--content-width);
   margin-right: auto;
   margin-left: auto;
+}
+
+p code, ul code, li code {
+  padding: 3px;
+  color: #333;
+  background-color: var(--code-background-color);
+  border-radius: 5px;
+}
+
+pre {
+  margin-top: 0;
 }
 
 header {
@@ -88,6 +120,7 @@ nav > div {
 
 nav a {
   flex-grow: 1;
+  flex-basis: 0;
   padding: 1rem;
   text-align: center;
   text-decoration: none;
