@@ -166,3 +166,25 @@ There will also be these urls with the same page content but without the layout 
 1. /info/about.fragment.html
 1. /my-first-blog-post.fragment.html
 1. /another-blog-post.fragment.html
+
+### Utilizing metadata
+
+The data in the `global.json` file of the pages directory will be available on a
+`global` property of the context object. This is available for normal pages, list
+pages, and layouts.
+
+#### /src/pages/index.js
+```json
+{
+  "title": "Hello, World!"
+}
+```
+
+#### /src/pages/index.js
+```js
+import { html } from 'orison';
+
+export default context => html`
+  <h1>${context.global.title}</h1>
+`;
+```

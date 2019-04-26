@@ -33,11 +33,6 @@ export default class OrisonGenerator {
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
     this.rootPath = rootPath;
-
-    const globalMetadataFilePath = this.getPagesPath(globalMetadataFile)
-    this.global = fs.existsSync(globalMetadataFilePath)
-      ? JSON.parse(fs.readFileSync(globalMetadataFilePath))
-      : { };
   }
 
   build() {

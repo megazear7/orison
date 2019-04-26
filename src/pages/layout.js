@@ -48,8 +48,7 @@ export default context => html`
     <meta property="og:image" content="icons/icon-512x512.png" />
   </head>
   <body>
-    ${header()}
-    ${nav(context.page.path)}
+    ${header(context.global.title)}
     <main>
       ${context.page.html}
     </main>

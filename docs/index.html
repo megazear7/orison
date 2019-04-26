@@ -54,15 +54,6 @@
     <p>A static site generator and server based upon lit-html</p>
   </header>
 
-    
-  <nav>
-    <div>
-      <a href="/" class="active">Begin</a>
-      <a href="/documentation.html" class="">Docs</a>
-      <a href="/blog.html" class="">Blog</a>
-    </div>
-  </nav>
-
     <main>
       
   <section><h2>Setup</h2>
@@ -208,6 +199,22 @@ export default context =&gt; html`
 <li>/my-first-blog-post.fragment.html</li>
 <li>/another-blog-post.fragment.html</li>
 </ol>
+<h3>Utilizing metadata</h3>
+<p>The data in the <code>global.json</code> file of the pages directory will be available on a
+<code>global</code> property of the context object. This is available for normal pages, list
+pages, and layouts.</p>
+<h4>/src/pages/index.js</h4>
+<pre><code class="language-json">{
+  &quot;title&quot;: &quot;Hello, World!&quot;
+}
+</code></pre>
+<h4>/src/pages/index.js</h4>
+<pre><code class="language-js">import { html } from 'orison';
+
+export default context =&gt; html`
+  &lt;h1&gt;${context.global.title}&lt;/h1&gt;
+`;
+</code></pre>
 </section>
   <section><h2>Production Build</h2>
 <p>The production ready build of your website can be performed as follows:</p>

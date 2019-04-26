@@ -1,9 +1,9 @@
 const { html } = require('@popeindustries/lit-html-server');
 import title from './title.js';
 
-export default () => html`
+export default pageTitle => html`
   <header>
-    ${title('OrisonJS')}
+    ${title(pageTitle)}
     <div>
       <img src="/icons/icon-256x256.png">
     </div>
