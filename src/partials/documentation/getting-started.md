@@ -211,3 +211,19 @@ export default context => html`
   <p>${context.data.message}</p>
 `;
 ```
+
+##### Parent Metadata
+
+The `context.parentData` property is an array of the data.json files starting
+from the one in the current directory and then proceeding towards the root pages
+directory. In addition a `path` property is added to each data object in the array.
+
+```js
+import { html } from 'orison';
+
+export default context => html`
+  ${context.parentData.map(data => html`
+    <a href="${data.path}">${data.title}</a>
+  `)}
+`;
+```

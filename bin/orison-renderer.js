@@ -178,9 +178,36 @@ export default class OrisonRenderer {
     return {
       global: this.globalData,
       data: this.contextData,
+      parentData: this.parentData,
       mdString,
       mdFile
     };
+  }
+
+  get parentData() {
+    let parentData = [ ];
+    let parentPath = path.dirname(this.dataPath.split('/' + this.pagesDirectory)[1]);
+    let foundRoot = false;
+
+    while (! foundRoot) {
+      let data = () => {
+        try {
+         return JSON.parse(fs.readFileSync(path.join(this.srcDirectory, this.pagesDirectory, parentPath, this.dataFileBasename + '.json')));
+        } catch {
+          return {};
+        }
+      };
+
+      parentData.push({
+        ...data(),
+        path: parentPath
+      });
+
+      foundRoot = parentPath === "/"
+      parentPath = path.dirname(parentPath);
+    }
+
+    return parentData.reverse();
   }
 
   get globalData() {

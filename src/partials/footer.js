@@ -1,14 +1,15 @@
 const { html } = require('@popeindustries/lit-html-server');
 
-export default () => html`
-  <footer class="inverse">
+export default parentData => html`
+  <footer>
     <h3>OrisonJS</h3>
     <p>
       Status: pre-release
       <br>
       <a href="https://github.com/megazear7/orison">Github</a> -
       <a href="https://www.npmjs.com/package/orison">npm</a> -
-      <a href="/license.html">License</a>
+      <a href="/license.html">License</a> -
+      <a href="/info/about.html">About</a>
     </p>
     <p>
       Author: <a href="https://www.alexlockhart.me">Alex Lockhart</a>

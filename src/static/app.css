@@ -108,7 +108,7 @@ header {
 }
 
 footer {
-  padding: 3rem 1rem;
+  padding: 1rem;
   background: var(--secondary-color);
 }
 
@@ -142,4 +142,18 @@ nav a.active {
 
 img {
   max-width: 100%;
+}
+
+ul.breadcrumb {
+  padding: 0;
+  list-style: none;
+}
+
+ul.breadcrumb li {
+  display: inline;
+}
+
+ul.breadcrumb li+li:before {
+  padding: 8px;
+  content: "/\00a0";
 }

@@ -1,8 +1,7 @@
 import { html } from '@popeindustries/lit-html-server';
-import { repeat } from '@popeindustries/lit-html-server/directives/repeat.js';
 import client from '../contentful.js';
 
-export default async () => {
+export default async context => {
   const entry = await client.getEntry("5yI7Sof8GKPflIWeG2O9RE");
   const entries = await client.getEntries({
     'content_type': 'blogPost',
@@ -10,7 +9,7 @@ export default async () => {
   });
 
   return html`
-    ${repeat(entries.items, entry => html`
+    ${entries.items.map(entry => html`
       <section>
         <div class="blog-overview">
           <h3>${entry.fields.title}</h3>

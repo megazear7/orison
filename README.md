@@ -12,7 +12,8 @@
 
 ## TODO
 
-1. Update the context object with parent and child data.
+1. Update the context object with child, grandchild, etc.. data.
+1. Make the context data available as an API.
 1. Add `orison generate` commands
 1. Add `orison init --firebase` option
 1. Add `orison init --netlify` option
