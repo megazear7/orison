@@ -34,7 +34,7 @@ npx orison serve
 <p>JavaScript pages should return a lit-html template. Html files will be interpreted as a lit-html template. Markdown files will be rendered as is.</p>
 <p>Below is an example page. Notice that it exports a function which takes no parameters and returns a template.</p>
 <h4>/src/pages/example.js</h4>
-<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+<pre><code class="language-js">import { html } from 'orison';
 
 export default context =&gt; html`
   &lt;h1&gt;This is an example page&lt;/h1&gt;
@@ -51,7 +51,7 @@ export default context =&gt; html`
 <h3>Enhancing pages with layouts</h3>
 <p>Layouts can be used to provide html that should exist on every page. Layouts should export a method which takes a page template and then renders a full html page. For example if you could create the following layout.js file:</p>
 <h4>/src/pages/layout.js</h4>
-<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+<pre><code class="language-js">import { html } from 'orison';
 
 export default context =&gt; html`
 &lt;!DOCTYPE html&gt;
@@ -73,7 +73,7 @@ export default context =&gt; html`
 <h3>Utilizing index files</h3>
 <p>Any file named with the &quot;index&quot; base name will be returned by the server for the url that matches the directory that it is in. For example the following file will be available at localhost:3000 when the server is running, <em>not</em> localhost:3000/index.html. Most web servers that serve static files will behave in the same way.</p>
 <h4>/src/pages/index.js</h4>
-<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+<pre><code class="language-js">import { html } from 'orison';
 
 export default context =&gt; html`
   &lt;h1&gt;This is an example index page&lt;/h1&gt;
@@ -82,25 +82,18 @@ export default context =&gt; html`
 <h3>List Pages</h3>
 <p>You can also have a single JS file produce multiple pages. This is useful for connecting to a content provider such as <a href="https://www.contentful.com">Contentful</a> and producing a web page for each item from a query. In the example below we are creating a list of blog posts.</p>
 <h4>/src/pages/list.js</h4>
-<pre><code class="language-js">import { html } from '@popeindustries/lit-html-server';
+<pre><code class="language-js">import { html } from 'orison';
 import client from '../../contentful.js';
 
 export default async (context, slug) =&gt; {
-  var params = {
-    'content_type': 'blogPost',
-    'fields.tags': 'orisonjs-blog'
-  };
+  const blogPosts = await loadContent(slug);
 
-  if (slug) params['fields.slug'] = slug;
-
-  const entries = await client.getEntries(searchParams(slug));
-
-  return entries.items.map(entry =&gt; ({
-    name: entry.fields.slug,
+  return blogPosts.items.map(blogPost =&gt; ({
+    name: blogPost.slug,
     html: html`
       &lt;section&gt;
-        &lt;h3&gt;${entry.fields.title}&lt;/h3&gt;
-        ${context.mdString(entry.fields.body)}
+        &lt;h3&gt;${blogPost.title}&lt;/h3&gt;
+        ${context.mdString(blogPost.body)}
       &lt;/section&gt;
     `
   }));
@@ -111,7 +104,7 @@ export default async (context, slug) =&gt; {
 <h3>Making reusable partials</h3>
 <p>If you need reusable chunks of html you can create partials under /src/partials. These partial files should export a method which excepts some parameters and returns an html template. For example we could create the following file:</p>
 <h4>/src/partials/title.js</h4>
-<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+<pre><code class="language-js">import { html } from 'orison';
 
 export default title =&gt; html`
   &lt;h1&gt;${title}&lt;/h1&gt;
@@ -119,7 +112,7 @@ export default title =&gt; html`
 </code></pre>
 <p>And then use this partial in our page and reuse wherever it is needed.</p>
 <h4>/src/pages/index.js</h4>
-<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+<pre><code class="language-js">import { html } from 'orison';
 import title from '../partials/title.js';
 
 export default context =&gt; html`

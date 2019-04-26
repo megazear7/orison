@@ -66,31 +66,62 @@
     <main>
       
     <section><h2>Single pages</h2>
-<pre><code class="language-js">export default () =&gt; html`...`
+<pre><code class="language-js">import { html } from 'orison';
+
+export default context =&gt; html`
+  ...
+`
 </code></pre>
 </section>
     <section><h2>List pages</h2>
-<pre><code class="language-js">export default () =&gt; [
+<pre><code class="language-js">import { html } from 'orison';
+
+export default (context, slug) =&gt; [
   {
-    path: 'path-segment-1',
+    name: 'path-segment-1',
     html: html`...`
   },
   {
-    path: 'path-segment-2',
+    name: 'path-segment-2',
     html: html`...`
   }
   ...
 ]
 </code></pre>
+<p>In the below example we load in a list of blog posts with a made up loadContent
+method. It is important to remember that when doing <code>orison build</code> the slug
+parameter will be undefined and when doing <code>orison serve</code> it will be the last
+path segment in the url. This way <code>orison serve</code> can only load in the data
+it needs for the currently requested page and <code>orison build</code> can build every
+page available from your content provider. This logic will need implemented
+differently depending on what content provider you are using, and is hidden
+inside the <code>loadContent</code> method in this example.</p>
+<pre><code class="language-js">import { html } from 'orison';
+
+export default async (context, slug) =&gt; {
+  const blogPosts = await loadContent(slug);
+
+  blogPosts.map(blogPost =&gt; ({
+    name: blogPost.urlName,
+    html: html`
+      ...
+    `
+  );
+}
+</code></pre>
 </section>
     <section><h2>Partials</h2>
-<pre><code class="language-js">export default data =&gt; html`...`
+<pre><code class="language-js">import { html } from 'orison';
+
+export default data =&gt; html`
+  ...
+`
 </code></pre>
 </section>
     <section><h2>Layouts</h2>
-<pre><code class="language-js">const { html } = require('@popeindustries/lit-html-server');
+<pre><code class="language-js">import { html } from 'orison';
 
-export default page =&gt; html`
+export default context =&gt; html`
 &lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
   &lt;head&gt;
@@ -99,7 +130,7 @@ export default page =&gt; html`
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div&gt;Website header&lt;/div&gt;
-    ${page}
+    ${context.page.html}
     &lt;div&gt;Website footer&lt;/div&gt;
   &lt;/body&gt;
 &lt;/html&gt;
@@ -121,7 +152,7 @@ orisonGenerator.build();
 <h3>Static serving</h3>
 <p>Here is an example of serving the statically built files.</p>
 <pre><code class="language-js">const { OrisonStaticServer } = require('orison');
-const orisonStaticServer = new OrisonStaticServer();
+const orisonStaticServer = new OrisonStaticServer({ rootPath: __dirname });
 orisonStaticServer.start();
 </code></pre>
 <h3>Server side generation</h3>
@@ -134,9 +165,14 @@ orisonServer.start();
 <p>Or you could create a file that builds, serves, or serves static based on provided command line arguments.</p>
 <pre><code class="language-js">const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
 
-if (process.argv.includes('build')) new OrisonGenerator({ rootPath: __dirname }).build();
-if (process.argv.includes('serve')) new OrisonServer({ rootPath: __dirname }).start();
-if (process.argv.includes('static')) new OrisonStaticServer().start();
+if (process.argv.includes('build'))
+  new OrisonGenerator({ rootPath: __dirname }).build();
+
+if (process.argv.includes('serve'))
+  new OrisonServer({ rootPath: __dirname }).start();
+
+if (process.argv.includes('static'))
+  new OrisonStaticServer({ rootPath: __dirname }).start();
 </code></pre>
 <p>Then you can build, serve, or serve static with these commands:</p>
 <pre><code class="language-bash">node ./orison.js build

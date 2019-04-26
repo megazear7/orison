@@ -1,4 +1,8 @@
 ## Single pages
 ```js
-export default () => html`...`
+import { html } from 'orison';
+
+export default context => html`
+  ...
+`
 ```

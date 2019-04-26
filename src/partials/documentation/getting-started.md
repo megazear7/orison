@@ -25,7 +25,7 @@ Below is an example page. Notice that it exports a function which takes no param
 
 #### /src/pages/example.js
 ```js
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from 'orison';
 
 export default context => html`
   <h1>This is an example page</h1>
@@ -52,7 +52,7 @@ Layouts can be used to provide html that should exist on every page. Layouts sho
 
 #### /src/pages/layout.js
 ```js
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from 'orison';
 
 export default context => html`
 <!DOCTYPE html>
@@ -80,7 +80,7 @@ Any file named with the "index" base name will be returned by the server for the
 
 #### /src/pages/index.js
 ```js
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from 'orison';
 
 export default context => html`
   <h1>This is an example index page</h1>
@@ -93,25 +93,18 @@ You can also have a single JS file produce multiple pages. This is useful for co
 
 #### /src/pages/list.js
 ```js
-import { html } from '@popeindustries/lit-html-server';
+import { html } from 'orison';
 import client from '../../contentful.js';
 
 export default async (context, slug) => {
-  var params = {
-    'content_type': 'blogPost',
-    'fields.tags': 'orisonjs-blog'
-  };
+  const blogPosts = await loadContent(slug);
 
-  if (slug) params['fields.slug'] = slug;
-
-  const entries = await client.getEntries(searchParams(slug));
-
-  return entries.items.map(entry => ({
-    name: entry.fields.slug,
+  return blogPosts.items.map(blogPost => ({
+    name: blogPost.slug,
     html: html`
       <section>
-        <h3>${entry.fields.title}</h3>
-        ${context.mdString(entry.fields.body)}
+        <h3>${blogPost.title}</h3>
+        ${context.mdString(blogPost.body)}
       </section>
     `
   }));
@@ -128,7 +121,7 @@ If you need reusable chunks of html you can create partials under /src/partials.
 
 #### /src/partials/title.js
 ```js
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from 'orison';
 
 export default title => html`
   <h1>${title}</h1>
@@ -139,7 +132,7 @@ And then use this partial in our page and reuse wherever it is needed.
 
 #### /src/pages/index.js
 ```js
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from 'orison';
 import title from '../partials/title.js';
 
 export default context => html`

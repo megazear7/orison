@@ -1,5 +1,9 @@
 ## Partials
 
 ```js
-export default data => html`...`
+import { html } from 'orison';
+
+export default data => html`
+  ...
+`
 ```

@@ -1,9 +1,9 @@
 ## Layouts
 
 ```js
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from 'orison';
 
-export default page => html`
+export default context => html`
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,7 +12,7 @@ export default page => html`
   </head>
   <body>
     <div>Website header</div>
-    ${page}
+    ${context.page.html}
     <div>Website footer</div>
   </body>
 </html>

@@ -24,7 +24,7 @@ Here is an example of serving the statically built files.
 
 ```js
 const { OrisonStaticServer } = require('orison');
-const orisonStaticServer = new OrisonStaticServer();
+const orisonStaticServer = new OrisonStaticServer({ rootPath: __dirname });
 orisonStaticServer.start();
 ```
 
@@ -37,16 +37,21 @@ const orisonServer = new OrisonServer({ rootPath: __dirname });
 orisonServer.start();
 ```
 
-### Custom command line utility 
+### Custom command line utility
 
 Or you could create a file that builds, serves, or serves static based on provided command line arguments.
 
 ```js
 const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('orison');
 
-if (process.argv.includes('build')) new OrisonGenerator({ rootPath: __dirname }).build();
-if (process.argv.includes('serve')) new OrisonServer({ rootPath: __dirname }).start();
-if (process.argv.includes('static')) new OrisonStaticServer().start();
+if (process.argv.includes('build'))
+  new OrisonGenerator({ rootPath: __dirname }).build();
+
+if (process.argv.includes('serve'))
+  new OrisonServer({ rootPath: __dirname }).start();
+
+if (process.argv.includes('static'))
+  new OrisonStaticServer({ rootPath: __dirname }).start();
 ```
 
 Then you can build, serve, or serve static with these commands:
