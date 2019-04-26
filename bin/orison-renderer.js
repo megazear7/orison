@@ -35,6 +35,7 @@ export default class OrisonRenderer {
     this.orisonFile = new OrisonDirectory({
       path: path.dirname(file),
       srcDirectory,
+      pagesDirectory,
       layoutFileBasename,
       dataFileBasename });
   }
@@ -89,24 +90,23 @@ export default class OrisonRenderer {
   renderHtmlFile(filePathOverride) {
     const filePath = filePathOverride ? filePathOverride : this.file;
     const global = this.globalData;
+    const data = this.orisonFile.data;
 
     return [
       {
         path: this.buildFilePath,
-        html: this.orisonFile.getData()
-          .then(data => this.orisonFile.getLayout()
+        html: this.orisonFile.getLayout()
             .then(layout => renderToString(layout({
               ...this.context(),
               page: {
                 html: eval('html`' + fs.readFileSync(filePath).toString() + '`'),
                 path: this.pageContextPath
               }
-            }))))
+            })))
       },
       {
         path: this.buildFragmentPath,
-        html: this.orisonFile.getData().then(data =>
-          renderToString(eval('html`' + fs.readFileSync(filePath).toString() + '`'))),
+        html: renderToString(eval('html`' + fs.readFileSync(filePath).toString() + '`')),
       }
     ];
   }
@@ -179,9 +179,19 @@ export default class OrisonRenderer {
       global: this.globalData,
       data: this.contextData,
       parentData: this.parentData,
+      root: this.rootDirectory,
       mdString,
       mdFile
     };
+  }
+
+  get rootDirectory() {
+    return new OrisonDirectory({
+      path: this.pagesPath,
+      srcDirectory: this.srcDirectory,
+      pagesDirectory: this.pagesDirectory,
+      layoutFileBasename: this.layoutFileBasename,
+      dataFileBasename: this.dataFileBasename });
   }
 
   get parentData() {
@@ -218,8 +228,12 @@ export default class OrisonRenderer {
     }
   }
 
+  get pagesPath() {
+    return path.join(this.srcPath, this.pagesDirectory);
+  }
+
   get globalPath() {
-    return path.join(this.srcPath, this.pagesDirectory, this.globalDataBasename + '.json');
+    return path.join(this.pagesPath, this.globalDataBasename + '.json');
   }
 
   get contextData() {
@@ -267,6 +281,7 @@ export default class OrisonRenderer {
   }
 
   get pageContextPath() {
+    // TODO We need to calculate this in a better way.
     return this.file.split('/' + this.pagesDirectory)[1];
   }
 
