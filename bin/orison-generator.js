@@ -10,7 +10,6 @@ import {
   DEFAULT_DATA_BASENAME,
   DEFAULT_LAYOUT_BASENAME,
   DEFAULT_PROTECTED_FILES,
-  DEFAULT_GLOBAL_METADATA_FILENAME,
   DEFAULT_STATIC_DIR } from './orison-esm.js';
 
 export default class OrisonGenerator {
@@ -18,7 +17,6 @@ export default class OrisonGenerator {
       rootPath,
       buildDir = DEFAULT_BUILD_DIR,
       protectedFileNames = DEFAULT_PROTECTED_FILES,
-      globalMetadataFile = DEFAULT_GLOBAL_METADATA_FILENAME,
       staticDirectory = DEFAULT_STATIC_DIR,
       pagesDirectory = DEFAULT_PAGES_DIR,
       srcDirectory = DEFAULT_SRC_DIR,

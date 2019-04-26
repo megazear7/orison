@@ -15,6 +15,7 @@
 1. Update the context object with child, grandchild, etc.. data.
 1. Thoroughly document the context object.
 1. Make the context data available as an API.
+1. SPA links to blog pages of the template project does not work.
 1. Add `orison generate` commands
 1. Add `orison init --firebase` option
 1. Add `orison init --netlify` option
