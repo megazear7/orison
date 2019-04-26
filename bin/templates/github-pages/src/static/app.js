@@ -11,7 +11,9 @@ function loadFragment(path, callback) {
   // Determine the fragment path
   var fragmentPath = path.includes('.html')
     ? path.replace('.html', '.fragment.html')
-    : path + 'index.fragment.html';
+    : path === '/'
+      ? '/index.fragment.html'
+      : path + '/index.fragment.html';
 
   fetch(fragmentPath)
   .then(res => res.status === 404 ? fetch('/404.fragment.html') : res)
