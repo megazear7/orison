@@ -12,7 +12,7 @@
 
 ## TODO
 
-1. Update the context object with child, grandchild, etc.. data.
+1. The global.json file should be removed and instead `context.root.data` should be used to access the root data.json file.
 1. Thoroughly document the context object.
 1. Make the context data available as an API.
 1. SPA links to blog pages of the template project does not work.

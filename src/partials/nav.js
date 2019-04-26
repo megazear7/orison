@@ -5,7 +5,7 @@ export default (currentPath, root) => html`
     <div>
       <a href="/" class="${currentPath === '/index.js' ? 'active' : ''}">Begin</a>
       ${root.getChildren().map(child => html`
-        <a href="${child.path}" class="${currentPath === child.path ? 'active' : ''}">${child.data.title}</a>
+        <a href="${child.path}" class="${currentPath.startsWith(child.path) ? 'active' : ''}">${child.data.title}</a>
       `)}
     </div>
   </nav>

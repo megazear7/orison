@@ -6,8 +6,7 @@ export default context => html`
   <section>${context.mdFile('./src/partials/documentation/getting-started.md')}</section>
   <section>${context.mdFile('./src/partials/documentation/build.md')}</section>
   <section>
-    <p>${context.data.libraryMessage}
-    </p>
+    <p>${context.data.libraryMessage}</p>
     <ol>
       <li><a href="https://github.com/popeindustries/lit-html-server">lit-html-server</a></li>
       <li><a href="https://github.com/Polymer/lit-html">lit-html</a></li>
