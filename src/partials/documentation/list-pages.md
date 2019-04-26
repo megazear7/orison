@@ -1,5 +1,6 @@
 ## List pages
 
+#### /src/pages/list.js
 ```js
 import { html } from 'orison';
 
@@ -25,6 +26,7 @@ page available from your content provider. This logic will need implemented
 differently depending on what content provider you are using, and is hidden
 inside the `loadContent` method in this example.
 
+#### /src/pages/list.js
 ```js
 import { html } from 'orison';
 

@@ -218,6 +218,7 @@ The `context.parentData` property is an array of the data.json files starting
 from the one in the current directory and then proceeding towards the root pages
 directory. In addition a `path` property is added to each data object in the array.
 
+#### /src/pages/example-parent/example-child.js
 ```js
 import { html } from 'orison';
 

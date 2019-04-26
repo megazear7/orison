@@ -1,5 +1,6 @@
 ## Layouts
 
+#### /src/pages/layout.js
 ```js
 import { html } from 'orison';
 

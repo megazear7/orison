@@ -1,5 +1,6 @@
 
     <section><h2>Single pages</h2>
+<h4>/src/pages/example.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
 export default context =&gt; html`
@@ -8,6 +9,7 @@ export default context =&gt; html`
 </code></pre>
 </section>
     <section><h2>List pages</h2>
+<h4>/src/pages/list.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
 export default (context, slug) =&gt; [
@@ -30,6 +32,7 @@ it needs for the currently requested page and <code>orison build</code> can buil
 page available from your content provider. This logic will need implemented
 differently depending on what content provider you are using, and is hidden
 inside the <code>loadContent</code> method in this example.</p>
+<h4>/src/pages/list.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
 export default async (context, slug) =&gt; {
@@ -45,6 +48,7 @@ export default async (context, slug) =&gt; {
 </code></pre>
 </section>
     <section><h2>Partials</h2>
+<h4>/src/partials/example.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
 export default data =&gt; html`
@@ -53,6 +57,7 @@ export default data =&gt; html`
 </code></pre>
 </section>
     <section><h2>Layouts</h2>
+<h4>/src/pages/layout.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
 export default context =&gt; html`
@@ -70,6 +75,70 @@ export default context =&gt; html`
 &lt;/html&gt;
 `;
 </code></pre>
+</section>
+    <section><h2>Context</h2>
+<h3>Child Directories</h3>
+<p>The <code>context.root.getChildren()</code> method will return an array of child directories.
+Each item in the array has the following attributes and methods:</p>
+<ol>
+<li><code>parent</code></li>
+<li><code>getChildren()</code></li>
+<li><code>path</code></li>
+<li><code>data</code></li>
+</ol>
+<p>These attributes and methods give you access to the child data.json files, the
+path of each child, and the <code>parent</code> and <code>getChildren</code> methods can be used to
+programmatically navigate the site structure.</p>
+<p>The order of the children will be based on the <code>orison.order</code> property of the
+corresponding data.json files as shown below.</p>
+<h4>/src/pages/first/data.json</h4>
+<pre><code class="language-json">{
+  &quot;orison&quot;: {
+    &quot;order&quot;: 100
+  }
+}
+</code></pre>
+<h4>/src/pages/second/data.json</h4>
+<pre><code class="language-json">{
+  &quot;orison&quot;: {
+    &quot;order&quot;: 200
+  }
+}
+</code></pre>
+<p>In this example the &quot;first&quot; directory will be the first child in the array, and
+the &quot;second&quot; directory will be the second child in the array. It is recommended
+to use larger numbers so that you can reorder directories without having to
+increment each directory.</p>
+<p>This can then be used to create navigation elements as shown below. In this example
+we are creating the navigation links by getting the children of the root directory.</p>
+<h4>/src/pages/index.js</h4>
+<pre><code class="language-js">const { html } = require('orison');
+
+export default context =&gt; html`
+  &lt;a href=&quot;/&quot; class=&quot;${context.page.path === '/index.js' ? 'active' : ''}&quot;&gt;Begin&lt;/a&gt;
+  ${context.root.getChildren().map(child =&gt; html`
+    &lt;a href=&quot;${child.path}&quot;
+       class=&quot;${context.page.path.startsWith(child.path) ? 'active' : ''}&quot;&gt;
+       ${child.data.title}
+    &lt;/a&gt;
+  `)}
+`;
+</code></pre>
+</section>
+    <section><h2>Metadata</h2>
+<p>Metadata file are data.json files under the /src/pages hierarchy. They are made
+available to pages through the context API. The only restraint to the json file
+is that &quot;orison&quot; is a reserved top level key:</p>
+<h4>/src/pages/data.json</h4>
+<pre><code class="language-json">{
+  ...
+  &quot;orison&quot;: {
+    &quot;order&quot;: 100
+  }
+}
+</code></pre>
+<p>Currently the only supported key is the &quot;order&quot; key which determines the order
+of the <code>getChildren()</code> context method.</p>
 </section>
     <section><h2>Programatic Usage</h2>
 <p>Instead of installing OrisonJS as a command line utility you can install it as a project dependency. Then you can interact with a configurable and programatic API for building and serving your site.</p>
