@@ -142,11 +142,12 @@ export default context =&gt; html`
 <li>/my-first-blog-post.fragment.html</li>
 <li>/another-blog-post.fragment.html</li>
 </ol>
-<h3>Utilizing metadata</h3>
+<h3>Utilizing Metadata</h3>
+<h5>Global Metadata</h5>
 <p>The data in the <code>global.json</code> file of the pages directory will be available on a
-<code>global</code> property of the context object. This is available for normal pages, list
-pages, and layouts.</p>
-<h4>/src/pages/index.js</h4>
+<code>global</code> property of the context object. This is available for all pages, list
+pages, and layouts regardless of where they exist in the pages directory.</p>
+<h4>/src/pages/global.js</h4>
 <pre><code class="language-json">{
   &quot;title&quot;: &quot;Hello, World!&quot;
 }
@@ -156,6 +157,21 @@ pages, and layouts.</p>
 
 export default context =&gt; html`
   &lt;h1&gt;${context.global.title}&lt;/h1&gt;
+`;
+</code></pre>
+<h5>Contextual Metadata</h5>
+<p>Any <code>data.json</code> file in the pages directory will be available on a <code>data</code> property
+of the context object for pages, list pages, and layouts in the same directory.</p>
+<h4>/src/pages/example/data.js</h4>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;This is available in the example directory.&quot;
+}
+</code></pre>
+<h4>/src/pages/example/index.js</h4>
+<pre><code class="language-js">import { html } from 'orison';
+
+export default context =&gt; html`
+  &lt;p&gt;${context.data.message}&lt;/p&gt;
 `;
 </code></pre>
 </section>
@@ -173,8 +189,7 @@ npx orison static
 </section>
 
   <section>
-    <p>
-      OrisonJS utilizes the following JavaScript libraries:
+    <p>OrisonJS utilizes the following JavaScript libraries:
     </p>
     <ol>
       <li><a href="https://github.com/popeindustries/lit-html-server">lit-html-server</a></li>

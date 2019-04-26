@@ -177,6 +177,7 @@ export default class OrisonRenderer {
   context() {
     return {
       global: this.globalData,
+      data: this.contextData,
       mdString,
       mdFile
     };
@@ -195,7 +196,11 @@ export default class OrisonRenderer {
   }
 
   get contextData() {
-    return {}; // TODO
+    try {
+     return JSON.parse(fs.readFileSync(this.dataPath));
+    } catch {
+      return {};
+    }
   }
 
   get dataPath() {

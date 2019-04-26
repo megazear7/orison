@@ -49,6 +49,7 @@ export default context => html`
   </head>
   <body>
     ${header(context.global.title)}
+    ${nav(context.page.path)}
     <main>
       ${context.page.html}
     </main>

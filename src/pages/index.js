@@ -7,8 +7,7 @@ export default context => html`
   <section>${context.mdFile('./src/partials/documentation/build.md')}</section>
 
   <section>
-    <p>
-      OrisonJS utilizes the following JavaScript libraries:
+    <p>${context.data.libraryMessage}
     </p>
     <ol>
       <li><a href="https://github.com/popeindustries/lit-html-server">lit-html-server</a></li>

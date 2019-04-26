@@ -63,6 +63,8 @@ h4 {
 h5 {
   color: var(--tertiary-color);
   font-size: 1.5rem;
+  text-shadow: var(--text-shadow);
+  font-weight: 300;
 }
 
 p {
