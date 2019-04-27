@@ -243,15 +243,14 @@ export default context =&gt; html`
 `;
 </code></pre>
 <h5>Parent Metadata</h5>
-<p>The <code>context.parentData</code> property is an array of the data.json files starting
-from the one in the current directory and then proceeding towards the root pages
-directory. In addition a <code>path</code> property is added to each data object in the array.</p>
+<p>The <code>context.parents</code> property is an array of OrisonDirectory objects representing
+each directory from the current page up to the root.</p>
 <h4>/src/pages/example-parent/example-child.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
 export default context =&gt; html`
-  ${context.parentData.map(data =&gt; html`
-    &lt;a href=&quot;${data.path}&quot;&gt;${data.title}&lt;/a&gt;
+  ${context.parents.map(parent =&gt; html`
+    &lt;a href=&quot;${parent.path}&quot;&gt;${parent.data.title}&lt;/a&gt;
   `)}
 `;
 </code></pre>

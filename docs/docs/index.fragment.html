@@ -78,7 +78,7 @@ export default context =&gt; html`
 </section>
     <section><h2>Context</h2>
 <h3>Child Directories</h3>
-<p>The <code>context.root.getChildren()</code> method will return an array of child directories.
+<p>The <code>context.local.getChildren()</code> method will return an array of child directories.
 Each item in the array has the following attributes and methods:</p>
 <ol>
 <li><code>parent</code></li>
@@ -116,13 +116,23 @@ we are creating the navigation links by getting the children of the root directo
 
 export default context =&gt; html`
   &lt;a href=&quot;/&quot; class=&quot;${context.page.path === '/index.js' ? 'active' : ''}&quot;&gt;Begin&lt;/a&gt;
-  ${context.root.getChildren().map(child =&gt; html`
+  ${context.local.getChildren().map(child =&gt; html`
     &lt;a href=&quot;${child.path}&quot;
        class=&quot;${context.page.path.startsWith(child.path) ? 'active' : ''}&quot;&gt;
        ${child.data.title}
     &lt;/a&gt;
   `)}
 `;
+</code></pre>
+<h3>Root Directory</h3>
+<pre><code class="language-js">export default context =&gt; html`
+  ${context.root}
+`
+</code></pre>
+<h3>Parent Directories</h3>
+<pre><code class="language-js">export default context =&gt; html`
+  ${context.parents}
+`
 </code></pre>
 </section>
     <section><h2>Metadata</h2>
