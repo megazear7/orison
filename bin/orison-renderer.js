@@ -10,7 +10,6 @@ import {
   DEFAULT_BUILD_DIR,
   DEFAULT_PAGES_DIR,
   DEFAULT_DATA_BASENAME,
-  DEFAULT_GLOBAL_METADATA_BASENAME,
   DEFAULT_LAYOUT_BASENAME } from './orison-esm.js';
 
 export default class OrisonRenderer {
@@ -20,7 +19,6 @@ export default class OrisonRenderer {
       srcDirectory = DEFAULT_SRC_DIR,
       layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
       dataFileBasename = DEFAULT_DATA_BASENAME,
-      globalDataBasename = DEFAULT_GLOBAL_METADATA_BASENAME,
       pagesDirectory = DEFAULT_PAGES_DIR,
       buildDir = DEFAULT_BUILD_DIR,
     }) {
@@ -29,7 +27,6 @@ export default class OrisonRenderer {
     this.srcDirectory = srcDirectory;
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
-    this.globalDataBasename = globalDataBasename;
     this.pagesDirectory = pagesDirectory;
     this.buildDir = buildDir;
     this.orisonFile = new OrisonDirectory({
@@ -89,7 +86,6 @@ export default class OrisonRenderer {
 
   renderHtmlFile(filePathOverride) {
     const filePath = filePathOverride ? filePathOverride : this.file;
-    const global = this.globalData;
     const data = this.orisonFile.data;
 
     return [
@@ -176,7 +172,6 @@ export default class OrisonRenderer {
 
   context() {
     return {
-      global: this.globalData,
       data: this.contextData,
       parentData: this.parentData,
       root: this.rootDirectory,
@@ -220,20 +215,8 @@ export default class OrisonRenderer {
     return parentData.reverse();
   }
 
-  get globalData() {
-    try {
-     return JSON.parse(fs.readFileSync(this.globalPath));
-    } catch {
-      return {};
-    }
-  }
-
   get pagesPath() {
     return path.join(this.srcPath, this.pagesDirectory);
-  }
-
-  get globalPath() {
-    return path.join(this.pagesPath, this.globalDataBasename + '.json');
   }
 
   get contextData() {
