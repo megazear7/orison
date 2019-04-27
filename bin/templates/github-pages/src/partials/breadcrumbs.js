@@ -1,4 +1,4 @@
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from '@popeindustries/lit-html-server';
 
 export default parentData => html`
   <ul class="breadcrumb">

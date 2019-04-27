@@ -2,6 +2,6 @@ import { html } from 'orison';
 
 export default context => html`
   <section>
-    <p>Blog listing page</p>
-  </section>
+    <h2>${context.data.title}</h2>
+  <section>
 `;

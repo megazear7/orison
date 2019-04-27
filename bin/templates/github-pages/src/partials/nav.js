@@ -1,11 +1,12 @@
-const { html } = require('@popeindustries/lit-html-server');
+import { html } from 'orison';
 
-export default path => html`
+export default (currentPath, root) => html`
   <nav>
     <div>
-      <a href="/" class="${path === '/index.js' ? 'active' : ''}">Home</a>
-      <a href="/blog.html" class="${path === '/blog.js' ? 'active' : ''}">Blog</a>
-      <a href="/info/about.html" class="${path === '/info/about.js' ? 'active' : ''}">About</a>
+      <a href="/" class="${currentPath === '' ? 'active' : ''}">Begin</a>
+      ${root.children.map(child => html`
+        <a href="${child.path}" class="${currentPath.startsWith(child.path) ? 'active' : ''}">${child.data.title}</a>
+      `)}
     </div>
   </nav>
 `;

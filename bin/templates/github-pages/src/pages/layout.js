@@ -8,13 +8,13 @@ export default context => html`
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Example Site</title>
+    <title>${context.root.data.title}</title>
     <script src="/app.js"></script>
     <link rel="stylesheet" type="text/css" href="/app.css">
   </head>
   <body>
-    ${header()}
-    ${nav(context.page.path)}
+    ${header(context.root.data.title)}
+    ${nav(context.path, context.root)}
     <main>
       ${context.page.html}
     </main>
