@@ -1,8 +1,0 @@
-{
-  "title": "OrisonJS",
-  "description": "Orison server and static stite generator documentation",
-  "assets": {
-    "js": "/app.js",
-    "css": "/app.css"
-  }
-}

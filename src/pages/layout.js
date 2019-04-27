@@ -8,28 +8,28 @@ export default context => html`
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>${context.global.title}</title>
-    <script src="${context.global.assets.js}"></script>
-    <link rel="stylesheet" type="text/css" href="${context.global.assets.css}">
+    <title>${context.root.data.title}</title>
+    <script src="${context.root.data.assets.js}"></script>
+    <link rel="stylesheet" type="text/css" href="${context.root.data.assets.css}">
 
     <link rel="stylesheet" href="/highlightjs/github.css">
     <script src="/highlightjs/highlight.pack.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="${context.global.description}">
+    <meta name="description" content="${context.root.data.description}">
     <link rel="icon" href="/icons/favicon.ico">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#fa5d0f">
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="${context.global.title}">
+    <meta name="application-name" content="${context.root.data.title}">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="${context.global.title}">
+    <meta name="apple-mobile-web-app-title" content="${context.root.data.title}">
 
     <!-- Homescreen icons -->
     <link rel="apple-touch-icon" href="icons/icon-640x640.png">
@@ -48,7 +48,7 @@ export default context => html`
     <meta property="og:image" content="icons/icon-512x512.png" />
   </head>
   <body>
-    ${header(context.global.title)}
+    ${header(context.root.data.title)}
     ${nav(context.page.path, context.root)}
     <main>
       ${context.page.html}

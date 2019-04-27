@@ -1,4 +1,10 @@
 {
   "title": "Home",
-  "libraryMessage": "OrisonJS utilizes the following JavaScript libraries:"
+  "title": "OrisonJS",
+  "libraryMessage": "OrisonJS utilizes the following JavaScript libraries:",
+  "description": "Orison server and static stite generator documentation",
+  "assets": {
+    "js": "/app.js",
+    "css": "/app.css"
+  }
 }
