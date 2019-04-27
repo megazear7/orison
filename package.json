@@ -1,6 +1,6 @@
 {
   "name": "orison",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "A static site generator built on top of lit-html.",
   "keywords": [
     "Static site generation",

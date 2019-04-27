@@ -12,7 +12,6 @@
 
 ## TODO
 
-1. Thoroughly document the context object.
 1. Make the documentations navigation bottom aligned on mobile after scrolling down.
 1. Make the context data available as an API.
 1. SPA links to blog pages of the template project does not work.
