@@ -144,10 +144,9 @@ export default context =&gt; html`
 </ol>
 <h3>Utilizing Metadata</h3>
 <h5>Global Metadata</h5>
-<p>The data in the <code>global.json</code> file of the pages directory will be available on a
-<code>global</code> property of the context object. This is available for all pages, list
-pages, and layouts regardless of where they exist in the pages directory.</p>
-<h4>/src/pages/global.js</h4>
+<p>The data in the /src/pages/data.json file of the pages directory can be used as Global metadata for the site. It will be accessible under the <code>context.root.data</code> property.
+This is available for all pages, list pages, and layouts regardless of where they exist in the pages directory.</p>
+<h4>/src/pages/data.js</h4>
 <pre><code class="language-json">{
   &quot;title&quot;: &quot;Hello, World!&quot;
 }
@@ -156,12 +155,12 @@ pages, and layouts regardless of where they exist in the pages directory.</p>
 <pre><code class="language-js">import { html } from 'orison';
 
 export default context =&gt; html`
-  &lt;h1&gt;${context.global.title}&lt;/h1&gt;
+  &lt;h1&gt;${context.root.data.title}&lt;/h1&gt;
 `;
 </code></pre>
 <h5>Contextual Metadata</h5>
 <p>Any <code>data.json</code> file in the pages directory will be available on a <code>data</code> property
-of the context object for pages, list pages, and layouts in the same directory.</p>
+of the context object for pages, list pages, and layouts that are in the same directory.</p>
 <h4>/src/pages/example/data.js</h4>
 <pre><code class="language-json">{
   &quot;message&quot;: &quot;This is available in the example directory.&quot;

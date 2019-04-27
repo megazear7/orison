@@ -171,11 +171,10 @@ There will also be these urls with the same page content but without the layout 
 
 ##### Global Metadata
 
-The data in the `global.json` file of the pages directory will be available on a
-`global` property of the context object. This is available for all pages, list
-pages, and layouts regardless of where they exist in the pages directory.
+The data in the /src/pages/data.json file of the pages directory can be used as Global metadata for the site. It will be accessible under the `context.root.data` property.
+This is available for all pages, list pages, and layouts regardless of where they exist in the pages directory.
 
-#### /src/pages/global.js
+#### /src/pages/data.js
 ```json
 {
   "title": "Hello, World!"
@@ -187,14 +186,14 @@ pages, and layouts regardless of where they exist in the pages directory.
 import { html } from 'orison';
 
 export default context => html`
-  <h1>${context.global.title}</h1>
+  <h1>${context.root.data.title}</h1>
 `;
 ```
 
 ##### Contextual Metadata
 
 Any `data.json` file in the pages directory will be available on a `data` property
-of the context object for pages, list pages, and layouts in the same directory.
+of the context object for pages, list pages, and layouts that are in the same directory.
 
 #### /src/pages/example/data.js
 ```json
