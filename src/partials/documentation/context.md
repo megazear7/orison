@@ -2,16 +2,11 @@
 
 ### Child Directories
 
-The `context.local.getChildren()` method will return an array of child directories.
+The `context.local.children` property provides an array of `OrisonDirectory` objects
 Each item in the array has the following attributes and methods:
 
-1. `parent`
-1. `getChildren()`
-1. `path`
-1. `data`
-
-These attributes and methods give you access to the child data.json files, the
-path of each child, and the `parent` and `getChildren` methods can be used to
+These attributes give you access to the child data.json files, the
+path of each child, and the `parent` and `children` methods can be used to
 programmatically navigate the site structure.
 
 The order of the children will be based on the `orison.order` property of the
@@ -49,7 +44,7 @@ const { html } = require('orison');
 
 export default context => html`
   <a href="/" class="${context.page.path === '/index.js' ? 'active' : ''}">Begin</a>
-  ${context.local.getChildren().map(child => html`
+  ${context.local.children.map(child => html`
     <a href="${child.path}"
        class="${context.page.path.startsWith(child.path) ? 'active' : ''}">
        ${child.data.title}

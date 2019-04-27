@@ -87,7 +87,7 @@ export default class OrisonRenderer {
     return [
       {
         path: this.buildFilePath,
-        html: this.localDirectory.getLayout()
+        html: this.localDirectory.layout
             .then(layout => renderToString(layout({
               ...this.context(),
               page: {
@@ -107,7 +107,7 @@ export default class OrisonRenderer {
     return [
       {
         path: this.buildFilePath,
-        html: this.localDirectory.getLayout().then(layout => renderToString(layout({
+        html: this.localDirectory.layout.then(layout => renderToString(layout({
           ...this.context(),
           page: {
             html: html`${unsafeHTML(this.markdownHtml)}`,
@@ -138,7 +138,7 @@ export default class OrisonRenderer {
         return [
           ...exportCopy1.map(({name, html}) => ({
             path: this.getIndexPath(name),
-            html: Promise.all([this.localDirectory.getLayout(), Promise.resolve(html)])
+            html: Promise.all([this.localDirectory.layout, Promise.resolve(html)])
                          .then(values => new LayoutRenderer(values, this.pageContextPath, name, context).render())
           })),
           ...exportCopy2.map(({name, html}) => ({
@@ -149,7 +149,7 @@ export default class OrisonRenderer {
       } else {
         return [{
           path: this.buildFilePath,
-          html: Promise.all([this.localDirectory.getLayout(), Promise.resolve(exportCopy1)])
+          html: Promise.all([this.localDirectory.layout, Promise.resolve(exportCopy1)])
                        .then(values => new LayoutRenderer(values, this.pageContextPath, undefined, context).render())
                        .catch(e => console.log(e))
         }, {
@@ -188,14 +188,13 @@ export default class OrisonRenderer {
 
   get parents() {
     let parents = [ ];
-    let parentPath = path.dirname(this.file);
+    let parent = this.createOrisonDirectory(path.dirname(this.file));
     let foundRoot = false;
 
     while (! foundRoot) {
-      parents.push(this.createOrisonDirectory(parentPath));
-
-      foundRoot = parentPath.endsWith(path.join(this.srcDirectory, this.pagesDirectory));
-      parentPath = path.dirname(parentPath);
+      parents.push(parent);
+      foundRoot = parent.isRoot;
+      parent = parent.parent;
     }
 
     return parents.reverse();
