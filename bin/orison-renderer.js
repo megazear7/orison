@@ -168,9 +168,12 @@ export default class OrisonRenderer {
 
   context() {
     return {
-      data: this.contextData,
-      parents: this.parents,
       local: this.localDirectory,
+      path: this.localDirectory.path,
+      data: this.localDirectory.data,
+      children: this.localDirectory.children,
+      parent: this.localDirectory.parent,
+      parents: this.localDirectory.parents,
       root: this.rootDirectory,
       mdString,
       mdFile
@@ -186,30 +189,8 @@ export default class OrisonRenderer {
       dataFileBasename: this.dataFileBasename });
   }
 
-  get parents() {
-    let parents = [ ];
-    let parent = this.createOrisonDirectory(path.dirname(this.file));
-    let foundRoot = false;
-
-    while (! foundRoot) {
-      parents.push(parent);
-      foundRoot = parent.isRoot;
-      parent = parent.parent;
-    }
-
-    return parents.reverse();
-  }
-
   get pagesPath() {
     return path.join(this.srcPath, this.pagesDirectory);
-  }
-
-  get contextData() {
-    try {
-     return JSON.parse(fs.readFileSync(this.dataPath));
-    } catch {
-      return {};
-    }
   }
 
   get dataPath() {

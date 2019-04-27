@@ -113,4 +113,18 @@ export default class OrisonDirectory {
 
     return this._children;
   }
+
+  get parents() {
+    let parents = [ ];
+    let parent = this;
+    let foundRoot = false;
+
+    while (! foundRoot) {
+      parents.push(parent);
+      foundRoot = parent.isRoot;
+      parent = parent.parent;
+    }
+
+    return parents.reverse();
+  }
 }

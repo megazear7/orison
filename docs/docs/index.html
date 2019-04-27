@@ -146,6 +146,18 @@ export default context =&gt; html`
 </code></pre>
 </section>
     <section><h2>Context</h2>
+<pre><code>context.path
+context.data
+context.local
+context.parent
+context.root
+context.parents
+context.children
+context.mdString
+context.mdFile
+</code></pre>
+<p>The local, parent, and root properties return <code>OrisonDirectory</code> objects. The
+parents and children return arrays of <code>OrisonDirectory</code> objects.</p>
 <h3>Child Directories</h3>
 <p>The <code>context.local.children</code> property provides an array of <code>OrisonDirectory</code> objects
 Each item in the array has the following attributes and methods:</p>

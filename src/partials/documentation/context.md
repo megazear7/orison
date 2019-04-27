@@ -1,5 +1,20 @@
 ## Context
 
+```
+context.path
+context.data
+context.local
+context.parent
+context.root
+context.parents
+context.children
+context.mdString
+context.mdFile
+```
+
+The local, parent, and root properties return `OrisonDirectory` objects. The
+parents and children return arrays of `OrisonDirectory` objects.
+
 ### Child Directories
 
 The `context.local.children` property provides an array of `OrisonDirectory` objects
