@@ -49,7 +49,7 @@ export default context => html`
   </head>
   <body>
     ${header(context.root.data.title)}
-    ${nav(context.page.path, context.root)}
+    ${nav(context.local.path, context.root)}
     <main>
       ${context.page.html}
     </main>

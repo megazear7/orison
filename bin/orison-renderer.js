@@ -29,12 +29,8 @@ export default class OrisonRenderer {
     this.dataFileBasename = dataFileBasename;
     this.pagesDirectory = pagesDirectory;
     this.buildDir = buildDir;
-    this.orisonFile = new OrisonDirectory({
-      path: path.dirname(file),
-      srcDirectory,
-      pagesDirectory,
-      layoutFileBasename,
-      dataFileBasename });
+    this.localDirectory = this.createOrisonDirectory(path.dirname(file));
+    this.rootDirectory = this.createOrisonDirectory(this.pagesPath);
   }
 
   writeFile(file) {
@@ -86,12 +82,12 @@ export default class OrisonRenderer {
 
   renderHtmlFile(filePathOverride) {
     const filePath = filePathOverride ? filePathOverride : this.file;
-    const data = this.orisonFile.data;
+    const data = this.localDirectory.data;
 
     return [
       {
         path: this.buildFilePath,
-        html: this.orisonFile.getLayout()
+        html: this.localDirectory.getLayout()
             .then(layout => renderToString(layout({
               ...this.context(),
               page: {
@@ -111,7 +107,7 @@ export default class OrisonRenderer {
     return [
       {
         path: this.buildFilePath,
-        html: this.orisonFile.getLayout().then(layout => renderToString(layout({
+        html: this.localDirectory.getLayout().then(layout => renderToString(layout({
           ...this.context(),
           page: {
             html: html`${unsafeHTML(this.markdownHtml)}`,
@@ -142,7 +138,7 @@ export default class OrisonRenderer {
         return [
           ...exportCopy1.map(({name, html}) => ({
             path: this.getIndexPath(name),
-            html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(html)])
+            html: Promise.all([this.localDirectory.getLayout(), Promise.resolve(html)])
                          .then(values => new LayoutRenderer(values, this.pageContextPath, name, context).render())
           })),
           ...exportCopy2.map(({name, html}) => ({
@@ -153,7 +149,7 @@ export default class OrisonRenderer {
       } else {
         return [{
           path: this.buildFilePath,
-          html: Promise.all([this.orisonFile.getLayout(), Promise.resolve(exportCopy1)])
+          html: Promise.all([this.localDirectory.getLayout(), Promise.resolve(exportCopy1)])
                        .then(values => new LayoutRenderer(values, this.pageContextPath, undefined, context).render())
                        .catch(e => console.log(e))
         }, {
@@ -173,46 +169,36 @@ export default class OrisonRenderer {
   context() {
     return {
       data: this.contextData,
-      parentData: this.parentData,
+      parents: this.parents,
+      local: this.localDirectory,
       root: this.rootDirectory,
       mdString,
       mdFile
     };
   }
 
-  get rootDirectory() {
+  createOrisonDirectory(dirPath) {
     return new OrisonDirectory({
-      path: this.pagesPath,
+      path: dirPath,
       srcDirectory: this.srcDirectory,
       pagesDirectory: this.pagesDirectory,
       layoutFileBasename: this.layoutFileBasename,
       dataFileBasename: this.dataFileBasename });
   }
 
-  get parentData() {
-    let parentData = [ ];
-    let parentPath = path.dirname(this.dataPath.split('/' + this.pagesDirectory)[1]);
+  get parents() {
+    let parents = [ ];
+    let parentPath = path.dirname(this.file);
     let foundRoot = false;
 
     while (! foundRoot) {
-      let data = () => {
-        try {
-         return JSON.parse(fs.readFileSync(path.join(this.srcDirectory, this.pagesDirectory, parentPath, this.dataFileBasename + '.json')));
-        } catch {
-          return {};
-        }
-      };
+      parents.push(this.createOrisonDirectory(parentPath));
 
-      parentData.push({
-        ...data(),
-        path: parentPath
-      });
-
-      foundRoot = parentPath === "/"
+      foundRoot = parentPath.endsWith(path.join(this.srcDirectory, this.pagesDirectory));
       parentPath = path.dirname(parentPath);
     }
 
-    return parentData.reverse();
+    return parents.reverse();
   }
 
   get pagesPath() {
@@ -303,7 +289,6 @@ class LayoutRenderer {
       ...this.context,
       page: {
         html: this.page,
-        path: this.path,
         name: this.name
       }
     }));

@@ -2,7 +2,7 @@
 
 ### Child Directories
 
-The `context.root.getChildren()` method will return an array of child directories.
+The `context.local.getChildren()` method will return an array of child directories.
 Each item in the array has the following attributes and methods:
 
 1. `parent`
@@ -49,11 +49,27 @@ const { html } = require('orison');
 
 export default context => html`
   <a href="/" class="${context.page.path === '/index.js' ? 'active' : ''}">Begin</a>
-  ${context.root.getChildren().map(child => html`
+  ${context.local.getChildren().map(child => html`
     <a href="${child.path}"
        class="${context.page.path.startsWith(child.path) ? 'active' : ''}">
        ${child.data.title}
     </a>
   `)}
 `;
+```
+
+### Root Directory
+
+```js
+export default context => html`
+  ${context.root}
+`
+```
+
+### Parent Directories
+
+```js
+export default context => html`
+  ${context.parents}
+`
 ```
