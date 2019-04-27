@@ -12,7 +12,6 @@
 
 ## TODO
 
-1. The global.json file should be removed and instead `context.root.data` should be used to access the root data.json file.
 1. Thoroughly document the context object.
 1. Make the documentations navigation bottom aligned on mobile after scrolling down.
 1. Make the context data available as an API.
