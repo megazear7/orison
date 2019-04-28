@@ -12,10 +12,12 @@
 
 ## TODO
 
-1. Make the documentation navigation bottom aligned on mobile after scrolling down.
 1. SPA links to blog pages of the template project does not work.
+1. Make the documentation navigation bottom aligned on mobile after scrolling down.
 1. Add `orison init --firebase` option
 1. Add `orison init --netlify` option
+1. Image rendering - images under /static will be downsized into smaller renditions.
+1. Create an <orison-img> component. It loads in image renditions based on a url, first loading in the smallest rendition, then loading in a correctly sized rendition based upon the measured box sizing of the image location.
 
 # Development on this project
 
