@@ -2,7 +2,7 @@
 
 const ncp = require('ncp');
 const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('./orison.js');
-var pjson = require('./package.json');
+var pjson = require('../package.json');
 
 if (process.argv.includes('--version') || process.argv.includes('-v')) {
   console.log(pjson.version);
