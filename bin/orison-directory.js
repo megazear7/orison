@@ -78,8 +78,9 @@ export default class OrisonDirectory {
     if (! this._data) {
       try {
         this._data = fs.existsSync(this.dataPath) ? JSON.parse(fs.readFileSync(this.dataPath)) : { };
+        if (! this._data.orison) this._data.orison = { };
       } catch {
-        this._data = {};
+        this._data = { orison: { } };
       }
     }
 
