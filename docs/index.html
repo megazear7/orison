@@ -73,19 +73,14 @@
 orison init my-project
 cd my-project
 npm install
-
-# Build the /src directory into the /docs directory
 npx orison build
-
-# Serve the files from the /docs directory
 npx orison serve
-
-# Your new website is available at localhost:3000
 </code></pre>
+<p>Your website will be available at localhost:3000</p>
 </section>
   <section><h2>Getting Started</h2>
 <h3>Project Organization</h3>
-<p>An OrisonJS project should have a <code>src</code> directory in the root of the project with three sub directories</p>
+<p>An OrisonJS project should have a <code>src</code> directory in the root of the project with these three sub directories:</p>
 <ul>
 <li>/src/pages</li>
 <li>/src/partials</li>
@@ -99,9 +94,9 @@ npx orison serve
 <li><code>npx orison static</code> Serve the static site</li>
 </ul>
 <h3>Creating your first page</h3>
-<p>With a few exceptions for layouts and lists, any JavaScript, HTML, or Markdown files under the /src/pages directory will be rendered as an html file at the same location but under the /docs directory.</p>
-<p>JavaScript pages should return a lit-html template. Html files will be interpreted as a lit-html template. Markdown files will be rendered as is.</p>
-<p>Below is an example page. Notice that it exports a function which takes no parameters and returns a template.</p>
+<p>With a few exceptions for layouts and list pages, any JavaScript, HTML, or Markdown file under the /src/pages directory will be rendered as an html file at the same location but under the /docs directory.</p>
+<p>JavaScript pages should return a method which accepts a <code>context</code> object and returns a lit-html template. Html files will be interpreted as a lit-html template where the <code>context</code> object is available. Markdown files will be rendered as is.</p>
+<p>Below is an example page. Notice that it exports a function which takes no <code>context</code> parameter and returns a template.</p>
 <h4>/src/pages/example.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
@@ -109,7 +104,7 @@ export default context =&gt; html`
   &lt;h1&gt;This is an example page&lt;/h1&gt;
 `;
 </code></pre>
-<p>Or you could define this same page with an html file instead of a JavaScript file:</p>
+<p>You could also define this same page with an html file instead of a JavaScript file:</p>
 <h4>/src/pages/example.html</h4>
 <pre><code class="language-html">&lt;h1&gt;This is an example page&lt;/h1&gt;
 </code></pre>
@@ -118,7 +113,7 @@ export default context =&gt; html`
 <pre><code class="language-md"># This is an example page
 </code></pre>
 <h3>Enhancing pages with layouts</h3>
-<p>Layouts can be used to provide html that should exist on every page. Layouts should export a method which takes a page template and then renders a full html page. For example if you could create the following layout.js file:</p>
+<p>Layouts can be used to provide html that should exist on every page. Layouts also export a function which receives a context parameter and then renders a full html page plugging in the page html by using the <code>context.page.html</code> attribute. For example you could create the following layout.js file:</p>
 <h4>/src/pages/layout.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
@@ -137,8 +132,7 @@ export default context =&gt; html`
 &lt;/html&gt;
 `;
 </code></pre>
-<p>The closest layout to the rendered page will be used for that page. So for example if you have only one layout.js file and it is directly in the /src/pages directory, it will be used for rendering every page. If a layout.js exists closer in the /src/pages directory hierarchy to the rendered page, it will be used instead.</p>
-<p>Any pages defined as an HTML file will automatically be inserted into the closest layout.js file that exists within the /src/pages directory structure.</p>
+<p>The closest layout to the rendered page will be used for that page. For example if you have only one layout.js file and it is directly in the /src/pages directory, it will be used for rendering every page. If a layout.js exists closer in the /src/pages directory hierarchy to the rendered page, it will be used instead.</p>
 <h3>Utilizing index files</h3>
 <p>Any file named with the &quot;index&quot; base name will be returned by the server for the url that matches the directory that it is in. For example the following file will be available at localhost:3000 when the server is running, <em>not</em> localhost:3000/index.html. Most web servers that serve static files will behave in the same way.</p>
 <h4>/src/pages/index.js</h4>
@@ -179,7 +173,7 @@ export default title =&gt; html`
   &lt;h1&gt;${title}&lt;/h1&gt;
 `;
 </code></pre>
-<p>And then use this partial in our page and reuse wherever it is needed.</p>
+<p>And then use this partial in our page and reuse it wherever it is needed.</p>
 <h4>/src/pages/index.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 import title from '../partials/title.js';
@@ -188,7 +182,7 @@ export default context =&gt; html`
   ${title('This is an example page')}
 `;
 </code></pre>
-<p>Note that because the partial's definition is outside of the page hierarchy and needs to be capable of accepting parameters it must be defined as a JS file and not an html file.</p>
+<p>Note that because the partial's definition is outside of the page hierarchy and needs to be capable of accepting parameters it must be defined as a JS file and not an html or markdown file.</p>
 <h3>The static directory</h3>
 <p>Finally, any files in the /src/static directory will get copied as is into the src directory during the build. If running the live server these will be available at the same location under the root of the url. So for example the following css and js files will be available at the specified url:</p>
 <ul>
@@ -254,18 +248,56 @@ export default context =&gt; html`
   `)}
 `;
 </code></pre>
+<h5>Child Metadata</h5>
+<p>The <code>context.children</code> property is an array of OrisonDirectory objects representing
+each child directory of the current directory.</p>
+<h4>/src/pages/example-parent/example-child.js</h4>
+<pre><code class="language-js">import { html } from 'orison';
+
+export default context =&gt; html`
+  ${context.children.map(child =&gt; html`
+    &lt;a href=&quot;${child.path}&quot;&gt;${child.data.title}&lt;/a&gt;
+  `)}
+`;
+</code></pre>
+<h5>Contextual Directories</h5>
+<p>Each <code>OrisonDirectory</code> object has <code>.parent</code> and <code>.children</code> accessors so that you can use the <code>context</code> API to do contextual rendering of pages based upon the hierarchy of your project. Here are some simple examples:</p>
+<h4>/src/pages/example-parent/example-child.js</h4>
+<pre><code class="language-js">import { html } from 'orison';
+
+export default context =&gt; html`
+  ${context.path}
+  ${context.data.title}
+  ${context.parent.data.title}
+  ${context.parent.children.map(sibling =&gt; html`
+    ${sibling.data.title},
+  `)}
+`;
+</code></pre>
+<h5>Rendering Markdown</h5>
+<p>Markdown can be rendered by using the <code>mdString</code> and <code>mdFile</code> methods of the context object as shown below:</p>
+<h4>/src/partials/example.md</h4>
+<pre><code class="language-md"># Some example markdown file
+</code></pre>
+<p>And then use this partial in our page and reuse it wherever it is needed.</p>
+<h4>/src/pages/index.js</h4>
+<pre><code class="language-js">import { html } from 'orison';
+
+export default context =&gt; html`
+  &lt;!-- Render a markdown file: --&gt;
+  ${context.mdFile('./src/partials/example.md')}
+
+  &lt;!-- Render a markdown string: --&gt;
+  ${context.mdString('# Example markdown string')}
+`;
+</code></pre>
 </section>
   <section><h2>Production Build</h2>
 <p>The production ready build of your website can be performed as follows:</p>
 <pre><code class="language-bash">npx orison build
-
-# The source files in /src will be built as static files into /docs
-# These folder names are configurable.
-
 npx orison static
-
-# The production version of the site will be available at localhost:3000
 </code></pre>
+<p>Then preview the production build at localhost:3000. Then you can simply deliver the /docs directory to your hosting service. The template projects will have details instructions on how to do this for Github Pages, Firebase, and Netlify.</p>
 </section>
   <section>
     <p>OrisonJS utilizes the following JavaScript libraries:</p>

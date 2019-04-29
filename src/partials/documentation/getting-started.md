@@ -2,7 +2,7 @@
 
 ### Project Organization
 
-An OrisonJS project should have a `src` directory in the root of the project with three sub directories
+An OrisonJS project should have a `src` directory in the root of the project with these three sub directories:
 
 - /src/pages
 - /src/partials
@@ -17,11 +17,11 @@ An OrisonJS project should have a `src` directory in the root of the project wit
 
 ### Creating your first page
 
-With a few exceptions for layouts and lists, any JavaScript, HTML, or Markdown files under the /src/pages directory will be rendered as an html file at the same location but under the /docs directory.
+With a few exceptions for layouts and list pages, any JavaScript, HTML, or Markdown file under the /src/pages directory will be rendered as an html file at the same location but under the /docs directory.
 
-JavaScript pages should return a lit-html template. Html files will be interpreted as a lit-html template. Markdown files will be rendered as is.
+JavaScript pages should return a method which accepts a `context` object and returns a lit-html template. Html files will be interpreted as a lit-html template where the `context` object is available. Markdown files will be rendered as is.
 
-Below is an example page. Notice that it exports a function which takes no parameters and returns a template.
+Below is an example page. Notice that it exports a function which takes no ` context` parameter and returns a template.
 
 #### /src/pages/example.js
 ```js
@@ -32,7 +32,7 @@ export default context => html`
 `;
 ```
 
-Or you could define this same page with an html file instead of a JavaScript file:
+You could also define this same page with an html file instead of a JavaScript file:
 
 #### /src/pages/example.html
 ```html
@@ -48,7 +48,7 @@ Or you could write this same page as a markdown file:
 
 ### Enhancing pages with layouts
 
-Layouts can be used to provide html that should exist on every page. Layouts should export a method which takes a page template and then renders a full html page. For example if you could create the following layout.js file:
+Layouts can be used to provide html that should exist on every page. Layouts also export a function which receives a context parameter and then renders a full html page plugging in the page html by using the `context.page.html` attribute. For example you could create the following layout.js file:
 
 #### /src/pages/layout.js
 ```js
@@ -70,9 +70,7 @@ export default context => html`
 `;
 ```
 
-The closest layout to the rendered page will be used for that page. So for example if you have only one layout.js file and it is directly in the /src/pages directory, it will be used for rendering every page. If a layout.js exists closer in the /src/pages directory hierarchy to the rendered page, it will be used instead.
-
-Any pages defined as an HTML file will automatically be inserted into the closest layout.js file that exists within the /src/pages directory structure.
+The closest layout to the rendered page will be used for that page. For example if you have only one layout.js file and it is directly in the /src/pages directory, it will be used for rendering every page. If a layout.js exists closer in the /src/pages directory hierarchy to the rendered page, it will be used instead.
 
 ### Utilizing index files
 
@@ -128,7 +126,7 @@ export default title => html`
 `;
 ```
 
-And then use this partial in our page and reuse wherever it is needed.
+And then use this partial in our page and reuse it wherever it is needed.
 
 #### /src/pages/index.js
 ```js
@@ -140,7 +138,7 @@ export default context => html`
 `;
 ```
 
-Note that because the partial's definition is outside of the page hierarchy and needs to be capable of accepting parameters it must be defined as a JS file and not an html file.
+Note that because the partial's definition is outside of the page hierarchy and needs to be capable of accepting parameters it must be defined as a JS file and not an html or markdown file.
 
 ### The static directory
 
@@ -224,5 +222,63 @@ export default context => html`
   ${context.parents.map(parent => html`
     <a href="${parent.path}">${parent.data.title}</a>
   `)}
+`;
+```
+
+##### Child Metadata
+
+The `context.children` property is an array of OrisonDirectory objects representing
+each child directory of the current directory.
+
+#### /src/pages/example-parent/example-child.js
+```js
+import { html } from 'orison';
+
+export default context => html`
+  ${context.children.map(child => html`
+    <a href="${child.path}">${child.data.title}</a>
+  `)}
+`;
+```
+
+##### Contextual Directories
+
+Each `OrisonDirectory` object has `.parent` and `.children` accessors so that you can use the `context` API to do contextual rendering of pages based upon the hierarchy of your project. Here are some simple examples:
+
+#### /src/pages/example-parent/example-child.js
+```js
+import { html } from 'orison';
+
+export default context => html`
+  ${context.path}
+  ${context.data.title}
+  ${context.parent.data.title}
+  ${context.parent.children.map(sibling => html`
+    ${sibling.data.title},
+  `)}
+`;
+```
+
+##### Rendering Markdown
+
+Markdown can be rendered by using the `mdString` and `mdFile` methods of the context object as shown below:
+
+#### /src/partials/example.md
+```md
+# Some example markdown file
+```
+
+And then use this partial in our page and reuse it wherever it is needed.
+
+#### /src/pages/index.js
+```js
+import { html } from 'orison';
+
+export default context => html`
+  <!-- Render a markdown file: -->
+  ${context.mdFile('./src/partials/example.md')}
+
+  <!-- Render a markdown string: -->
+  ${context.mdString('# Example markdown string')}
 `;
 ```

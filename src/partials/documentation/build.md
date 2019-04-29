@@ -4,11 +4,7 @@ The production ready build of your website can be performed as follows:
 
 ```bash
 npx orison build
-
-# The source files in /src will be built as static files into /docs
-# These folder names are configurable.
-
 npx orison static
-
-# The production version of the site will be available at localhost:3000
 ```
+
+Then preview the production build at localhost:3000. Then you can simply deliver the /docs directory to your hosting service. The template projects will have details instructions on how to do this for Github Pages, Firebase, and Netlify.

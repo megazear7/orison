@@ -10,13 +10,6 @@
 * Uses express for a server when being used as a server.
 * Uses markdown-it for markdown rendering.
 
-## TODO
-
-1. SPA links to blog pages of the template project does not work.
-1. Make the documentation navigation bottom aligned on mobile after scrolling down.
-1. Add `orison init --firebase` option
-1. Add `orison init --netlify` option
-
 # Development on this project
 
 ## Install
