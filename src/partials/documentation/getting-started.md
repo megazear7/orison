@@ -188,6 +188,13 @@ export default context => html`
 `;
 ```
 
+The context object is also available in html files:
+
+#### /src/pages/index.html
+```html
+<h1>${context.root.data.title}</h1>
+```
+
 ##### Contextual Metadata
 
 Any `data.json` file in the pages directory will be available on a `data` property

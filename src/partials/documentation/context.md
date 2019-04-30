@@ -68,6 +68,19 @@ export default context => html`
 `;
 ```
 
+The context object is also available from html files as well.
+
+#### /src/pages/index.html
+```html
+<a href="/" class="${context.page.path === '/index.js' ? 'active' : ''}">Begin</a>
+${context.local.children.map(child => html`
+  <a href="${child.path}"
+     class="${context.page.path.startsWith(child.path) ? 'active' : ''}">
+     ${child.data.title}
+  </a>
+`)}
+```
+
 ### Root Directory
 
 ```js

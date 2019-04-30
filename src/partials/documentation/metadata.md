@@ -14,5 +14,5 @@ is that "orison" is a reserved top level key:
 }
 ```
 
-Currently the only supported key is the "order" key which determines the order
-of the `getChildren()` context method.
+The only reserved key is the "order" key which determines the order
+of the `children` context property.

@@ -82,14 +82,14 @@ export default class OrisonRenderer {
 
   renderHtmlFile(filePathOverride) {
     const filePath = filePathOverride ? filePathOverride : this.file;
-    const data = this.localDirectory.data;
+    const context = this.context();
 
     return [
       {
         path: this.buildFilePath,
         html: this.localDirectory.layout
             .then(layout => renderToString(layout({
-              ...this.context(),
+              ...context,
               page: {
                 html: eval('html`' + fs.readFileSync(filePath).toString() + '`'),
                 path: this.pageContextPath

@@ -67,8 +67,7 @@
   </nav>
 
     <main>
-      
-    <section><h2>Single pages</h2>
+      <section><h2>Single pages</h2>
 <h4>/src/pages/example.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
@@ -77,7 +76,7 @@ export default context =&gt; html`
 `
 </code></pre>
 </section>
-    <section><h2>List pages</h2>
+<section><h2>List pages</h2>
 <h4>/src/pages/list.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
@@ -116,7 +115,7 @@ export default async (context, slug) =&gt; {
 }
 </code></pre>
 </section>
-    <section><h2>Partials</h2>
+<section><h2>Partials</h2>
 <h4>/src/partials/example.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
@@ -125,7 +124,7 @@ export default data =&gt; html`
 `
 </code></pre>
 </section>
-    <section><h2>Layouts</h2>
+<section><h2>Layouts</h2>
 <h4>/src/pages/layout.js</h4>
 <pre><code class="language-js">import { html } from 'orison';
 
@@ -145,7 +144,7 @@ export default context =&gt; html`
 `;
 </code></pre>
 </section>
-    <section><h2>Context</h2>
+<section><h2>Context</h2>
 <pre><code>context.path
 context.data
 context.local
@@ -199,6 +198,16 @@ export default context =&gt; html`
   `)}
 `;
 </code></pre>
+<p>The context object is also available from html files as well.</p>
+<h4>/src/pages/index.html</h4>
+<pre><code class="language-html">&lt;a href=&quot;/&quot; class=&quot;${context.page.path === '/index.js' ? 'active' : ''}&quot;&gt;Begin&lt;/a&gt;
+${context.local.children.map(child =&gt; html`
+  &lt;a href=&quot;${child.path}&quot;
+     class=&quot;${context.page.path.startsWith(child.path) ? 'active' : ''}&quot;&gt;
+     ${child.data.title}
+  &lt;/a&gt;
+`)}
+</code></pre>
 <h3>Root Directory</h3>
 <pre><code class="language-js">export default context =&gt; html`
   ${context.root}
@@ -210,7 +219,7 @@ export default context =&gt; html`
 `
 </code></pre>
 </section>
-    <section><h2>Metadata</h2>
+<section><h2>Metadata</h2>
 <p>Metadata file are data.json files under the /src/pages hierarchy. They are made
 available to pages through the context API. The only restraint to the json file
 is that &quot;orison&quot; is a reserved top level key:</p>
@@ -222,10 +231,10 @@ is that &quot;orison&quot; is a reserved top level key:</p>
   }
 }
 </code></pre>
-<p>Currently the only supported key is the &quot;order&quot; key which determines the order
-of the <code>getChildren()</code> context method.</p>
+<p>The only reserved key is the &quot;order&quot; key which determines the order
+of the <code>children</code> context property.</p>
 </section>
-    <section><h2>Programatic Usage</h2>
+<section><h2>Programatic Usage</h2>
 <p>Instead of installing OrisonJS as a command line utility you can install it as a project dependency. Then you can interact with a configurable and programatic API for building and serving your site.</p>
 <pre><code class="language-bash">npm install orison
 </code></pre>
@@ -268,7 +277,7 @@ node ./orison.js serve
 node ./orison.js static
 </code></pre>
 </section>
-  
+
     </main>
     
   <footer>

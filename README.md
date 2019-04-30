@@ -7,8 +7,18 @@
 * Can be used as a static site generator or server.
 * Uses [lit-html](https://github.com/Polymer/lit-html) for rendering.
 * Uses [lit-html-server](https://github.com/popeindustries/lit-html-server) for server side rendering with lit-html.
-* Uses express for a server when being used as a server.
-* Uses markdown-it for markdown rendering.
+* Uses [express](https://expressjs.com/) for a server when being used as a server.
+* Uses [markdown-it](https://github.com/markdown-it/markdown-it) for markdown rendering.
+
+## TODOS
+
+1. Build hook integration and documentation
+1. Make the public property of data files publicly available
+1. PWA offline page
+1. Refactor code
+1. JSDocs
+1. Unit Testing
+1. Documentation
 
 # Development on this project
 

@@ -152,6 +152,10 @@ export default context =&gt; html`
   &lt;h1&gt;${context.root.data.title}&lt;/h1&gt;
 `;
 </code></pre>
+<p>The context object is also available in html files:</p>
+<h4>/src/pages/index.html</h4>
+<pre><code class="language-html">&lt;h1&gt;${context.root.data.title}&lt;/h1&gt;
+</code></pre>
 <h5>Contextual Metadata</h5>
 <p>Any <code>data.json</code> file in the pages directory will be available on a <code>data</code> property
 of the context object for pages, list pages, and layouts that are in the same directory.</p>
