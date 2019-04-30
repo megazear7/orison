@@ -12,7 +12,8 @@
 
 ## TODOS
 
-1. Add an optional path option to the build command that only builds a certain path under /src/pages.
+1. Remove ./orison.js and update the npm scripts to use ./bin/cli.js instead
+1. Add an optional path option to the build command that only builds a certain path under /src/pages
 1. Make the public property of data files publicly available
 1. Provide a context.partial method which renders JS or MD partials, with paths relative to /src/partials
 1. PWA offline page

@@ -9,4 +9,4 @@ npx orison build
 npx orison serve
 ```
 
-Your new website will be available at [localhost:3000](http://localhost:3000).
+Your new website will be available at [localhost:3000](http://localhost:3000)
