@@ -12,7 +12,7 @@
 
 ## TODOS
 
-1. After hosting on Netlify has been validated we should be able to add the docs directory to .gitignore
+1. Add an optional path option to the build command that only builds a certain path under /src/pages.
 1. Make the public property of data files publicly available
 1. Provide a context.partial method which renders JS or MD partials, with paths relative to /src/partials
 1. PWA offline page
