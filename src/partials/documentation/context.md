@@ -45,8 +45,8 @@ corresponding data.json files as shown below.
 }
 ```
 
-In this example the "first" directory will be the first child in the array, and
-the "second" directory will be the second child in the array. It is recommended
+In this example the /src/pages/first directory will be the first child in the array, and
+the /src/pages/second directory will be the second child in the array. It is recommended
 to use larger numbers so that you can reorder directories without having to
 increment each directory.
 

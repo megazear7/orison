@@ -12,8 +12,8 @@
 
 ## TODOS
 
-1. Build hook integration and documentation
 1. Make the public property of data files publicly available
+1. Provide a context.partial method which renders js or md partials, with paths relative to /src/partials
 1. PWA offline page
 1. Refactor code
 1. JSDocs
