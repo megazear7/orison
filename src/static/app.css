@@ -6,6 +6,7 @@ html {
   --primary-color: #fa5d0f;
   --secondary-color: #ffce27;
   --tertiary-color: #d13405;
+  --tertiary-color-dark: #ae2c04;
   --code-header-color: #a8a8a8;
   --code-background-color: #f8f8f8;
   --grey: #eee;
@@ -140,16 +141,14 @@ nav a {
   padding: 1rem;
   text-align: center;
   text-decoration: none;
-  color: var(--tertiary-color);
+  color: var(--tertiary-color-dark);
 }
 
 nav a:hover {
-  color: var(--primary-color);
   border-bottom: 3px dashed var(--primary-color);
 }
 
 nav a.active {
-  color: var(--primary-color);
   border-bottom: 3px solid var(--primary-color);
 }
 
