@@ -29,9 +29,9 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node --inspect=5858 ./orison.js build",
-    "serve": "node --inspect=5858 ./orison.js serve",
-    "static": "node --inspect=5858 ./orison.js static"
+    "build": "node --inspect=5858 ./bin/cli.js build",
+    "serve": "node --inspect=5858 ./bin/cli.js serve",
+    "static": "node --inspect=5858 ./bin/cli.js static"
   },
   "bin": {
     "orison": "./bin/cli.js"
