@@ -8,8 +8,6 @@ if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
 }
 
 function loadFragment(path, callback) {
-  // Determine the fragment path
-
   var fragmentPath = path.includes('.html')
     ? path.replace('.html', '.fragment.html')
     : path === '/'
