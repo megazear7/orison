@@ -12,10 +12,6 @@ export default context => html`
     <script src="${context.root.data.assets.js}"></script>
     <link rel="stylesheet" type="text/css" href="${context.root.data.assets.css}">
 
-    <link rel="stylesheet" href="/highlightjs/github.css">
-    <script src="/highlightjs/highlight.pack.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="${context.root.data.description}">
     <link rel="icon" href="/icons/favicon.ico">
@@ -54,6 +50,10 @@ export default context => html`
       ${context.page.html}
     </main>
     ${footer()}
+
+    <link rel="stylesheet" href="/highlightjs/github.css">
+    <script src="/highlightjs/highlight.pack.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>
 `;

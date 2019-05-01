@@ -6,7 +6,7 @@ html {
   --primary-color: #fa5d0f;
   --secondary-color: #ffce27;
   --tertiary-color: #d13405;
-  --tertiary-color-dark: #ae2c04;
+  --tertiary-color-dark: #7d1f03;
   --code-header-color: #a8a8a8;
   --code-background-color: #f8f8f8;
   --grey: #eee;
@@ -116,6 +116,8 @@ pre {
 }
 
 header {
+  color: var(--tertiary-color-dark);
+  text-align: center;
   padding: 1rem;
   border-top: 3px solid var(--primary-color);
   background-color: var(--secondary-color);
