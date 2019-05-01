@@ -1,4 +1,7 @@
 {
+  "public": {
+    "test": "Hello, World!"
+  },
   "title": "Home",
   "title": "OrisonJS",
   "libraryMessage": "OrisonJS utilizes the following JavaScript libraries:",

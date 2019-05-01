@@ -48,7 +48,7 @@ export default class OrisonRenderer {
   html(segment, path404) {
     return Promise.resolve(this.render(segment)).then(renderResult => {
       if (Array.isArray(renderResult)) {
-        if (renderResult.length > 1) {
+        if (renderResult.length > 0) {
           if (segment.includes('.fragment')) {
             return renderResult[1].html;
           } else {
@@ -77,6 +77,8 @@ export default class OrisonRenderer {
       return this.renderJsFile(segment);
     } else if (this.file.endsWith('.html')) {
       return this.renderHtmlFile();
+    } else if (this.file.endsWith('.json')) {
+      return this.renderJsonFile();
     }
   }
 
@@ -151,13 +153,22 @@ export default class OrisonRenderer {
           path: this.buildFilePath,
           html: Promise.all([this.localDirectory.layout, Promise.resolve(exportCopy1)])
                        .then(values => new LayoutRenderer(values, this.pageContextPath, undefined, context).render())
-                       .catch(e => console.log(e))
+                       .catch(e => console.error(e))
         }, {
           path: this.buildFragmentPath,
           html: Promise.resolve(exportCopy2).then(page => renderToString(page))
         }];
       }
     });
+  }
+
+  renderJsonFile() {
+    const json = require(this.file).public;
+
+    return [{
+      path: this.buildJsonFilePath,
+      html: Promise.resolve(JSON.stringify(json ? json : { }))
+    }];
   }
 
   clearSrcModuleCache() {
@@ -219,6 +230,10 @@ export default class OrisonRenderer {
 
   get buildFilePath() {
     return path.join(this.rootPath, this.buildDir, this.replaceExtension('html'));
+  }
+
+  get buildJsonFilePath() {
+    return path.join(this.rootPath, this.buildDir, this.replaceExtension('json'));
   }
 
   get buildFragmentPath() {

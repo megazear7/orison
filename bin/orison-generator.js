@@ -70,7 +70,7 @@ export default class OrisonGenerator {
 
   isSourcePage(file) {
     return ! file.endsWith(this.layoutFileBasename + '.js') &&
-           ( file.endsWith('.js') || file.endsWith('.html') || file.endsWith('.md') );
+           ( file.endsWith('.js') || file.endsWith('.html') || file.endsWith('.md') || file.endsWith('data.json') );
   }
 
   copyStaticFiles() {

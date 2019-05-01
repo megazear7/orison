@@ -75,6 +75,10 @@ export default class  {
     const fullRequestPath = path.join(this.rootPath, this.pagesPath, requestPath).replace('.fragment', '');
     const indexFullRequestPath = fullRequestPath.replace('index.html', '');
 
+    if (fullRequestPath.includes('.json')) {
+      return fullRequestPath;
+    }
+
     if (fs.existsSync(indexFullRequestPath)) {
       const stat = fs.statSync(indexFullRequestPath);
       const jsIndexFilePath = path.join(indexFullRequestPath, this.indexFileBasename + '.js');
