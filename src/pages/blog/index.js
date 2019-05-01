@@ -13,7 +13,7 @@ export default async context => {
       <section>
         <div class="blog-overview">
           <h3>${entry.fields.title}</h3>
-          <img src="${entry.fields.heroImage.fields.file.url}">
+          <img alt="${entry.fields.heroImage.fields.description}" src="${entry.fields.heroImage.fields.file.url}">
           <p>${entry.fields.description}</p>
           <p><a href="/blog/${entry.fields.slug}.html">Read More</a></p>
         </div>

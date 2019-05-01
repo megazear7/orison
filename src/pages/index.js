@@ -8,10 +8,10 @@ export default context => html`
   <section>
     <p>${context.data.libraryMessage}</p>
     <ol>
-      <li><a href="https://github.com/popeindustries/lit-html-server">lit-html-server</a></li>
-      <li><a href="https://github.com/Polymer/lit-html">lit-html</a></li>
-      <li><a href="https://github.com/expressjs/express">express</a></li>
-      <li><a href="https://github.com/markdown-it/markdown-it">markdown-it</a></li>
+      <li><a href="https://github.com/popeindustries/lit-html-server" rel="noopener">lit-html-server</a></li>
+      <li><a href="https://github.com/Polymer/lit-html" rel="noopener">lit-html</a></li>
+      <li><a href="https://github.com/expressjs/express" rel="noopener">express</a></li>
+      <li><a href="https://github.com/markdown-it/markdown-it" rel="noopener">markdown-it</a></li>
     </ol>
   </section>
 `;

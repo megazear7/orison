@@ -87,7 +87,7 @@ export default context => html`
 
 ### List Pages
 
-You can also have a single JS file produce multiple pages. This is useful for connecting to a content provider such as [Contentful](https://www.contentful.com) and producing a web page for each item from a query. In the example below we are creating a list of blog posts.
+You can also have a single JS file produce multiple pages. This is useful for connecting to a content provider such as <a href="https://www.contentful.com" rel="noopener">Contentful</a> and producing a web page for each item from a query. In the example below we are creating a list of blog posts.
 
 #### /src/pages/list.js
 ```js
