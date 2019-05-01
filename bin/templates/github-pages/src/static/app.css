@@ -9,6 +9,7 @@ html {
   --code-header-color: #a8a8a8;
   --code-background-color: #f8f8f8;
   --grey: #eee;
+  --dark-grey: #444;
   --app-section-even-color: #fff;
   --app-section-odd-color: var(--grey);
   --border-radius: 5px;
@@ -28,26 +29,28 @@ body {
 }
 
 h1 {
-  color: var(--tertiary-color);
   font-size: 4rem;
-  text-shadow: var(--text-shadow);
-  font-weight: 500;
   line-height: 1;
+  font-weight: 500;
+  color: var(--tertiary-color);
+  text-shadow: var(--text-shadow);
 }
 
 h2 {
-  color: var(--primary-color);
   font-size: 2.5rem;
-  text-shadow: var(--text-shadow);
+  line-height: 1;
   font-weight: 400;
+  color: var(--primary-color);
+  text-shadow: var(--text-shadow);
 }
 
 h3 {
-  color: var(--tertiary-color);
   font-size: 1.75rem;
-  text-shadow: var(--text-shadow);
+  line-height: 1;
   font-weight: 300;
   letter-spacing: 2px;
+  color: var(--tertiary-color);
+  text-shadow: var(--text-shadow);
 }
 
 h4 {
@@ -61,8 +64,20 @@ h4 {
 }
 
 h5 {
-  color: var(--tertiary-color);
   font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 300;
+  color: var(--tertiary-color);
+  text-shadow: var(--text-shadow);
+}
+
+h6 {
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: var(--dark-grey);
+  text-shadow: var(--text-shadow);
 }
 
 p {
@@ -106,7 +121,7 @@ header {
 }
 
 footer {
-  padding: 3rem 1rem;
+  padding: 1rem;
   background: var(--secondary-color);
 }
 
@@ -140,4 +155,18 @@ nav a.active {
 
 img {
   max-width: 100%;
+}
+
+ul.breadcrumb {
+  padding: 0;
+  list-style: none;
+}
+
+ul.breadcrumb li {
+  display: inline;
+}
+
+ul.breadcrumb li+li:before {
+  padding: 8px;
+  content: "/\00a0";
 }
