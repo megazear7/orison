@@ -10,30 +10,12 @@
 * Uses [express](https://expressjs.com/) for a server when being used as a server.
 * Uses [markdown-it](https://github.com/markdown-it/markdown-it) for markdown rendering.
 
-## TODOS
-
-1. Remove ./orison.js and update the npm scripts to use ./bin/cli.js instead
-1. Add an optional path option to the build command that only builds a certain path under /src/pages
-1. Make the public property of data files publicly available
-1. Provide a context.partial method which renders JS or MD partials, with paths relative to /src/partials
-1. PWA offline page
-1. Refactor code
-1. JSDocs
-1. Unit Testing
-1. Documentation
-
 # Development on this project
 
 ## Install
 
 ```
 npm run install
-```
-
-## Build
-
-```
-npm run build
 ```
 
 ## Develop
@@ -46,10 +28,10 @@ npm run serve
 ## Deploy
 
 ```
+# Commit your changes
 npm run build
 npm run static
 # Test the production build at localhost:3000
-git add docs
-git commit -m "Deployment"
 git push origin master
+# The Github and Netlify build integration will auto deploy the changes
 ```
