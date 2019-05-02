@@ -9,16 +9,22 @@ import {
 export default class OrisonDirectory {
   constructor({
       path,
+      rootPath,
       srcDirectory = DEFAULT_SRC_DIR,
       pagesDirectory = DEFAULT_PAGES_DIR,
       layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
       dataFileBasename = DEFAULT_DATA_BASENAME
     }) {
-    this._fullPath = path;
+    this.path = path;
+    this.rootPath = rootPath;
     this.srcDirectory = srcDirectory;
     this.pagesDirectory = pagesDirectory;
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
+  }
+
+  get _fullPath() {
+    return fsPath.join(this.rootPath, this.srcDirectory, this.pagesDirectory, this.path);
   }
 
   get dataPath() {
@@ -31,26 +37,17 @@ export default class OrisonDirectory {
 
   get isRoot() {
     if (! this._isRoot) {
-      this._isRoot = this._fullPath.endsWith(fsPath.join(this.srcDirectory, this.pagesDirectory));
+      this._isRoot = this.path === fsPath.sep;
     }
 
     return this._isRoot;
-  }
-
-  get path() {
-    if (! this._path) {
-      // TODO We need to calculate this in a better way.
-      this._path = this._fullPath.split('/' + this.pagesDirectory)[1];
-    }
-
-    return this._path;
   }
 
   get layout() {
     if (! this._layout) {
       let directory = this._fullPath;
 
-      while (! directory.endsWith(this.srcDirectory) && directory != '/') {
+      while (! directory.endsWith(this.srcDirectory) && directory.length > fsPath.sep.length) {
         let jsLayoutPath = fsPath.join(directory, this.layoutFileBasename + '.js');
         let htmlLayoutPath = fsPath.join(directory, this.layoutFileBasename + '.html');
 
@@ -79,6 +76,7 @@ export default class OrisonDirectory {
       try {
         this._data = fs.existsSync(this.dataPath) ? JSON.parse(fs.readFileSync(this.dataPath)) : { };
         if (! this._data.orison) this._data.orison = { };
+        if (! this._data.public) this._data.public = { };
       } catch {
         this._data = { orison: { } };
       }
@@ -90,7 +88,8 @@ export default class OrisonDirectory {
   get parent() {
     if (! this._parent) {
       this._parent = new OrisonDirectory({
-        path: fsPath.dirname(this._fullPath),
+        path: fsPath.dirname(this.path),
+        rootPath: this.rootPath,
         srcDirectory: this.srcDirectory,
         layoutFileBasename: this.layoutFileBasename,
         dataFileBasename: this.dataFileBasename });
@@ -105,7 +104,8 @@ export default class OrisonDirectory {
         .map(name => join(this._fullPath, name))
         .filter(source => lstatSync(source).isDirectory())
         .map(directory => new OrisonDirectory({
-          path: directory,
+          path: directory.substring(fsPath.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length),
+          rootPath: this.rootPath,
           srcDirectory: this.srcDirectory,
           layoutFileBasename: this.layoutFileBasename,
           dataFileBasename: this.dataFileBasename }))

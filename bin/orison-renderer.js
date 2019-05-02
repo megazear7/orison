@@ -4,11 +4,13 @@ import path from 'path';
 import { unsafeHTML } from '@popeindustries/lit-html-server/directives/unsafe-html.js';
 import { html, renderToString } from '@popeindustries/lit-html-server';
 import OrisonDirectory from './orison-directory.js';
+import OrisonPathMaker from './orison-path-maker.js';
 import { mdString, mdFile } from './markdown.js';
 import {
   DEFAULT_SRC_DIR,
   DEFAULT_BUILD_DIR,
   DEFAULT_PAGES_DIR,
+  DEFAULT_FRAGMENT_NAME,
   DEFAULT_DATA_BASENAME,
   DEFAULT_LAYOUT_BASENAME } from './orison-esm.js';
 
@@ -20,17 +22,20 @@ export default class OrisonRenderer {
       layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
       dataFileBasename = DEFAULT_DATA_BASENAME,
       pagesDirectory = DEFAULT_PAGES_DIR,
+      fragmentName = DEFAULT_FRAGMENT_NAME,
       buildDir = DEFAULT_BUILD_DIR,
     }) {
-    this.file = file;
+    this.pathMaker = new OrisonPathMaker(rootPath, srcDirectory, pagesDirectory);
+    this.file = this.pathMaker.create(file);
     this.rootPath = rootPath;
     this.srcDirectory = srcDirectory;
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
     this.pagesDirectory = pagesDirectory;
+    this.fragmentName = fragmentName;
     this.buildDir = buildDir;
     this.localDirectory = this.createOrisonDirectory(path.dirname(file));
-    this.rootDirectory = this.createOrisonDirectory(this.pagesPath);
+    this.rootDirectory = this.createOrisonDirectory(path.sep);
   }
 
   writeFile(file) {
@@ -49,7 +54,7 @@ export default class OrisonRenderer {
     return Promise.resolve(this.render(segment)).then(renderResult => {
       if (Array.isArray(renderResult)) {
         if (renderResult.length > 0) {
-          if (segment.includes('.fragment')) {
+          if (segment.includes('.' + this.fragmentName)) {
             return renderResult[1].html;
           } else {
             return renderResult[0].html;
@@ -57,7 +62,7 @@ export default class OrisonRenderer {
         } else {
           const page404Result = this.renderHtmlFile(path404);
           if (page404Result.length > 1) {
-            if (segment.includes('.fragment')) {
+            if (segment.includes('.' + this.fragmentName)) {
               return page404Result[1].html;
             } else {
               return page404Result[0].html;
@@ -71,19 +76,19 @@ export default class OrisonRenderer {
   }
 
   render(segment) {
-    if (this.file.endsWith('.md')) {
+    if (this.file.rel.endsWith('.md')) {
       return this.renderMdFile();
-    } else if (this.file.endsWith('.js')) {
+    } else if (this.file.rel.endsWith('.js')) {
       return this.renderJsFile(segment);
-    } else if (this.file.endsWith('.html')) {
+    } else if (this.file.rel.endsWith('.html')) {
       return this.renderHtmlFile();
-    } else if (this.file.endsWith('.json')) {
+    } else if (this.file.rel.endsWith('.json')) {
       return this.renderJsonFile();
     }
   }
 
   renderHtmlFile(filePathOverride) {
-    const filePath = filePathOverride ? filePathOverride : this.file;
+    const filePath = filePathOverride ? filePathOverride : this.file.full;
     const context = this.context();
 
     return [
@@ -128,8 +133,8 @@ export default class OrisonRenderer {
     if (process.env.NODE_ENV !== 'production') {
       this.clearSrcModuleCache();
     }
-    const fileExport = require(this.file).default;
-    const slug = segment ? segment.replace('.html', '').replace('.fragment', '') : undefined;
+    const fileExport = require(this.file.full).default;
+    const slug = segment ? segment.replace('.html', '').replace('.' + this.fragmentName, '') : undefined;
     const context = this.context();
 
     return Promise.all([fileExport(context, slug), fileExport(context, slug)]).then(fileExportResults => {
@@ -163,7 +168,7 @@ export default class OrisonRenderer {
   }
 
   renderJsonFile() {
-    const json = require(this.file).public;
+    const json = require(this.file.full).public;
 
     return [{
       path: this.buildJsonFilePath,
@@ -194,6 +199,7 @@ export default class OrisonRenderer {
   createOrisonDirectory(dirPath) {
     return new OrisonDirectory({
       path: dirPath,
+      rootPath: this.rootPath,
       srcDirectory: this.srcDirectory,
       pagesDirectory: this.pagesDirectory,
       layoutFileBasename: this.layoutFileBasename,
@@ -209,7 +215,7 @@ export default class OrisonRenderer {
   }
 
   get contextPath() {
-    return path.dirname(this.file);
+    return path.dirname(this.file.full);
   }
 
   get markdownHtml() {
@@ -217,7 +223,7 @@ export default class OrisonRenderer {
   }
 
   get markdown() {
-    return fs.readFileSync(this.file).toString();
+    return fs.readFileSync(this.file.full).toString();
   }
 
   get srcPath() {
@@ -237,7 +243,7 @@ export default class OrisonRenderer {
   }
 
   get buildFragmentPath() {
-    return path.join(this.rootPath, this.buildDir, this.replaceExtension('fragment.html'));
+    return path.join(this.rootPath, this.buildDir, this.replaceExtension(this.fragmentName + '.html'));
   }
 
   get relativeBuildFilePath() {
@@ -245,8 +251,7 @@ export default class OrisonRenderer {
   }
 
   get pageContextPath() {
-    // TODO We need to calculate this in a better way.
-    return this.file.split('/' + this.pagesDirectory)[1];
+    return this.file.rel;
   }
 
   replaceExtension(extension) {
@@ -260,12 +265,12 @@ export default class OrisonRenderer {
   }
 
   getIndexFragmentPath(fileName) {
-    return path.join(this.rootPath, this.buildDir, this.replaceFileName(fileName + '.fragment.html'));
+    return path.join(this.rootPath, this.buildDir, this.replaceFileName(fileName + '.' + this.fragmentName + '.html'));
   }
 
   replaceFileName(fileName) {
     const filePath = this.pageContextPath;
-    const directory = filePath.slice(0, filePath.lastIndexOf('/'))
+    const directory = filePath.slice(0, filePath.lastIndexOf(path.sep))
     return path.join(directory, fileName);
   }
 }

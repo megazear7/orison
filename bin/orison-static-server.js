@@ -1,5 +1,5 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
 import { DEFAULT_BUILD_DIR, DEFAULT_PORT } from './orison-esm.js';
 
 export default class {

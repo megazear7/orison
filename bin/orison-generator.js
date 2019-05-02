@@ -40,7 +40,7 @@ export default class OrisonGenerator {
   }
 
   getPageContextPath(pagePath) {
-    return pagePath.split('/' + this.pagesDirectory)[1];
+    return pagePath.split(path.sep + this.pagesDirectory)[1];
   }
 
   getSrcPath(srcPath = '') {
@@ -59,7 +59,8 @@ export default class OrisonGenerator {
     console.log(`Generating to ${this.buildDir} from ${this.srcDirectory}:`);
     fileWalker(this.getSrcPath(this.pagesDirectory),
       file => {
-        if (this.isSourcePage(file)) (new OrisonRenderer({file, rootPath: this.rootPath})).write();
+        const relFilePath = file.substring(path.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length);
+        if (this.isSourcePage(file)) (new OrisonRenderer({file: relFilePath, rootPath: this.rootPath})).write();
       },
       directory => {
         const newPath = this.getBuildPath(this.getPageContextPath(directory));
