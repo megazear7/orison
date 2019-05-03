@@ -28,7 +28,7 @@ export default context => html`
     <meta name="apple-mobile-web-app-title" content="${context.root.data.title}">
 
     <!-- Homescreen icons -->
-    <link rel="apple-touch-icon" href="icons/icon-640x640.png">
+    <link rel="apple-touch-icon" href="icons/icon-256x256.png">
     <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
 
     <!-- Tile icon for Windows 8 (144x144 + tile color) -->
