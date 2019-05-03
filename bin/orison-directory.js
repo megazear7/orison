@@ -6,6 +6,10 @@ import {
   DEFAULT_DATA_BASENAME,
   DEFAULT_LAYOUT_BASENAME } from './orison-esm.js';
 
+/**
+ * A class representing a src pages directory. Provides easy to use accessor methods
+ * for retrieving contextual information about that given location under the src pages path.
+ */
 export default class OrisonDirectory {
   constructor({
       path,
@@ -23,10 +27,16 @@ export default class OrisonDirectory {
     this.dataFileBasename = dataFileBasename;
   }
 
+  /**
+   * The full path including the file system root.
+   */
   get _fullPath() {
     return fsPath.join(this.rootPath, this.srcDirectory, this.pagesDirectory, this.path);
   }
 
+  /**
+   * The path to the Orison data json file in the current directory.
+   */
   get dataPath() {
     if (! this._dataPath) {
       this._dataPath = fsPath.join(this._fullPath, this.dataFileBasename + '.json');
@@ -35,6 +45,9 @@ export default class OrisonDirectory {
     return this._dataPath;
   }
 
+  /**
+   * Whether or not this is the root directory of the src pages.
+   */
   get isRoot() {
     if (! this._isRoot) {
       this._isRoot = this.path === fsPath.sep;
@@ -43,6 +56,10 @@ export default class OrisonDirectory {
     return this._isRoot;
   }
 
+  /**
+   * The layout to be used for pages within this directory. It will recursively
+   * search up the src pages path to find the closest layout.
+   */
   get layout() {
     if (! this._layout) {
       let directory = this._fullPath;
@@ -71,6 +88,11 @@ export default class OrisonDirectory {
     return this._layout();
   }
 
+  /**
+   * The JSON data associated to this src pages directory, coming from the data json
+   * file within this directory. The JSON object will always have a "orison" and "public"
+   * attribute.
+   */
   get data() {
     if (! this._data) {
       try {
@@ -85,6 +107,10 @@ export default class OrisonDirectory {
     return this._data;
   }
 
+  /**
+   * The OrisonDirectory object one level up the src pages path. This should not
+   * be called when this.isRoot this true.
+   */
   get parent() {
     if (! this._parent) {
       this._parent = new OrisonDirectory({
@@ -98,6 +124,11 @@ export default class OrisonDirectory {
     return this._parent;
   }
 
+  /**
+   * An array of OrisonDirectory's representing the children of the current directory.
+   * They will be ordered based upon the value of the `child.data.orison.order` property
+   * of each child directory.
+   */
   get children() {
     if (! this._children) {
       this._children = readdirSync(this._fullPath)
@@ -115,6 +146,11 @@ export default class OrisonDirectory {
     return this._children;
   }
 
+  /**
+   * An array of OrisonDirectory objects starting with this one and going up the
+   * directory hierarchy by calling the parent method until an OrisonDirectory object
+   * returns true for `isRoot`.
+   */
   get parents() {
     let parents = [ ];
     let parent = this;

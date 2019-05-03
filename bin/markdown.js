@@ -7,10 +7,18 @@ const markdown = md({
   html: true
 });
 
+/**
+ * Renders the markdown file at filePath, returning a lit-html template.
+ * @param filePath The markdown file to render.
+ */
 export function mdFile(filePath) {
   return html`${unsafeHTML(markdown.render(fs.readFileSync(filePath).toString()))}`;
 }
 
+/**
+ * Renders the markdown string, returning a lit-html template.
+ * @param filePath The markdown string to render.
+ */
 export function mdString(string) {
   return html`${unsafeHTML(markdown.render(string))}`;
 }
