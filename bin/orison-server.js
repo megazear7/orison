@@ -10,6 +10,9 @@ import {
   DEFAULT_INDEX_BASENAME,
   DEFAULT_LIST_BASENAME,
   DEFAULT_FRAGMENT_NAME,
+  DEFAULT_LAYOUT_BASENAME,
+  DEFAULT_DATA_BASENAME,
+  DEFAULT_BUILD_DIR,
   DEFAULT_404_FILENAME,
   DEFAULT_500_FILENAME,
   DEFAULT_STRIP_HTML,
@@ -23,6 +26,9 @@ export default class  {
       staticPath = path.join(DEFAULT_SRC_DIR, DEFAULT_STATIC_DIR),
       indexFileBasename = DEFAULT_INDEX_BASENAME,
       listFileBasename = DEFAULT_LIST_BASENAME,
+      layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
+      dataFileBasename = DEFAULT_DATA_BASENAME,
+      buildDir = DEFAULT_BUILD_DIR,
       fragmentName = DEFAULT_FRAGMENT_NAME,
       page404 = DEFAULT_404_FILENAME,
       page500 = DEFAULT_500_FILENAME,
@@ -34,6 +40,9 @@ export default class  {
     this.staticPath = staticPath;
     this.indexFileBasename = indexFileBasename;
     this.listFileBasename = listFileBasename;
+    this.layoutFileBasename = layoutFileBasename;
+    this.dataFileBasename = dataFileBasename;
+    this.buildDir = buildDir;
     this.fragmentName = fragmentName;
     this.page404 = page404;
     this.path404 = path.join(this.rootPath, this.srcDir, this.pagesDir, this.page404);
@@ -52,7 +61,16 @@ export default class  {
       const srcPath = this.srcPath(req.path, code => res.status(code));
       if (srcPath !== undefined) {
         const segment = path.basename(req.path);
-        const renderer = new OrisonRenderer({file: srcPath, rootPath: this.rootPath});
+        const renderer = new OrisonRenderer({
+          file: srcPath,
+          rootPath: this.rootPath,
+          srcDirectory: this.srcDir,
+          layoutFileBasename: this.layoutFileBasename,
+          dataFileBasename: this.dataFileBasename,
+          pagesDirectory: this.pagesDir,
+          fragmentName: this.fragmentName,
+          buildDir: this.buildDir
+        });
         renderer.html(segment, this.path404)
         .then(html => {
           if (html) {

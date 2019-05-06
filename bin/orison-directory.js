@@ -117,6 +117,7 @@ export default class OrisonDirectory {
         path: fsPath.dirname(this.path),
         rootPath: this.rootPath,
         srcDirectory: this.srcDirectory,
+        pagesDirectory: this.pagesDirectory,
         layoutFileBasename: this.layoutFileBasename,
         dataFileBasename: this.dataFileBasename });
     }
@@ -138,6 +139,7 @@ export default class OrisonDirectory {
           path: directory.substring(fsPath.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length),
           rootPath: this.rootPath,
           srcDirectory: this.srcDirectory,
+          pagesDirectory: this.pagesDirectory,
           layoutFileBasename: this.layoutFileBasename,
           dataFileBasename: this.dataFileBasename }))
         .sort((d1, d2) => d1.data.orison.order - d2.data.orison.order);

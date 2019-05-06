@@ -10,6 +10,7 @@ import {
   DEFAULT_DATA_BASENAME,
   DEFAULT_LAYOUT_BASENAME,
   DEFAULT_PROTECTED_FILES,
+  DEFAULT_FRAGMENT_NAME,
   DEFAULT_STATIC_DIR } from './orison-esm.js';
 
 export default class OrisonGenerator {
@@ -21,7 +22,8 @@ export default class OrisonGenerator {
       pagesDirectory = DEFAULT_PAGES_DIR,
       srcDirectory = DEFAULT_SRC_DIR,
       layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
-      dataFileBasename = DEFAULT_DATA_BASENAME
+      dataFileBasename = DEFAULT_DATA_BASENAME,
+      fragmentName = DEFAULT_FRAGMENT_NAME
     }) {
     this.buildDir = buildDir;
     this.protectedFileNames = protectedFileNames;
@@ -30,6 +32,7 @@ export default class OrisonGenerator {
     this.srcDirectory = srcDirectory;
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
+    this.fragmentName = fragmentName;
     this.rootPath = rootPath;
   }
 
@@ -60,7 +63,16 @@ export default class OrisonGenerator {
     fileWalker(this.getSrcPath(this.pagesDirectory),
       file => {
         const relFilePath = file.substring(path.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length);
-        if (this.isSourcePage(file)) (new OrisonRenderer({file: relFilePath, rootPath: this.rootPath})).write();
+        if (this.isSourcePage(file)) (new OrisonRenderer({
+          file: relFilePath,
+          rootPath: this.rootPath,
+          srcDirectory: this.srcDirectory,
+          layoutFileBasename: this.layoutFileBasename,
+          dataFileBasename: this.dataFileBasename,
+          pagesDirectory: this.pagesDirectory,
+          fragmentName: this.fragmentName,
+          buildDir: this.buildDir
+        })).write();
       },
       directory => {
         const newPath = this.getBuildPath(this.getPageContextPath(directory));
