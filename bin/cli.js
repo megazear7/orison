@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const ncp = require('ncp');
+const path = require('path');
 const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('./orison.js');
 const pjson = require('../package.json');
 const {
