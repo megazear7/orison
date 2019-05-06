@@ -16,9 +16,10 @@ html {
   --border-radius: 5px;
   --content-width: 600px;
   --text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  --text-color: rgba(0, 0, 0, 0.8);
   font-size: 18px;
   line-height: 2rem;
-  color: rgba(0, 0, 0, 0.8);
+  color: var(--text-color);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -83,6 +84,14 @@ h6 {
 
 p {
   font-size: 1rem;
+}
+
+a {
+  color: var(--tertiary-color);
+}
+
+footer a {
+  color: var(--text-color);
 }
 
 main p {
@@ -170,4 +179,8 @@ ul.breadcrumb li {
 ul.breadcrumb li+li:before {
   padding: 8px;
   content: "/\00a0";
+}
+
+.more-posts {
+  text-align: center;
 }

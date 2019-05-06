@@ -6,6 +6,8 @@
   "title": "OrisonJS",
   "libraryMessage": "OrisonJS utilizes the following JavaScript libraries:",
   "description": "Orison server and static stite generator documentation",
+  "pageSize": 10,
+  "moreText": "More posts",
   "assets": {
     "js": "/app.js",
     "css": "/app.css"
