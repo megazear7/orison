@@ -32,9 +32,9 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node --inspect=5858 ./bin/cli.js build",
+    "build": "node ./build.js",
     "serve": "node --inspect=5858 ./bin/cli.js serve",
-    "static": "node --inspect=5858 ./bin/cli.js static"
+    "static": "node ./bin/cli.js static"
   },
   "bin": {
     "orison": "./bin/cli.js"
