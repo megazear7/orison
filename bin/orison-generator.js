@@ -111,7 +111,7 @@ export default class OrisonGenerator {
   }
 
   deleteBuildFiles() {
-    fileWalker(this.getBuildPath(),
+    fileWalker(this.getBuildPath(this.generatePath),
       file => {
         if (! this.protectedFileNames.includes(path.basename(file))) {
           try {
@@ -125,7 +125,7 @@ export default class OrisonGenerator {
   }
 
   deleteBuildDirectories() {
-    fileWalker(this.getBuildPath(),
+    fileWalker(this.getBuildPath(this.generatePath),
       () => { },
       directory => {
         try {
