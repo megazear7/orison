@@ -4,6 +4,7 @@ import fileWalker from './file-walker.js';
 import { ncp } from 'ncp';
 import OrisonRenderer from './orison-renderer.js';
 import {
+  DEFAULT_GENERATE_PATH,
   DEFAULT_SRC_DIR,
   DEFAULT_BUILD_DIR,
   DEFAULT_PAGES_DIR,
@@ -16,6 +17,7 @@ import {
 export default class OrisonGenerator {
   constructor({
       rootPath,
+      generatePath = DEFAULT_GENERATE_PATH,
       buildDir = DEFAULT_BUILD_DIR,
       protectedFileNames = DEFAULT_PROTECTED_FILES,
       staticDirectory = DEFAULT_STATIC_DIR,
@@ -25,6 +27,8 @@ export default class OrisonGenerator {
       dataFileBasename = DEFAULT_DATA_BASENAME,
       fragmentName = DEFAULT_FRAGMENT_NAME
     }) {
+    this.rootPath = rootPath;
+    this.generatePath = generatePath
     this.buildDir = buildDir;
     this.protectedFileNames = protectedFileNames;
     this.staticDirectory = staticDirectory;
@@ -33,7 +37,6 @@ export default class OrisonGenerator {
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
     this.fragmentName = fragmentName;
-    this.rootPath = rootPath;
   }
 
   build() {
@@ -63,16 +66,18 @@ export default class OrisonGenerator {
     fileWalker(this.getSrcPath(this.pagesDirectory),
       file => {
         const relFilePath = file.substring(path.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length);
-        if (this.isSourcePage(file)) (new OrisonRenderer({
-          file: relFilePath,
-          rootPath: this.rootPath,
-          srcDirectory: this.srcDirectory,
-          layoutFileBasename: this.layoutFileBasename,
-          dataFileBasename: this.dataFileBasename,
-          pagesDirectory: this.pagesDirectory,
-          fragmentName: this.fragmentName,
-          buildDir: this.buildDir
-        })).write();
+        if (this.isSourcePage(file) && relFilePath.startsWith(this.generatePath)) {
+          (new OrisonRenderer({
+            file: relFilePath,
+            rootPath: this.rootPath,
+            srcDirectory: this.srcDirectory,
+            layoutFileBasename: this.layoutFileBasename,
+            dataFileBasename: this.dataFileBasename,
+            pagesDirectory: this.pagesDirectory,
+            fragmentName: this.fragmentName,
+            buildDir: this.buildDir
+          })).write();
+        }
       },
       directory => {
         const newPath = this.getBuildPath(this.getPageContextPath(directory));

@@ -5,6 +5,7 @@ const path = require('path');
 const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('./orison.js');
 const pjson = require('../package.json');
 const {
+  DEFAULT_GENERATE_PATH,
   DEFAULT_SRC_DIR,
   DEFAULT_PAGES_DIR,
   DEFAULT_STATIC_DIR,
@@ -19,6 +20,7 @@ const {
   DEFAULT_STRIP_HTML,
   DEFAULT_PORT } = require('./orison-esm.js');
 
+const generatePath = getConfig('--generatePath', DEFAULT_GENERATE_PATH);
 const srcDir = getConfig('--srcDir', DEFAULT_SRC_DIR);
 const pagesDir = getConfig('--pagesDir', DEFAULT_PAGES_DIR);
 const staticDir = getConfig('--staticDir', DEFAULT_STATIC_DIR);
@@ -39,6 +41,7 @@ if (process.argv.includes('--version') || process.argv.includes('-v')) {
 } else if (process.argv.includes('build')) {
   new OrisonGenerator({
     rootPath: process.cwd(),
+    generatePath: generatePath,
     buildDir: buildDir,
     staticDirectory: staticDir,
     pagesDirectory: pagesDir,

@@ -6,6 +6,7 @@ export { default as OrisonStaticServer } from './orison-static-server.js';
 export { mdString, mdFile } from './markdown.js';
 export { html, renderToString } from '@popeindustries/lit-html-server';
 
+export const DEFAULT_GENERATE_PATH = '/';
 export const DEFAULT_SRC_DIR = 'src';
 export const DEFAULT_BUILD_DIR = 'docs';
 export const DEFAULT_PAGES_DIR = 'pages';
