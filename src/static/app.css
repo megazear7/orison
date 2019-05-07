@@ -14,7 +14,7 @@ html {
   --app-section-even-color: #fff;
   --app-section-odd-color: var(--grey);
   --border-radius: 5px;
-  --content-width: 600px;
+  --content-width: 800px;
   --text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
   --text-color: rgba(0, 0, 0, 0.8);
   font-size: 18px;

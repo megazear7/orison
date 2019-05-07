@@ -53,6 +53,10 @@ export default class OrisonGenerator {
     return path.join(this.rootPath, this.srcDirectory, srcPath);
   }
 
+  getStaticPath(staticPath = '') {
+    return path.join(this.rootPath, this.srcDirectory, this.staticDirectory, staticPath);
+  }
+
   getPagesPath(pagesPath = '') {
     return path.join(this.getSrcPath(this.pagesDirectory), pagesPath);
   }
@@ -63,27 +67,30 @@ export default class OrisonGenerator {
 
   generatePages() {
     console.log(`Generating to ${this.buildDir} from ${this.srcDirectory}:`);
-    fileWalker(this.getSrcPath(this.pagesDirectory),
-      file => {
-        const relFilePath = file.substring(path.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length);
-        if (this.isSourcePage(file) && relFilePath.startsWith(this.generatePath)) {
-          (new OrisonRenderer({
-            file: relFilePath,
-            rootPath: this.rootPath,
-            srcDirectory: this.srcDirectory,
-            layoutFileBasename: this.layoutFileBasename,
-            dataFileBasename: this.dataFileBasename,
-            pagesDirectory: this.pagesDirectory,
-            fragmentName: this.fragmentName,
-            buildDir: this.buildDir
-          })).write();
+    const generatePath = this.getSrcPath(this.pagesDirectory);
+    if (fs.existsSync(generatePath)) {
+      fileWalker(generatePath,
+        file => {
+          const relFilePath = file.substring(path.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length);
+          if (this.isSourcePage(file) && relFilePath.startsWith(this.generatePath)) {
+            (new OrisonRenderer({
+              file: relFilePath,
+              rootPath: this.rootPath,
+              srcDirectory: this.srcDirectory,
+              layoutFileBasename: this.layoutFileBasename,
+              dataFileBasename: this.dataFileBasename,
+              pagesDirectory: this.pagesDirectory,
+              fragmentName: this.fragmentName,
+              buildDir: this.buildDir
+            })).write();
+          }
+        },
+        directory => {
+          const newPath = this.getBuildPath(this.getPageContextPath(directory));
+          if (!fs.existsSync(newPath)) fs.mkdirSync(newPath);
         }
-      },
-      directory => {
-        const newPath = this.getBuildPath(this.getPageContextPath(directory));
-        if (!fs.existsSync(newPath)) fs.mkdirSync(newPath);
-      }
-    );
+      );
+    }
   }
 
   isSourcePage(file) {
@@ -92,9 +99,12 @@ export default class OrisonGenerator {
   }
 
   copyStaticFiles() {
-    ncp(this.getSrcPath(this.staticDirectory), this.getBuildPath(), err => {
-      if (err) throw err;
-    });
+    const staticPath = this.getStaticPath(this.generatePath);
+    if (fs.existsSync(staticPath)) {
+      ncp(staticPath, this.getBuildPath(this.generatePath), err => {
+        if (err) throw err;
+      });
+    }
   }
 
   prepBuildDir() {
@@ -111,29 +121,35 @@ export default class OrisonGenerator {
   }
 
   deleteBuildFiles() {
-    fileWalker(this.getBuildPath(this.generatePath),
-      file => {
-        if (! this.protectedFileNames.includes(path.basename(file))) {
-          try {
-            fs.unlinkSync(file);
-          } catch {
-            console.debug('Could not delete build file: ' + file);
+    const deletePath = this.getBuildPath(this.generatePath);
+    if (fs.existsSync(deletePath)) {
+      fileWalker(deletePath,
+        file => {
+          if (! this.protectedFileNames.includes(path.basename(file))) {
+            try {
+              fs.unlinkSync(file);
+            } catch {
+              console.debug('Could not delete build file: ' + file);
+            }
           }
         }
-      }
-    );
+      );
+    }
   }
 
   deleteBuildDirectories() {
-    fileWalker(this.getBuildPath(this.generatePath),
-      () => { },
-      directory => {
-        try {
-          fs.unlinkSync(directory);
-        } catch {
-          console.debug('Could not delete build directory: ' + directory);
+    const deletePath = this.getBuildPath(this.generatePath);
+    if (fs.existsSync(deletePath)) {
+      fileWalker(deletePath,
+        () => { },
+        directory => {
+          try {
+            fs.unlinkSync(directory);
+          } catch {
+            console.debug('Could not delete build directory: ' + directory);
+          }
         }
-      }
-    );
+      );
+    }
   }
 }
