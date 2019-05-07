@@ -43,11 +43,19 @@ export default class OrisonRenderer {
     file.html.then(html => fs.writeFile(file.path, html, err => err && console.log(err)));
   }
 
-  write() {
-    return Promise.resolve(this.render()).then(renderResult =>
-      Array.isArray(renderResult)
-        ? renderResult.forEach(file => this.writeFile(file))
-        : this.writeFile(renderResult));
+  write(slugs) {
+    if (slugs && slugs.length > 0) {
+      return slugs.forEach(slug =>
+        Promise.resolve(this.render(slug)).then(renderResult =>
+          Array.isArray(renderResult)
+            ? renderResult.forEach(file => this.writeFile(file))
+            : this.writeFile(renderResult)));
+    } else {
+      return Promise.resolve(this.render()).then(renderResult =>
+        Array.isArray(renderResult)
+          ? renderResult.forEach(file => this.writeFile(file))
+          : this.writeFile(renderResult));
+    }
   }
 
   html(segment, path404) {

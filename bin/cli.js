@@ -6,6 +6,7 @@ const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('./orison.
 const pjson = require('../package.json');
 const {
   DEFAULT_GENERATE_PATH,
+  DEFAULT_GENERATE_SLUGS,
   DEFAULT_SRC_DIR,
   DEFAULT_PAGES_DIR,
   DEFAULT_STATIC_DIR,
@@ -21,6 +22,7 @@ const {
   DEFAULT_PORT } = require('./orison-esm.js');
 
 const generatePath = getConfig('--generatePath', DEFAULT_GENERATE_PATH);
+const generateSlugs = getArrayConfig('--generateSlugs', DEFAULT_GENERATE_SLUGS);
 const srcDir = getConfig('--srcDir', DEFAULT_SRC_DIR);
 const pagesDir = getConfig('--pagesDir', DEFAULT_PAGES_DIR);
 const staticDir = getConfig('--staticDir', DEFAULT_STATIC_DIR);
@@ -108,4 +110,9 @@ if (process.argv.includes('--version') || process.argv.includes('-v')) {
 function getConfig(name, defaultValue) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : defaultValue;
+}
+
+function getArrayConfig(name, defaultValue) {
+  const stringVal = getConfig(name, '');
+  return stringVal.split(',');
 }

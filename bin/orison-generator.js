@@ -5,6 +5,7 @@ import { ncp } from 'ncp';
 import OrisonRenderer from './orison-renderer.js';
 import {
   DEFAULT_GENERATE_PATH,
+  DEFAULT_GENERATE_SLUGS,
   DEFAULT_SRC_DIR,
   DEFAULT_BUILD_DIR,
   DEFAULT_PAGES_DIR,
@@ -18,6 +19,7 @@ export default class OrisonGenerator {
   constructor({
       rootPath,
       generatePath = DEFAULT_GENERATE_PATH,
+      generateSlugs = DEFAULT_GENERATE_SLUGS,
       buildDir = DEFAULT_BUILD_DIR,
       protectedFileNames = DEFAULT_PROTECTED_FILES,
       staticDirectory = DEFAULT_STATIC_DIR,
@@ -28,7 +30,8 @@ export default class OrisonGenerator {
       fragmentName = DEFAULT_FRAGMENT_NAME
     }) {
     this.rootPath = rootPath;
-    this.generatePath = generatePath
+    this.generatePath = generatePath;
+    this.generateSlugs = generateSlugs;
     this.buildDir = buildDir;
     this.protectedFileNames = protectedFileNames;
     this.staticDirectory = staticDirectory;
@@ -82,7 +85,7 @@ export default class OrisonGenerator {
               pagesDirectory: this.pagesDirectory,
               fragmentName: this.fragmentName,
               buildDir: this.buildDir
-            })).write();
+            })).write(this.generateSlugs);
           }
         },
         directory => {
