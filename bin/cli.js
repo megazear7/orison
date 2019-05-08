@@ -44,6 +44,7 @@ if (process.argv.includes('--version') || process.argv.includes('-v')) {
   new OrisonGenerator({
     rootPath: process.cwd(),
     generatePath: generatePath,
+    generateSlugs: generateSlugs,
     buildDir: buildDir,
     staticDirectory: staticDir,
     pagesDirectory: pagesDir,
@@ -114,5 +115,5 @@ function getConfig(name, defaultValue) {
 
 function getArrayConfig(name, defaultValue) {
   const stringVal = getConfig(name, '');
-  return stringVal.split(',');
+  return stringVal.split(',').filter(val => !! val);
 }

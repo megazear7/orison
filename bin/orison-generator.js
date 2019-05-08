@@ -130,7 +130,9 @@ export default class OrisonGenerator {
         file => {
           if (! this.protectedFileNames.includes(path.basename(file))) {
             try {
-              fs.unlinkSync(file);
+              if (this.generateSlugs.length === 0 || this.generateSlugs.includes(path.basename(file))) {
+                fs.unlinkSync(file);
+              }
             } catch {
               console.debug('Could not delete build file: ' + file);
             }
