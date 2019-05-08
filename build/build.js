@@ -1,6 +1,7 @@
 const path = require('path');
 const { OrisonGenerator } = require('../bin/orison.js');
 const BuildPayload = require('./build-payload.js');
+require('dotenv').config();
 
 console.log('INCOMING_HOOK_BODY', process.env.INCOMING_HOOK_BODY);
 
@@ -19,7 +20,7 @@ if (payload.isBlogPost && payload.hasSlug) {
   new OrisonGenerator({
     rootPath: rootPath,
     generatePath: '/blog',
-    excludedPaths: '/blog/article'
+    excludedPaths: [ '/blog/article' ]
   }).build();
 } else {
   // If we don't know the build scenario, rebuild the whole site.

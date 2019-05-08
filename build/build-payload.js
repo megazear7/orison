@@ -1,26 +1,25 @@
 module.exports = class BuildPayload {
   constructor(payload, language = 'en-US') {
     this.payload = payload;
+    this.jsonPayload = JSON.parse(payload)
     this.language = language;
   }
 
   get isBlogPost() {
-    return
-    this.payload &&
-    this.payload.sys &&
-    this.payload.sys.contentType &&
-    this.payload.sys.contentType.sys &&
-    this.payload.sys.contentType.sys.id === 'blogPost';
+    return this.jsonPayload &&
+    this.jsonPayload.sys &&
+    this.jsonPayload.sys.contentType &&
+    this.jsonPayload.sys.contentType.sys &&
+    this.jsonPayload.sys.contentType.sys.id === 'blogPost';
   }
 
   get hasSlug() {
-    return
-    this.payload &&
-    this.payload.fields &&
-    this.payload.fields.slug[language];
+    return this.jsonPayload &&
+    this.jsonPayload.fields &&
+    this.jsonPayload.fields.slug[this.language];
   }
 
   get slug() {
-    return this.hasSlug ? this.payload.fields.slug[language] : undefined;
+    return this.hasSlug ? this.jsonPayload.fields.slug[this.language] : undefined;
   }
 }
