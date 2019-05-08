@@ -32,7 +32,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node ./build.js",
+    "build": "node ./build/build.js",
     "serve": "node --inspect=5858 ./bin/cli.js serve",
     "static": "node ./bin/cli.js static"
   },
