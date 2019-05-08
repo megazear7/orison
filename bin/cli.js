@@ -7,6 +7,7 @@ const pjson = require('../package.json');
 const {
   DEFAULT_GENERATE_PATH,
   DEFAULT_GENERATE_SLUGS,
+  DEFAULT_EXCLUDED_PATHS,
   DEFAULT_SRC_DIR,
   DEFAULT_PAGES_DIR,
   DEFAULT_STATIC_DIR,
@@ -23,6 +24,7 @@ const {
 
 const generatePath = getConfig('--generatePath', DEFAULT_GENERATE_PATH);
 const generateSlugs = getArrayConfig('--generateSlugs', DEFAULT_GENERATE_SLUGS);
+const excludedPaths = getArrayConfig('--excludedPaths', DEFAULT_EXCLUDED_PATHS);
 const srcDir = getConfig('--srcDir', DEFAULT_SRC_DIR);
 const pagesDir = getConfig('--pagesDir', DEFAULT_PAGES_DIR);
 const staticDir = getConfig('--staticDir', DEFAULT_STATIC_DIR);
@@ -45,6 +47,7 @@ if (process.argv.includes('--version') || process.argv.includes('-v')) {
     rootPath: process.cwd(),
     generatePath: generatePath,
     generateSlugs: generateSlugs,
+    excludedPaths: excludedPaths,
     buildDir: buildDir,
     staticDirectory: staticDir,
     pagesDirectory: pagesDir,

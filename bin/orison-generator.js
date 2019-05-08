@@ -6,6 +6,7 @@ import OrisonRenderer from './orison-renderer.js';
 import {
   DEFAULT_GENERATE_PATH,
   DEFAULT_GENERATE_SLUGS,
+  DEFAULT_EXCLUDED_PATHS,
   DEFAULT_SRC_DIR,
   DEFAULT_BUILD_DIR,
   DEFAULT_PAGES_DIR,
@@ -20,6 +21,7 @@ export default class OrisonGenerator {
       rootPath,
       generatePath = DEFAULT_GENERATE_PATH,
       generateSlugs = DEFAULT_GENERATE_SLUGS,
+      excludedPaths = DEFAULT_EXCLUDED_PATHS,
       buildDir = DEFAULT_BUILD_DIR,
       protectedFileNames = DEFAULT_PROTECTED_FILES,
       staticDirectory = DEFAULT_STATIC_DIR,
@@ -32,6 +34,7 @@ export default class OrisonGenerator {
     this.rootPath = rootPath;
     this.generatePath = generatePath;
     this.generateSlugs = generateSlugs;
+    this.excludedPaths = excludedPaths;
     this.buildDir = buildDir;
     this.protectedFileNames = protectedFileNames;
     this.staticDirectory = staticDirectory;
@@ -75,7 +78,7 @@ export default class OrisonGenerator {
       fileWalker(generatePath,
         file => {
           const relFilePath = file.substring(path.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length);
-          if (this.isSourcePage(file) && relFilePath.startsWith(this.generatePath)) {
+          if (this.isSourcePage(file) && relFilePath.startsWith(this.generatePath) && ! this.excludedSrcPagePaths.some(pagePath => file.startsWith(pagePath))) {
             (new OrisonRenderer({
               file: relFilePath,
               rootPath: this.rootPath,
@@ -123,16 +126,28 @@ export default class OrisonGenerator {
     this.deleteBuildDirectories();
   }
 
+  validSlug(file) {
+    return this.generateSlugs.length === 0 || this.generateSlugs.includes(path.basename(file));
+  }
+
+  get excludedSrcPagePaths() {
+    return this.excludedPaths.map(excludedPath => path.join(this.rootPath, this.srcDirectory, this.pagesDirectory, excludedPath));
+  }
+
+  get excludedBuildPaths() {
+    return this.excludedPaths.map(excludedPath => path.join(this.rootPath, this.buildDir, excludedPath));
+  }
+
   deleteBuildFiles() {
     const deletePath = this.getBuildPath(this.generatePath);
     if (fs.existsSync(deletePath)) {
       fileWalker(deletePath,
         file => {
-          if (! this.protectedFileNames.includes(path.basename(file))) {
+          if (! this.protectedFileNames.includes(path.basename(file)) &&
+              ! this.excludedBuildPaths.some(buildPath => file.startsWith(buildPath)) &&
+              this.validSlug(file)) {
             try {
-              if (this.generateSlugs.length === 0 || this.generateSlugs.includes(path.basename(file))) {
-                fs.unlinkSync(file);
-              }
+              fs.unlinkSync(file);
             } catch {
               console.debug('Could not delete build file: ' + file);
             }
