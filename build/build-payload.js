@@ -1,7 +1,11 @@
 module.exports = class BuildPayload {
   constructor(payload, language = 'en-US') {
     this.payload = payload;
-    this.jsonPayload = JSON.parse(payload)
+    try {
+      this.jsonPayload = JSON.parse(payload);
+    } catch {
+      this.jsonPayload = {};
+    }
     this.language = language;
   }
 
