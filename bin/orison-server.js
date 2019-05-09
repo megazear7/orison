@@ -71,7 +71,7 @@ export default class  {
           fragmentName: this.fragmentName,
           buildDir: this.buildDir
         });
-        renderer.html(segment, this.path404)
+        renderer.html(segment, this.page404)
         .then(html => {
           if (html) {
             res.send(html)
@@ -181,7 +181,7 @@ export default class  {
 
   src404Path() {
     if (fs.existsSync(this.path404)) {
-      return this.path404;
+      return this.page404;
     }
 
     return undefined;
