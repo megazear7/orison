@@ -1,6 +1,6 @@
 OrisonGenerator has these configuration options:
 
-generatePath
+generatePath = '/'
 generateSlugs
 excludedPaths
 buildDir
