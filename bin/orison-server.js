@@ -58,45 +58,69 @@ export default class  {
 
     this.app.get('*', (req, res) => {
       console.log(req.path);
-      const srcPath = this.srcPath(req.path, code => res.status(code));
-      if (srcPath !== undefined) {
-        const segment = path.basename(req.path);
-        const renderer = new OrisonRenderer({
-          file: srcPath,
-          rootPath: this.rootPath,
-          srcDirectory: this.srcDir,
-          layoutFileBasename: this.layoutFileBasename,
-          dataFileBasename: this.dataFileBasename,
-          pagesDirectory: this.pagesDir,
-          fragmentName: this.fragmentName,
-          buildDir: this.buildDir
-        });
-        renderer.html(segment, this.page404)
-        .then(html => {
-          if (html) {
-            res.send(html)
-          } else {
-            res.send('404 - create a 404 page at ' + path.join(this.srcDir, this.pagesDir, this.page404));
-          }
-        })
-        .catch(e => {
-          console.error(e);
-          res.status(500);
-          const page500 = path.join(this.rootPath, this.srcDir, this.pagesDir, this.page500);
-
-          if (fs.existsSync(page500)) {
-            const html500 = fs.readFileSync(page500).toString();
-            res.send(html500);
-          } else {
-            res.send('500 - create a 500 page at ' + path.join(this.rootPath, this.srcDir, this.pagesDir, this.page500));
-          }
-        });
-      } else {
-        res.send('404 - create a 404 page at ' + path.join(this.rootPath, this.srcDir, this.pagesDir, this.page404));
+      const segment = path.basename(req.path);
+      try {
+        const srcPath = this.srcPath(req.path, code => res.status(code));
+        if (srcPath !== undefined) {
+          const renderer = new OrisonRenderer({
+            file: srcPath,
+            rootPath: this.rootPath,
+            srcDirectory: this.srcDir,
+            layoutFileBasename: this.layoutFileBasename,
+            dataFileBasename: this.dataFileBasename,
+            pagesDirectory: this.pagesDir,
+            fragmentName: this.fragmentName,
+            buildDir: this.buildDir
+          });
+          renderer.html(segment, this.page404)
+          .then(html => {
+            if (html) {
+              res.send(html)
+            } else {
+              res.send('404 - create a 404 page at ' + path.join(this.srcDir, this.pagesDir, this.page404));
+            }
+          })
+          .catch(e => {
+            console.error(e);
+            this.respondWith500(res, segment);
+          });
+        } else {
+          res.send('404 - create a 404 page at ' + path.join(this.rootPath, this.srcDir, this.pagesDir, this.page404));
+        }
+      } catch (e) {
+        console.error(e);
+        this.respondWith500(res, segment);
       }
     });
 
     this.app.listen(this.port, () => console.log(`Example app listening on port ${this.port}!`));
+  }
+
+  respondWith500(res, segment) {
+    res.status(500);
+    const path500 = path.join(this.rootPath, this.srcDir, this.pagesDir, this.page500);
+
+    if (fs.existsSync(path500)) {
+      const renderer = new OrisonRenderer({
+        file: this.page500,
+        rootPath: this.rootPath,
+        srcDirectory: this.srcDir,
+        layoutFileBasename: this.layoutFileBasename,
+        dataFileBasename: this.dataFileBasename,
+        pagesDirectory: this.pagesDir,
+        fragmentName: this.fragmentName,
+        buildDir: this.buildDir
+      })
+      .html(segment)
+      .then(html => res.send(html))
+      .catch(e => {
+        console.log('Error while generating 500 error page', e);
+        const html500 = fs.readFileSync(path500).toString();
+        res.send(html500);
+      });
+    } else {
+      res.send('500 - create a 500 page at ' + path.join(this.rootPath, this.srcDir, this.pagesDir, this.page500));
+    }
   }
 
   srcPath(requestPathParam, setStatus) {

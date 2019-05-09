@@ -145,7 +145,8 @@ export default class OrisonRenderer {
     const slug = segment ? segment.replace('.html', '').replace('.' + this.fragmentName, '') : undefined;
     const context = this.context();
 
-    return Promise.all([fileExport(context, slug), fileExport(context, slug)]).then(fileExportResults => {
+    return Promise.all([Promise.resolve(fileExport(context, slug)), Promise.resolve(fileExport(context, slug))])
+    .then(fileExportResults => {
       const exportCopy1 = fileExportResults[0];
       const exportCopy2 = fileExportResults[1];
 
@@ -166,7 +167,6 @@ export default class OrisonRenderer {
           path: this.buildFilePath,
           html: Promise.all([this.localDirectory.layout, Promise.resolve(exportCopy1)])
                        .then(values => new LayoutRenderer(values, this.pageContextPath, undefined, context).render())
-                       .catch(e => console.error(e))
         }, {
           path: this.buildFragmentPath,
           html: Promise.resolve(exportCopy2).then(page => renderToString(page))
