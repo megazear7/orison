@@ -196,6 +196,7 @@ export default class OrisonRenderer {
       path: this.localDirectory.path,
       data: this.localDirectory.data,
       children: this.localDirectory.children,
+      child: this.localDirectory.child,
       parent: this.localDirectory.parent,
       parents: this.localDirectory.parents,
       root: this.rootDirectory,

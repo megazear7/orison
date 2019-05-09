@@ -83,28 +83,28 @@ if (process.argv.includes('--version') || process.argv.includes('-v')) {
   }).start();
 
 } else if (process.argv.length === 4 && process.argv.includes('init')) {
-  ncp(path.join(__dirname, 'templates', 'plain'), process.argv[3], err => {
+  ncp(path.join(__dirname, '../templates', 'plain'), process.argv[3], err => {
     if (err) {
       return console.error(err);
     }
   });
 
 } else if (process.argv.length === 5 && process.argv.includes('init') && process.argv.includes('--github-pages')) {
-  ncp(path.join(__dirname, 'templates', 'github-pages'), process.argv[4], err => {
+  ncp(path.join(__dirname, '../templates', 'github-pages'), process.argv[4], err => {
     if (err) {
       return console.error(err);
     }
   });
 
 } else if (process.argv.length === 5 && process.argv.includes('init') && process.argv.includes('--firebase')) {
-  ncp(path.join(__dirname, 'templates', 'firebase'), process.argv[4], err => {
+  ncp(path.join(__dirname, '../templates', 'firebase'), process.argv[4], err => {
     if (err) {
       return console.error(err);
     }
   });
 
 } else if (process.argv.length === 5 && process.argv.includes('init') && process.argv.includes('--netlify')) {
-  ncp(path.join(__dirname, 'templates', 'netlify'), process.argv[4], err => {
+  ncp(path.join(__dirname, '../templates', 'netlify'), process.argv[4], err => {
     if (err) {
       return console.error(err);
     }

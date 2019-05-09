@@ -1,5 +1,4 @@
 import { html } from '@popeindustries/lit-html-server';
-import nav from '../partials/nav.js';
 
 export default context => html`
   <section>${context.mdFile('./src/partials/documentation/setup.md')}</section>

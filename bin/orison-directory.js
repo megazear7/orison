@@ -126,6 +126,19 @@ export default class OrisonDirectory {
   }
 
   /**
+   * The OrisonDirectory object of the given child directory.
+   */
+  child(name) {
+    return new OrisonDirectory({
+        path: fsPath.join(this.path, name),
+        rootPath: this.rootPath,
+        srcDirectory: this.srcDirectory,
+        pagesDirectory: this.pagesDirectory,
+        layoutFileBasename: this.layoutFileBasename,
+        dataFileBasename: this.dataFileBasename });
+  }
+
+  /**
    * An array of OrisonDirectory's representing the children of the current directory.
    * They will be ordered based upon the value of the `child.data.orison.order` property
    * of each child directory.
