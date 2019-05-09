@@ -1,7 +1,7 @@
 OrisonGenerator has these configuration options:
 
 generatePath = '/'
-generateSlugs
+generateSlugs = [ ]
 excludedPaths
 buildDir
 protectedFileNames
