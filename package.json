@@ -34,7 +34,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node ./build/build.js",
     "serve": "node --inspect=5858 ./bin/cli.js serve",
-    "static": "node ./bin/cli.js static"
+    "static": "node ./bin/cli.js static",
+    "jsdocs": "doxdox 'bin/**/*.js' --layout markdown --output src/partials/documentation/jsdocs.md"
   },
   "bin": {
     "orison": "./bin/cli.js"
