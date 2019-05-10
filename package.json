@@ -29,13 +29,15 @@
     "markdown-it": "^8.4.2",
     "ncp": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "doxdox": "^3.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node ./build/build.js",
     "serve": "node --inspect=5858 ./bin/cli.js serve",
     "static": "node ./bin/cli.js static",
-    "jsdocs": "doxdox 'bin/**/*.js' --layout markdown --output src/partials/documentation/jsdocs.md"
+    "jsdocs": "doxdox 'bin/orison-directory.js' 'bin/orison-generator.js' 'bin/orison-renderer.js' 'bin/orison-server' 'bin/orison-static-server' --layout bin/documentation-template.hbs --output src/partials/documentation/jsdocs.md"
   },
   "bin": {
     "orison": "./bin/cli.js"

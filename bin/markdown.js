@@ -9,7 +9,7 @@ const markdown = md({
 
 /**
  * Renders the markdown file at filePath, returning a lit-html template.
- * @param filePath The markdown file to render.
+ * @param {String} filePath The markdown file to render.
  */
 export function mdFile(filePath) {
   return html`${unsafeHTML(markdown.render(fs.readFileSync(filePath).toString()))}`;
@@ -17,7 +17,7 @@ export function mdFile(filePath) {
 
 /**
  * Renders the markdown string, returning a lit-html template.
- * @param filePath The markdown string to render.
+ * @param {String} filePath The markdown string to render.
  */
 export function mdString(string) {
   return html`${unsafeHTML(markdown.render(string))}`;

@@ -32,8 +32,7 @@ npm run jsdocs
 ```
 
 This will update a partial at `/src/partials/documentation/jsdocs.md`. This will then need
-deployed by committing the change to master as any other `/src` change would. This
-required that the `doxdox` npm module be installed globally with `npm i -g doxdox`.
+deployed by committing the change to master as any other `/src` change would.
 
 ## Deploy
 

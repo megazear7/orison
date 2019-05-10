@@ -14,6 +14,9 @@ import {
   DEFAULT_DATA_BASENAME,
   DEFAULT_LAYOUT_BASENAME } from './orison-esm.js';
 
+/**
+ * A class that renders a given Orison source file based upon the provided configurations.
+ */
 export default class OrisonRenderer {
   constructor({
       file,

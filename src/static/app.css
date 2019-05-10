@@ -71,6 +71,7 @@ h5 {
   font-weight: 300;
   color: var(--tertiary-color);
   text-shadow: var(--text-shadow);
+  margin: 1.5em 0 0 0;
 }
 
 h6 {
@@ -80,6 +81,7 @@ h6 {
   letter-spacing: 2px;
   color: var(--dark-grey);
   text-shadow: var(--text-shadow);
+  margin: 1em 0 0 0;
 }
 
 p {
@@ -183,4 +185,17 @@ ul.breadcrumb li+li:before {
 
 .more-posts {
   text-align: center;
+}
+
+.jsdocs table {
+  width: 100%;
+}
+
+.jsdocs th {
+  text-align: left;
+}
+
+.jsdocs tr td {
+  padding: 5px 1rem 5px 0;
+  vertical-align: top;
 }

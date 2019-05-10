@@ -11,6 +11,10 @@ import {
  * for retrieving contextual information about that given location under the src pages path.
  */
 export default class OrisonDirectory {
+  /**
+   * @type {OrisonDirectory}
+   * @returns A new OrisonDirectory with the provided configurations.
+   */
   constructor({
       path,
       rootPath,
@@ -27,15 +31,15 @@ export default class OrisonDirectory {
     this.dataFileBasename = dataFileBasename;
   }
 
-  /**
-   * The full path including the file system root.
+  /* PRIVATE METHOD
+   * @returns {string} The full path including the file system root.
    */
   get _fullPath() {
     return fsPath.join(this.rootPath, this.srcDirectory, this.pagesDirectory, this.path);
   }
 
   /**
-   * The path to the Orison data json file in the current directory.
+   * @returns {string} The path to the Orison data json file in the current directory.
    */
   get dataPath() {
     if (! this._dataPath) {
@@ -46,7 +50,7 @@ export default class OrisonDirectory {
   }
 
   /**
-   * Whether or not this is the root directory of the src pages.
+   * @returns {boolean} Whether or not this is the root directory of the src pages.
    */
   get isRoot() {
     if (! this._isRoot) {
@@ -57,7 +61,7 @@ export default class OrisonDirectory {
   }
 
   /**
-   * The layout to be used for pages within this directory. It will recursively
+   * @returns {function} The layout to be used for pages within this directory. It will recursively
    * search up the src pages path to find the closest layout.
    */
   get layout() {
@@ -89,7 +93,7 @@ export default class OrisonDirectory {
   }
 
   /**
-   * The JSON data associated to this src pages directory, coming from the data json
+   * @returns {object} The JSON data associated to this src pages directory, coming from the data json
    * file within this directory. The JSON object will always have a "orison" and "public"
    * attribute.
    */
@@ -108,7 +112,7 @@ export default class OrisonDirectory {
   }
 
   /**
-   * The OrisonDirectory object one level up the src pages path. This should not
+   * @returns {OrisonDirectory} The OrisonDirectory object one level up the src pages path. This should not
    * be called when this.isRoot this true.
    */
   get parent() {
@@ -126,7 +130,7 @@ export default class OrisonDirectory {
   }
 
   /**
-   * The OrisonDirectory object of the given child directory.
+   * @returns {OrisonDirectory} The OrisonDirectory object of the given child directory.
    */
   child(name) {
     return new OrisonDirectory({
@@ -139,7 +143,7 @@ export default class OrisonDirectory {
   }
 
   /**
-   * An array of OrisonDirectory's representing the children of the current directory.
+   * @returns {Array} An array of OrisonDirectory's representing the children of the current directory.
    * They will be ordered based upon the value of the `child.data.orison.order` property
    * of each child directory.
    */
@@ -162,7 +166,7 @@ export default class OrisonDirectory {
   }
 
   /**
-   * An array of OrisonDirectory objects starting with this one and going up the
+   * @returns {Array} An array of OrisonDirectory objects starting with this one and going up the
    * directory hierarchy by calling the parent method until an OrisonDirectory object
    * returns true for `isRoot`.
    */

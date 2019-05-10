@@ -1,0 +1,76 @@
+<section>
+
+## {{title}} {{#if pkg.version}}*{{pkg.version}}*{{/if}}
+
+</section>
+
+{{#each files}}
+
+<section class="jsdocs">
+
+## {{name}}
+
+{{#each methods}}
+
+##### {{name}}({{params}}) {{#if isPrivate}} *private method*{{/if}}
+
+{{{description}}}
+
+{{{body}}}
+
+{{#if tags.param}}
+
+###### Parameters
+
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+{{#each tags.param}}
+| {{name}} | {{#each types}}`{{{.}}}` {{/each}} | {{{description}}} | {{#if isOptional}}*Optional*{{else}}&nbsp;{{/if}} |
+{{/each}}
+
+{{/if}}
+
+{{#if tags.property}}
+
+###### Properties
+
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+{{#each tags.param}}
+| {{name}} | {{#each types}}`{{{.}}}` {{/each}} | {{{description}}} | {{#if isOptional}}*Optional*{{else}}&nbsp;{{/if}} |
+{{/each}}
+
+{{/if}}
+
+{{#if tags.example}}
+
+###### Examples
+
+{{#each tags.example}}
+```javascript
+{{{.}}}
+```
+{{/each}}
+
+{{/if}}
+
+###### Returns
+
+{{#if tags.return}}
+
+{{#each tags.return}}
+{{#each types}}`{{.}}` {{/each}} {{{description}}}
+
+{{/each}}
+
+{{else}}
+
+`Void`
+
+{{/if}}
+
+{{/each}}
+
+</section>
+
+{{/each}}
