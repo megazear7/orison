@@ -33,7 +33,10 @@ function replacePage(fragmentHtml, path) {
       link.classList.add('active');
     }
   });
-  document.querySelector('nav').scrollIntoView({behavior: 'smooth'});
+  const nav = document.querySelector('nav');
+  if (nav.offsetTop < window.pageYOffset) {
+    nav.scrollIntoView({behavior: 'smooth'});
+  }
   document.querySelectorAll('pre code').forEach((block) => {
     hljs.highlightBlock(block);
   });
