@@ -65,6 +65,22 @@ h4 {
   font-weight: 300;
 }
 
+h4::after {
+  display: block;
+  content: "Copy";
+  float: right;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+h4.copied::after {
+  content: "Copied!";
+}
+
+h4:after:hover {
+  color: red;
+}
+
 h5 {
   font-size: 1.5rem;
   line-height: 1;

@@ -37,9 +37,21 @@ function replacePage(fragmentHtml, path) {
   if (nav.offsetTop < window.pageYOffset) {
     nav.scrollIntoView({behavior: 'smooth'});
   }
+  addCodeCopyListeners();
   document.querySelectorAll('pre code').forEach((block) => {
     hljs.highlightBlock(block);
   });
+}
+
+function addCodeCopyListeners() {
+  document.querySelectorAll('h4').forEach(h4 =>
+    h4.addEventListener('click', () =>
+      navigator.clipboard
+      .writeText(h4.nextElementSibling.textContent)
+      .then(() => {
+        h4.classList.add('copied');
+        setTimeout(() => h4.classList.remove('copied'), 3000);
+      }, () => alert('Failed to copy text'))));
 }
 
 window.addEventListener('popstate', event => {
@@ -49,6 +61,8 @@ window.addEventListener('popstate', event => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  addCodeCopyListeners();
+
   document.body.addEventListener('click', event => {
     var tag = event.target;
 
