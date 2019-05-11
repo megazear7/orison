@@ -10,7 +10,7 @@
 ## bin/orison-directory.js
 
 
-##### new OrisonDirectory() 
+##### new OrisonDirectory(config) 
 
 A class representing a src pages directory. Provides easy to use accessor methods
 for retrieving contextual information about that given location under the src pages path.
@@ -18,20 +18,17 @@ for retrieving contextual information about that given location under the src pa
 
 
 
+###### Parameters
 
-
-###### Returns
-
-
-`Void`
-
-
-
-##### OrisonDirectory.constructor() 
-
-
-
-
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| config | `object`  | Required. An object with configurations on how the source directory should be interpretted. | &nbsp; |
+| config.path | `string`  | Required. The path to the directory that this OrisonDirectory will represent. Should be relative to the pages directory. | &nbsp; |
+| config.rootPath | `string`  | Required. The absolute system level path to the root of the project. | &nbsp; |
+| config.srcDirectory | `string`  | Optional. The path to the source directory relative to the root directory. | &nbsp; |
+| config.pagesDirectory | `string`  | Optional. The path to the pages directory relative to the source directory. | &nbsp; |
+| config.layoutFileBasename | `string`  | Optional. The base name of the files to interpret as Orison layouts. These files should return a method which accepts a context object and returns a `TemplateResult`. | &nbsp; |
+| config.dataFileBasename | `string`  | Optional. The base name of the files to interpret as data files. These should be json. | &nbsp; |
 
 
 
@@ -39,7 +36,7 @@ for retrieving contextual information about that given location under the src pa
 ###### Returns
 
 
- A new OrisonDirectory with the provided configurations.
+`OrisonDirectory`  A new OrisonDirectory with the provided configurations.
 
 
 

@@ -5,12 +5,16 @@ import { DEFAULTS } from './orison-esm.js';
 /**
  * A class representing a src pages directory. Provides easy to use accessor methods
  * for retrieving contextual information about that given location under the src pages path.
+ * @param {object} config Required. An object with configurations on how the source directory should be interpretted.
+ * @param {string} config.path Required. The path to the directory that this OrisonDirectory will represent. Should be relative to the pages directory.
+ * @param {string} config.rootPath Required. The absolute system level path to the root of the project.
+ * @param {string} config.srcDirectory Optional. The path to the source directory relative to the root directory.
+ * @param {string} config.pagesDirectory Optional. The path to the pages directory relative to the source directory.
+ * @param {string} config.layoutFileBasename Optional. The base name of the files to interpret as Orison layouts. These files should return a method which accepts a context object and returns a `TemplateResult`.
+ * @param {string} config.dataFileBasename Optional. The base name of the files to interpret as data files. These should be json.
+ * @returns {OrisonDirectory} A new OrisonDirectory with the provided configurations.
  */
 export default class OrisonDirectory {
-  /**
-   * @type {OrisonDirectory}
-   * @returns A new OrisonDirectory with the provided configurations.
-   */
   constructor({
       path,
       rootPath,
