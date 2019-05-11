@@ -93,6 +93,12 @@ if (process.argv.includes('--version') || process.argv.includes('-v')) {
       return console.error(err);
     }
   });
+} else if (process.argv.length === 5 && process.argv.includes('init') && process.argv.includes('--netlify')) {
+  ncp(path.join(__dirname, '../templates', 'contentful-netlify'), process.argv[4], err => {
+    if (err) {
+      return console.error(err);
+    }
+  });
 }
 
 /**

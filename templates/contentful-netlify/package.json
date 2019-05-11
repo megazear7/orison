@@ -1,0 +1,19 @@
+{
+  "name": "orison-example",
+  "version": "1.0.0",
+  "description": "An example Orison project setup for GitHub pages.",
+  "main": "orison.js",
+  "dependencies": {
+    "orison": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "orison build",
+    "serve": "orison serve",
+    "prod": "NODE_ENV=production orison serve",
+    "static": "orison static"
+  },
+  "author": "",
+  "license": "ISC"
+}
