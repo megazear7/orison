@@ -95,12 +95,30 @@ if (process.argv.includes('--version') || process.argv.includes('-v')) {
   });
 }
 
+/**
+ * Retrieves command line configurations from `process.argv` in the format:
+ *   --name value
+ * Where "name" is the `name` parameter and value is the return value.
+ * If no config is found then `defaultValue` is returned if the parameter is provided.
+ * Otherwise undefined is returned.
+ * @param {string} name Required. The name of the parameter to look in `process.argv` for.
+ * @param {string} defaultValue Optional. The value to return if the config is not found.
+ * @returns {string} The value found in `process.argv` if it exists or the defaultValue parameter if the config is not found, or undefined if the config is not found and no default value was provided.
+ */
 function getConfig(name, defaultValue) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : defaultValue;
 }
 
-function getArrayConfig(name, defaultValue) {
-  const stringVal = getConfig(name, '');
-  return stringVal.split(',').filter(val => !! val);
+/**
+ * This functions the same as `getConfig` except that it splits the value found in `process.argv` on the ',' character.
+ * @param {string} name Required. The name of the parameter to look in `process.argv` for.
+ * @param {array} defaultValue Optional. The value to return if the config is not found. Defaults to an empty array if not provided.
+ * @returns {array} The value found in `process.argv` if it exists or the defaultValue parameter if the config is not found, or an empty array if no default value was provided.
+ */
+function getArrayConfig(name, defaultValue = []) {
+  const stringVal = getConfig(name, undefined);
+  return stringVal
+    ? stringVal.split(',').filter(val => !! val)
+    : defaultValue;
 }
