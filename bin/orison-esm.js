@@ -6,20 +6,22 @@ export { default as OrisonStaticServer } from './orison-static-server.js';
 export { mdString, mdFile } from './markdown.js';
 export { html, renderToString } from '@popeindustries/lit-html-server';
 
-export const DEFAULT_GENERATE_PATH = '/';
-export const DEFAULT_GENERATE_SLUGS = [ ];
-export const DEFAULT_EXCLUDED_PATHS = [ ];
-export const DEFAULT_SRC_DIR = 'src';
-export const DEFAULT_BUILD_DIR = 'docs';
-export const DEFAULT_PAGES_DIR = 'pages';
-export const DEFAULT_DATA_BASENAME = 'data';
-export const DEFAULT_LAYOUT_BASENAME = 'layout';
-export const DEFAULT_INDEX_BASENAME = 'index';
-export const DEFAULT_LIST_BASENAME = 'list';
-export const DEFAULT_FRAGMENT_NAME = 'fragment';
-export const DEFAULT_PROTECTED_FILES = [ 'CNAME' ];
-export const DEFAULT_404_FILENAME = '/404.html';
-export const DEFAULT_500_FILENAME = '/500.html';
-export const DEFAULT_STRIP_HTML = false;
-export const DEFAULT_STATIC_DIR = 'static';
-export const DEFAULT_PORT = 3000;
+export const DEFAULTS = {
+  GENERATE_PATH: '/',
+  GENERATE_SLUGS: [ ],
+  EXCLUDED_PATHS: [ ],
+  SRC_DIR: 'src',
+  BUILD_DIR: 'docs',
+  PAGES_DIR: 'pages',
+  DATA_BASENAME: 'data',
+  LAYOUT_BASENAME: 'layout',
+  INDEX_BASENAME: 'index',
+  LIST_BASENAME: 'list',
+  FRAGMENT_NAME: 'fragment',
+  PROTECTED_FILES: [ 'CNAME' ],
+  FILENAME_404: '/404.html',
+  FILENAME_500: '/500.html',
+  STRIP_HTML: false,
+  STATIC_DIR: 'static',
+  PORT: 3000
+};

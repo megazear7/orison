@@ -3,37 +3,24 @@ import path from 'path';
 import fs from 'fs';
 import OrisonRenderer from './orison-renderer.js';
 import OrisonPathMaker from './orison-path-maker.js';
-import {
-  DEFAULT_SRC_DIR,
-  DEFAULT_PAGES_DIR,
-  DEFAULT_STATIC_DIR,
-  DEFAULT_INDEX_BASENAME,
-  DEFAULT_LIST_BASENAME,
-  DEFAULT_FRAGMENT_NAME,
-  DEFAULT_LAYOUT_BASENAME,
-  DEFAULT_DATA_BASENAME,
-  DEFAULT_BUILD_DIR,
-  DEFAULT_404_FILENAME,
-  DEFAULT_500_FILENAME,
-  DEFAULT_STRIP_HTML,
-  DEFAULT_PORT } from './orison-esm.js';
+import { DEFAULTS } from './orison-esm.js';
 
 export default class  {
   constructor({
       rootPath,
-      srcDir = DEFAULT_SRC_DIR,
-      pagesDir = DEFAULT_PAGES_DIR,
-      staticPath = path.join(DEFAULT_SRC_DIR, DEFAULT_STATIC_DIR),
-      indexFileBasename = DEFAULT_INDEX_BASENAME,
-      listFileBasename = DEFAULT_LIST_BASENAME,
-      layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
-      dataFileBasename = DEFAULT_DATA_BASENAME,
-      buildDir = DEFAULT_BUILD_DIR,
-      fragmentName = DEFAULT_FRAGMENT_NAME,
-      page404 = DEFAULT_404_FILENAME,
-      page500 = DEFAULT_500_FILENAME,
-      stripHtml = DEFAULT_STRIP_HTML,
-      port = DEFAULT_PORT }) {
+      srcDir = DEFAULTS.SRC_DIR,
+      pagesDir = DEFAULTS.PAGES_DIR,
+      staticPath = path.join(DEFAULTS.SRC_DIR, DEFAULTS.STATIC_DIR),
+      indexFileBasename = DEFAULTS.INDEX_BASENAME,
+      listFileBasename = DEFAULTS.LIST_BASENAME,
+      layoutFileBasename = DEFAULTS.LAYOUT_BASENAME,
+      dataFileBasename = DEFAULTS.DATA_BASENAME,
+      buildDir = DEFAULTS.BUILD_DIR,
+      fragmentName = DEFAULTS.FRAGMENT_NAME,
+      page404 = DEFAULTS.FILENAME_400,
+      page500 = DEFAULTS.FILENAME_500,
+      stripHtml = DEFAULTS.STRIP_HTML,
+      port = DEFAULTS.PORT }) {
     this.rootPath = rootPath;
     this.pagesDir = pagesDir;
     this.srcDir = srcDir;
@@ -48,7 +35,7 @@ export default class  {
     this.path404 = path.join(this.rootPath, this.srcDir, this.pagesDir, this.page404);
     this.page500 = page500;
     this.stripHtml = stripHtml;
-    this.port = DEFAULT_PORT;
+    this.port = port;
     this.app = express();
     this.pathMaker = new OrisonPathMaker(this.rootPath, this.srcDir, this.pagesDir);
   }
@@ -177,7 +164,7 @@ export default class  {
     if ((requestPath.full.includes('.html') && ! this.stripHtml) || (! requestPath.full.includes('.html') && this.stripHtml)) {
       const strippedRequestPath = this.pathMaker.create(this.stripHtml ? requestPath.rel.replace('.html', '') : requestPath.rel);
 
-      if (! strippedRequestPath.full.includes(`${path.sep}${DEFAULT_INDEX_BASENAME}.`)) {
+      if (! strippedRequestPath.full.includes(`${path.sep}${this.indexFileBasename}.`)) {
         const jsFilePath = this.pathMaker.create(path.format({ ...path.parse(strippedRequestPath.rel), ext: '.js', base: undefined}));
         const htmlFilePath = this.pathMaker.create(path.format({ ...path.parse(strippedRequestPath.rel), ext: '.html', base: undefined}));
         const mdFilePath = this.pathMaker.create(path.format({ ...path.parse(strippedRequestPath.rel), ext: '.md', base: undefined}));

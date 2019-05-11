@@ -1,10 +1,6 @@
 import fsPath, { join } from 'path';
 import fs, { lstatSync, readdirSync } from 'fs';
-import {
-  DEFAULT_SRC_DIR,
-  DEFAULT_PAGES_DIR,
-  DEFAULT_DATA_BASENAME,
-  DEFAULT_LAYOUT_BASENAME } from './orison-esm.js';
+import { DEFAULTS } from './orison-esm.js';
 
 /**
  * A class representing a src pages directory. Provides easy to use accessor methods
@@ -18,10 +14,10 @@ export default class OrisonDirectory {
   constructor({
       path,
       rootPath,
-      srcDirectory = DEFAULT_SRC_DIR,
-      pagesDirectory = DEFAULT_PAGES_DIR,
-      layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
-      dataFileBasename = DEFAULT_DATA_BASENAME
+      srcDirectory = DEFAULTS.SRC_DIR,
+      pagesDirectory = DEFAULTS.PAGES_DIR,
+      layoutFileBasename = DEFAULTS.LAYOUT_BASENAME,
+      dataFileBasename = DEFAULTS.DATA_BASENAME
     }) {
     this.path = path;
     this.rootPath = rootPath;

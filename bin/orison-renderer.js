@@ -6,13 +6,7 @@ import { html, renderToString } from '@popeindustries/lit-html-server';
 import OrisonDirectory from './orison-directory.js';
 import OrisonPathMaker from './orison-path-maker.js';
 import { mdString, mdFile } from './markdown.js';
-import {
-  DEFAULT_SRC_DIR,
-  DEFAULT_BUILD_DIR,
-  DEFAULT_PAGES_DIR,
-  DEFAULT_FRAGMENT_NAME,
-  DEFAULT_DATA_BASENAME,
-  DEFAULT_LAYOUT_BASENAME } from './orison-esm.js';
+import { DEFAULTS } from './orison-esm.js';
 
 /**
  * A class that renders a given Orison source file based upon the provided configurations.
@@ -21,12 +15,12 @@ export default class OrisonRenderer {
   constructor({
       file,
       rootPath,
-      srcDirectory = DEFAULT_SRC_DIR,
-      layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
-      dataFileBasename = DEFAULT_DATA_BASENAME,
-      pagesDirectory = DEFAULT_PAGES_DIR,
-      fragmentName = DEFAULT_FRAGMENT_NAME,
-      buildDir = DEFAULT_BUILD_DIR,
+      srcDirectory = DEFAULTS.SRC_DIR,
+      layoutFileBasename = DEFAULTS.LAYOUT_BASENAME,
+      dataFileBasename = DEFAULTS.DATA_BASENAME,
+      pagesDirectory = DEFAULTS.PAGES_DIR,
+      fragmentName = DEFAULTS.FRAGMENT_NAME,
+      buildDir = DEFAULTS.BUILD_DIR,
     }) {
     this.pathMaker = new OrisonPathMaker(rootPath, srcDirectory, pagesDirectory);
     this.file = this.pathMaker.create(file);

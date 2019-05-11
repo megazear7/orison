@@ -8,18 +8,7 @@ import path from 'path';
 import fileWalker from './file-walker.js';
 import { ncp } from 'ncp';
 import OrisonRenderer from './orison-renderer.js';
-import {
-  DEFAULT_GENERATE_PATH,
-  DEFAULT_GENERATE_SLUGS,
-  DEFAULT_EXCLUDED_PATHS,
-  DEFAULT_SRC_DIR,
-  DEFAULT_BUILD_DIR,
-  DEFAULT_PAGES_DIR,
-  DEFAULT_DATA_BASENAME,
-  DEFAULT_LAYOUT_BASENAME,
-  DEFAULT_PROTECTED_FILES,
-  DEFAULT_FRAGMENT_NAME,
-  DEFAULT_STATIC_DIR } from './orison-esm.js';
+import { DEFAULTS } from './orison-esm.js';
 
 /**
  * Creates an OrisonGenerator that can be used to build a website based upon a specially formatted source directory.
@@ -41,17 +30,17 @@ import {
 export default class OrisonGenerator {
   constructor({
       rootPath,
-      generatePath = DEFAULT_GENERATE_PATH,
-      generateSlugs = DEFAULT_GENERATE_SLUGS,
-      excludedPaths = DEFAULT_EXCLUDED_PATHS,
-      buildDir = DEFAULT_BUILD_DIR,
-      protectedFileNames = DEFAULT_PROTECTED_FILES,
-      staticDirectory = DEFAULT_STATIC_DIR,
-      pagesDirectory = DEFAULT_PAGES_DIR,
-      srcDirectory = DEFAULT_SRC_DIR,
-      layoutFileBasename = DEFAULT_LAYOUT_BASENAME,
-      dataFileBasename = DEFAULT_DATA_BASENAME,
-      fragmentName = DEFAULT_FRAGMENT_NAME
+      generatePath = DEFAULTS.GENERATE_PATH,
+      generateSlugs = DEFAULTS.GENERATE_SLUGS,
+      excludedPaths = DEFAULTS.EXCLUDED_PATHS,
+      buildDir = DEFAULTS.BUILD_DIR,
+      protectedFileNames = DEFAULTS.PROTECTED_FILES,
+      staticDirectory = DEFAULTS.STATIC_DIR,
+      pagesDirectory = DEFAULTS.PAGES_DIR,
+      srcDirectory = DEFAULTS.SRC_DIR,
+      layoutFileBasename = DEFAULTS.LAYOUT_BASENAME,
+      dataFileBasename = DEFAULTS.DATA_BASENAME,
+      fragmentName = DEFAULTS.FRAGMENT_NAME
     }) {
     this.rootPath = rootPath;
     this.generatePath = generatePath;

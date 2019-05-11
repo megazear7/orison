@@ -1,12 +1,12 @@
 import express from 'express';
 import path from 'path';
-import { DEFAULT_BUILD_DIR, DEFAULT_PORT } from './orison-esm.js';
+import { DEFAULTS } from './orison-esm.js';
 
 export default class {
   constructor({
       rootPath,
-      dir = DEFAULT_BUILD_DIR,
-      port = DEFAULT_PORT
+      dir = DEFAULTS.BUILD_DIR,
+      port = DEFAULTS.PORT
     }) {
     this.rootPath = rootPath;
     this.dir = dir;

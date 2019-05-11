@@ -4,40 +4,24 @@ const ncp = require('ncp');
 const path = require('path');
 const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('./orison.js');
 const pjson = require('../package.json');
-const {
-  DEFAULT_GENERATE_PATH,
-  DEFAULT_GENERATE_SLUGS,
-  DEFAULT_EXCLUDED_PATHS,
-  DEFAULT_SRC_DIR,
-  DEFAULT_PAGES_DIR,
-  DEFAULT_STATIC_DIR,
-  DEFAULT_INDEX_BASENAME,
-  DEFAULT_LIST_BASENAME,
-  DEFAULT_FRAGMENT_NAME,
-  DEFAULT_LAYOUT_BASENAME,
-  DEFAULT_DATA_BASENAME,
-  DEFAULT_BUILD_DIR,
-  DEFAULT_404_FILENAME,
-  DEFAULT_500_FILENAME,
-  DEFAULT_STRIP_HTML,
-  DEFAULT_PORT } = require('./orison-esm.js');
+const { DEFAULTS } = require('./orison-esm.js');
 
-const generatePath = getConfig('--generatePath', DEFAULT_GENERATE_PATH);
-const generateSlugs = getArrayConfig('--generateSlugs', DEFAULT_GENERATE_SLUGS);
-const excludedPaths = getArrayConfig('--excludedPaths', DEFAULT_EXCLUDED_PATHS);
-const srcDir = getConfig('--srcDir', DEFAULT_SRC_DIR);
-const pagesDir = getConfig('--pagesDir', DEFAULT_PAGES_DIR);
-const staticDir = getConfig('--staticDir', DEFAULT_STATIC_DIR);
-const indexBasename = getConfig('--indexBasename', DEFAULT_INDEX_BASENAME);
-const listBasename = getConfig('--listBasename', DEFAULT_LIST_BASENAME);
-const fragmentBasename = getConfig('--fragmentBasename', DEFAULT_FRAGMENT_NAME);
-const layoutBasename = getConfig('--layoutBasename', DEFAULT_LAYOUT_BASENAME);
-const dataBasename = getConfig('--dataBasename', DEFAULT_DATA_BASENAME);
-const buildDir = getConfig('--buildDir', DEFAULT_BUILD_DIR);
-const file404 = getConfig('--file404', DEFAULT_404_FILENAME);
-const file500 = getConfig('--file500', DEFAULT_500_FILENAME);
-const stripHtml = !! getConfig('--stripHtml', DEFAULT_STRIP_HTML);
-const port = parseInt(getConfig('--port', DEFAULT_PORT));
+const generatePath = getConfig('--generatePath', DEFAULTS.GENERATE_PATH);
+const generateSlugs = getArrayConfig('--generateSlugs', DEFAULTS.GENERATE_SLUGS);
+const excludedPaths = getArrayConfig('--excludedPaths', DEFAULTS.EXCLUDED_PATHS);
+const srcDir = getConfig('--srcDir', DEFAULTS.SRC_DIR);
+const pagesDir = getConfig('--pagesDir', DEFAULTS.PAGES_DIR);
+const staticDir = getConfig('--staticDir', DEFAULTS.STATIC_DIR);
+const indexBasename = getConfig('--indexBasename', DEFAULTS.INDEX_BASENAME);
+const listBasename = getConfig('--listBasename', DEFAULTS.LIST_BASENAME);
+const fragmentBasename = getConfig('--fragmentBasename', DEFAULTS.FRAGMENT_NAME);
+const layoutBasename = getConfig('--layoutBasename', DEFAULTS.LAYOUT_BASENAME);
+const dataBasename = getConfig('--dataBasename', DEFAULTS.DATA_BASENAME);
+const buildDir = getConfig('--buildDir', DEFAULTS.BUILD_DIR);
+const file404 = getConfig('--file404', DEFAULTS.FILENAME_404);
+const file500 = getConfig('--file500', DEFAULTS.FILENAME_500);
+const stripHtml = !! getConfig('--stripHtml', DEFAULTS.STRIP_HTML);
+const port = parseInt(getConfig('--port', DEFAULTS.PORT));
 
 if (process.argv.includes('--version') || process.argv.includes('-v')) {
   console.log(pjson.version);
