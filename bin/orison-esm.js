@@ -5,6 +5,7 @@ export { default as OrisonServer } from './orison-server.js';
 export { default as OrisonStaticServer } from './orison-static-server.js';
 export { mdString, mdFile } from './markdown.js';
 export { html, renderToString } from '@popeindustries/lit-html-server';
+export { unsafeHTML } from '@popeindustries/lit-html-server/directives/unsafe-html.js';
 
 export const DEFAULTS = {
   GENERATE_PATH: '/',
