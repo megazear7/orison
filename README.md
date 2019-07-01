@@ -1,7 +1,5 @@
 # Orison
 
-> Status: pre-release
-
 [Orison Documentation](https://orison.alexlockhart.me)
 
 * Can be used as a static site generator or server.
@@ -9,6 +7,8 @@
 * Uses [lit-html-server](https://github.com/popeindustries/lit-html-server) for server side rendering with lit-html.
 * Uses [express](https://expressjs.com/) for a server when being used as a server.
 * Uses [markdown-it](https://github.com/markdown-it/markdown-it) for markdown rendering.
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/orison-netlify-starter-kit)
 
 # Development on this project
 
