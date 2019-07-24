@@ -9,4 +9,5 @@ export default context => html`
   <section>${context.mdFile('./src/partials/documentation/metadata.md')}</section>
   <section>${context.mdFile('./src/partials/documentation/programatic.md')}</section>
   <section>${context.mdFile('./src/partials/documentation/unsafe-html.md')}</section>
+  <section>${context.mdFile('./src/partials/documentation/proxy.md')}</section>
 `;
