@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import OrisonRenderer from './orison-renderer.js';
 import OrisonPathMaker from './orison-path-maker.js';
+import OrisonCacheLoader from './orison-cache-loader.js';
 import { DEFAULTS } from './orison-esm.js';
 
 export default class  {
@@ -16,6 +17,7 @@ export default class  {
       layoutFileBasename = DEFAULTS.LAYOUT_BASENAME,
       dataFileBasename = DEFAULTS.DATA_BASENAME,
       buildDir = DEFAULTS.BUILD_DIR,
+      loaderDir = DEFAULTS.LOADER_DIRECTORY,
       fragmentName = DEFAULTS.FRAGMENT_NAME,
       page404 = DEFAULTS.FILENAME_400,
       page500 = DEFAULTS.FILENAME_500,
@@ -38,6 +40,7 @@ export default class  {
     this.port = port;
     this.app = express();
     this.pathMaker = new OrisonPathMaker(this.rootPath, this.srcDir, this.pagesDir);
+    this.cacheLoader = new OrisonCacheLoader({ loaderPath: path.join(this.rootPath, this.srcDir, loaderDir) });
   }
 
   start() {
@@ -57,7 +60,8 @@ export default class  {
             dataFileBasename: this.dataFileBasename,
             pagesDirectory: this.pagesDir,
             fragmentName: this.fragmentName,
-            buildDir: this.buildDir
+            buildDir: this.buildDir,
+            cacheLoader: this.cacheLoader
           });
           renderer.html(segment, this.page404)
           .then(html => {

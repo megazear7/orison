@@ -19,6 +19,7 @@ export const DEFAULTS = {
   INDEX_BASENAME: 'index',
   LIST_BASENAME: 'list',
   FRAGMENT_NAME: 'fragment',
+  LOADER_DIRECTORY: 'loaders',
   PROTECTED_FILES: [ 'CNAME' ],
   FILENAME_404: '/404.html',
   FILENAME_500: '/500.html',

@@ -5,6 +5,7 @@ import { unsafeHTML } from '@popeindustries/lit-html-server/directives/unsafe-ht
 import { html, renderToString } from '@popeindustries/lit-html-server';
 import OrisonDirectory from './orison-directory.js';
 import OrisonPathMaker from './orison-path-maker.js';
+import OrisonCacheLoader from './orison-cache-loader.js';
 import { mdString, mdFile } from './markdown.js';
 import { DEFAULTS } from './orison-esm.js';
 
@@ -21,6 +22,7 @@ export default class OrisonRenderer {
       pagesDirectory = DEFAULTS.PAGES_DIR,
       fragmentName = DEFAULTS.FRAGMENT_NAME,
       buildDir = DEFAULTS.BUILD_DIR,
+      cacheLoader = new OrisonCacheLoader()
     }) {
     this.pathMaker = new OrisonPathMaker(rootPath, srcDirectory, pagesDirectory);
     this.file = this.pathMaker.create(file);
@@ -33,6 +35,7 @@ export default class OrisonRenderer {
     this.buildDir = buildDir;
     this.localDirectory = this.createOrisonDirectory(path.dirname(file));
     this.rootDirectory = this.createOrisonDirectory(path.sep);
+    this.cacheLoader = cacheLoader;
   }
 
   writeFile(file) {
@@ -197,6 +200,7 @@ export default class OrisonRenderer {
       parent: this.localDirectory.parent,
       parents: this.localDirectory.parents,
       root: this.rootDirectory,
+      loaders: this.cacheLoader,
       mdString,
       mdFile
     };

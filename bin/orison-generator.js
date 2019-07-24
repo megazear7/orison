@@ -8,6 +8,7 @@ import path from 'path';
 import fileWalker from './file-walker.js';
 import { ncp } from 'ncp';
 import OrisonRenderer from './orison-renderer.js';
+import OrisonCacheLoader from './orison-cache-loader.js';
 import { DEFAULTS } from './orison-esm.js';
 
 /**
@@ -38,6 +39,7 @@ export default class OrisonGenerator {
       staticDirectory = DEFAULTS.STATIC_DIR,
       pagesDirectory = DEFAULTS.PAGES_DIR,
       srcDirectory = DEFAULTS.SRC_DIR,
+      loaderDirectory = DEFAULTS.LOADER_DIRECTORY,
       layoutFileBasename = DEFAULTS.LAYOUT_BASENAME,
       dataFileBasename = DEFAULTS.DATA_BASENAME,
       fragmentName = DEFAULTS.FRAGMENT_NAME
@@ -54,6 +56,7 @@ export default class OrisonGenerator {
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
     this.fragmentName = fragmentName;
+    this.cacheLoader = new OrisonCacheLoader({ loaderPath: path.join(this.rootPath, this.srcDirectory, loaderDirectory) });
   }
 
   build() {
@@ -98,7 +101,8 @@ export default class OrisonGenerator {
               dataFileBasename: this.dataFileBasename,
               pagesDirectory: this.pagesDirectory,
               fragmentName: this.fragmentName,
-              buildDir: this.buildDir
+              buildDir: this.buildDir,
+              cacheLoader: this.cacheLoader
             })).write(this.generateSlugs);
           }
         },
