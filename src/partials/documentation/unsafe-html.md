@@ -5,7 +5,7 @@
 import { html, unsafeHTML } from 'orison';
 import someCMS from 'some-cms';
 
-const htmlFromCMS = comeCMS.get('...');
+const htmlFromCMS = someCMS.get('...');
 
 export default context => html`
   ${unsafeHTML(htmlFromCMS)}
