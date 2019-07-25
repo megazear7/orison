@@ -46,6 +46,7 @@ export default context => html`
   <body>
     ${header(context.root.data.title)}
     ${nav(context.path, context.root)}
+    <div class="back-to-top">&#x21ea;</div>
     <main>
       ${context.page.html}
     </main>

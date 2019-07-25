@@ -63,6 +63,10 @@ window.addEventListener('popstate', event => {
 document.addEventListener("DOMContentLoaded", () => {
   addCodeCopyListeners();
 
+  document.querySelector('.back-to-top').addEventListener('click', () => {
+    document.querySelector('nav').scrollIntoView({behavior: 'smooth'});
+  });
+
   document.body.addEventListener('click', event => {
     var tag = event.target;
 
