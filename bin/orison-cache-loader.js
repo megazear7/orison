@@ -4,7 +4,7 @@ import fileWalker from './file-walker.js';
 import camelCase from 'camelcase';
 
 export default class OrisonCacheLoader {
-  constructor({ loaderPath } = { }) {
+  constructor({ loaderPath, initialLoaders } = { }) {
     this._caches = { };
     this._loaders = { };
     this._getters = { };
@@ -18,6 +18,8 @@ export default class OrisonCacheLoader {
         }
       );
     }
+
+    initialLoaders.forEach(loader => this.addLoader(loader.name, loader.loader));
   }
 
   addLoader(name, loader) {

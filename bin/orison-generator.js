@@ -42,7 +42,8 @@ export default class OrisonGenerator {
       loaderDirectory = DEFAULTS.LOADER_DIRECTORY,
       layoutFileBasename = DEFAULTS.LAYOUT_BASENAME,
       dataFileBasename = DEFAULTS.DATA_BASENAME,
-      fragmentName = DEFAULTS.FRAGMENT_NAME
+      fragmentName = DEFAULTS.FRAGMENT_NAME,
+      loaders = [ ]
     }) {
     this.rootPath = rootPath;
     this.generatePath = generatePath;
@@ -56,7 +57,10 @@ export default class OrisonGenerator {
     this.layoutFileBasename = layoutFileBasename;
     this.dataFileBasename = dataFileBasename;
     this.fragmentName = fragmentName;
-    this.cacheLoader = new OrisonCacheLoader({ loaderPath: path.join(this.rootPath, this.srcDirectory, loaderDirectory) });
+    this.cacheLoader = new OrisonCacheLoader({
+      loaderPath: path.join(this.rootPath, this.srcDirectory, loaderDirectory),
+      initialLoaders: loaders
+    });
   }
 
   build() {

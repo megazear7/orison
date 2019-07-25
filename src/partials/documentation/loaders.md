@@ -15,16 +15,18 @@ export default async message => {
 
 While this code fakes an asynchronous API call, the idea is simple. The loader exports a function which excepts some parameters and then returns a promise of data. If this loader is called with the same parameters then the cache will be hit and a second API call will be avoided. The name of the loader will be the camel cased version of the file name.
 
-This loader can then be used in layouts, pages, and partials by using the `context.loaders` object:
+This loader can then be used in layouts, pages, and partials by using the `context.loaders.example` method:
 
+#### /src/pages/index.js
 ```js
 import { html } from 'orison';
 
-export default async context => {
-  const dataFromLoader = await context.loaders.example('Hello, World!');
-
-  return html`
-    <p>${dataFromLoader}</p>
-  `;
-};
+export default async context => html`
+  <ol>
+    <li>${await context.loaders.example('ABC')}</li>
+    <li>${await context.loaders.example('ABC')}</li>
+  </ol>
+`;
 ```
+
+This will produce the output as shown below. The first call will hit the loader defined at /src/loaders.js. The second call will hit the cache and the loader at /src/loader.js will not be hit:

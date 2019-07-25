@@ -19,9 +19,10 @@ export default class  {
       buildDir = DEFAULTS.BUILD_DIR,
       loaderDir = DEFAULTS.LOADER_DIRECTORY,
       fragmentName = DEFAULTS.FRAGMENT_NAME,
-      page404 = DEFAULTS.FILENAME_400,
+      page404 = DEFAULTS.FILENAME_404,
       page500 = DEFAULTS.FILENAME_500,
       stripHtml = DEFAULTS.STRIP_HTML,
+      loaders = [ ],
       port = DEFAULTS.PORT }) {
     this.rootPath = rootPath;
     this.pagesDir = pagesDir;
@@ -40,7 +41,10 @@ export default class  {
     this.port = port;
     this.app = express();
     this.pathMaker = new OrisonPathMaker(this.rootPath, this.srcDir, this.pagesDir);
-    this.cacheLoader = new OrisonCacheLoader({ loaderPath: path.join(this.rootPath, this.srcDir, loaderDir) });
+    this.cacheLoader = new OrisonCacheLoader({
+      loaderPath: path.join(this.rootPath, this.srcDir, loaderDir),
+      initialLoaders: loaders
+    });
   }
 
   start() {
