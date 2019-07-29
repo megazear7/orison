@@ -53,6 +53,7 @@ export default class  {
     this.app.get('*', (req, res) => {
       console.log(req.path);
       const segment = path.basename(req.path);
+      res.header('Content-Type', 'text/html');
       try {
         const srcPath = this.srcPath(req.path, code => res.status(code));
         if (srcPath !== undefined) {
