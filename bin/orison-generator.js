@@ -26,6 +26,7 @@ import { DEFAULTS } from './orison-esm.js';
  * @param {string} config.layoutFileBasename Optional. Defaults to "layout". The basename of the layouts created under the pages directory. Pages are inserted into the nearest layout within the pages hierarchy. As an example if "layout" is provided in this configuration then files named "layout.js" will be interpretted as layouts.
  * @param {string} config.dataFileBasename Optional. Defaults to "data". The basename of the data files under the pages directory. The output of these data files are provided to pages and serve as contextual site metadata.
  * @param {string} config.fragmentName Optional. Defaults to "fragment". The string to identify fragments with. Fragments are pages that get rendered without the layout. This allows for page content to be requested without the surrounding layout and helps support single page application style linking. If "fragment" is provided, then each page will get a corresponding file built with the format "<page>.fragment.html" where the contents are the same as "<page>.html" but without the layout applied and where <page> is the basename of the corresponding page.
+ * @param {array} config.loaders Optional. Defaults to an empty array. Any objects put in this array should have a name property that is a string and a loader prop that is a function. Review the documentation on the details for implementing a loader.
  * @returns {OrisonGenerator} An OrisonGenerator based upon the provided configurations.
  */
 export default class OrisonGenerator {
@@ -63,40 +64,61 @@ export default class OrisonGenerator {
     });
   }
 
+  /**
+   * @returns {void} Build the static files for the website based upon the options provided in the constructor. This is essentially a three step process: (1) Delete the directories and files in the buildDir, (2) Copy the static files to the build directory, (3) Generate HTML files in the build directory based upon the page files (HTML, JS, MD) in the pages directory.
+   */
   build() {
-    this.prepBuildDir();
-    this.copyStaticFiles();
-    this.generatePages();
+    this._prepBuildDir();
+    this._copyStaticFiles();
+    this._generatePages();
   }
 
-  getPageContextPath(pagePath) {
+  /* PRIVATE METHOD
+   * @returns {string} Returns the provided path but trimmed to just the contextual part of the path starting from the pages directory.
+   */
+  _getPageContextPath(pagePath) {
     return pagePath.split(path.sep + this.pagesDirectory)[1];
   }
 
-  getSrcPath(srcPath = '') {
+  /* PRIVATE METHOD
+   * @returns {string} Returns the src path including the root path at the beginning and the provided path at the end.
+   */
+  _getSrcPath(srcPath = '') {
     return path.join(this.rootPath, this.srcDirectory, srcPath);
   }
 
-  getStaticPath(staticPath = '') {
+  /* PRIVATE METHOD
+   * @returns {string} Returns the static path including the root path at the beginning and the provided path at the end.
+   */
+  _getStaticPath(staticPath = '') {
     return path.join(this.rootPath, this.srcDirectory, this.staticDirectory, staticPath);
   }
 
-  getPagesPath(pagesPath = '') {
-    return path.join(this.getSrcPath(this.pagesDirectory), pagesPath);
+  /* PRIVATE METHOD
+   * @returns {string} Returns the page path including the root path at the beginning and the provided path at the end.
+   */
+  _getPagesPath(pagesPath = '') {
+    return path.join(this._getSrcPath(this.pagesDirectory), pagesPath);
   }
 
-  getBuildPath(buildPath = '') {
+  /* PRIVATE METHOD
+   * @returns {string} Returns the build path including the root path at the beginning and the provided path at the end.
+   */
+  _getBuildPath(buildPath = '') {
     return path.join(this.rootPath, this.buildDir, buildPath);
   }
 
-  generatePages() {
+  /* PRIVATE METHOD
+   * @returns {void} Generates the pages into the build directory based upon the pages directory.
+   */
+  _generatePages() {
     console.log(`Generating to ${this.buildDir} from ${this.srcDirectory}:`);
-    const generatePath = this.getSrcPath(this.pagesDirectory);
+    const generatePath = this._getSrcPath(this.pagesDirectory);
     if (fs.existsSync(generatePath)) {
       fileWalker(generatePath,
         file => {
           const relFilePath = file.substring(path.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length);
-          if (this.isSourcePage(file) && relFilePath.startsWith(this.generatePath) && ! this.excludedSrcPagePaths.some(pagePath => file.startsWith(pagePath))) {
+          if (this._isSourcePage(file) && relFilePath.startsWith(this.generatePath) && ! this._excludedSrcPagePaths.some(pagePath => file.startsWith(pagePath))) {
             (new OrisonRenderer({
               file: relFilePath,
               rootPath: this.rootPath,
@@ -111,60 +133,84 @@ export default class OrisonGenerator {
           }
         },
         directory => {
-          const newPath = this.getBuildPath(this.getPageContextPath(directory));
+          const newPath = this._getBuildPath(this._getPageContextPath(directory));
           if (!fs.existsSync(newPath)) fs.mkdirSync(newPath);
         }
       );
     }
   }
 
-  isSourcePage(file) {
+  /* PRIVATE METHOD
+   * @returns {boolean} Determines whethor or not this is a source page based upon the file extension. It will also ignore layouts based upon the file basename since a layout is not an actual source page.
+   */
+  _isSourcePage(file) {
     return ! file.endsWith(this.layoutFileBasename + '.js') &&
            ( file.endsWith('.js') || file.endsWith('.html') || file.endsWith('.md') || file.endsWith('data.json') );
   }
 
-  copyStaticFiles() {
-    const staticPath = this.getStaticPath(this.generatePath);
+  /* PRIVATE METHOD
+   * @returns {void} Copies the static files to the build directory.
+   */
+  _copyStaticFiles() {
+    const staticPath = this._getStaticPath(this.generatePath);
     if (fs.existsSync(staticPath)) {
-      ncp(staticPath, this.getBuildPath(this.generatePath), err => {
+      ncp(staticPath, this._getBuildPath(this.generatePath), err => {
         if (err) throw err;
       });
     }
   }
 
-  prepBuildDir() {
-    if (fs.existsSync(this.getBuildPath())) {
-      this.cleanBuildDir();
+  /* PRIVATE METHOD
+   * @returns {void} Preps the build directory by removing what is already there and making any directories that will be needed.
+   */
+  _prepBuildDir() {
+    if (fs.existsSync(this._getBuildPath())) {
+      this._cleanBuildDir();
     } else {
-      fs.mkdirSync(this.getBuildPath());
+      fs.mkdirSync(this._getBuildPath());
     }
   }
 
-  cleanBuildDir() {
-    this.deleteBuildFiles();
-    this.deleteBuildDirectories();
+  /* PRIVATE METHOD
+   * @returns {void} Cleans the build directory by removing what is already there.
+   */
+  _cleanBuildDir() {
+    this._deleteBuildFiles();
+    this._deleteBuildDirectories();
   }
 
-  validSlug(file) {
+  /* PRIVATE METHOD
+   * @returns {boolean} Determines if this is a valid url slug based upon whethor or not it already exists.
+   */
+  _validSlug(file) {
     return this.generateSlugs.length === 0 || this.generateSlugs.includes(path.basename(file));
   }
 
-  get excludedSrcPagePaths() {
+  /* PRIVATE METHOD
+   * @returns {array} Creates the absolute paths for excluded directory paths based upon the provided excluded paths (which are provided as relative paths).
+   */
+  get _excludedSrcPagePaths() {
     return this.excludedPaths.map(excludedPath => path.join(this.rootPath, this.srcDirectory, this.pagesDirectory, excludedPath));
   }
 
-  get excludedBuildPaths() {
+  /* PRIVATE METHOD
+   * @returns {array} Creates the absolute paths excluded build paths based upon the provided excluded paths (which are provided as relative paths).
+   */
+  get _excludedBuildPaths() {
     return this.excludedPaths.map(excludedPath => path.join(this.rootPath, this.buildDir, excludedPath));
   }
 
-  deleteBuildFiles() {
-    const deletePath = this.getBuildPath(this.generatePath);
+  /* PRIVATE METHOD
+   * @returns {void} Cleans the build directory by deleting existing files.
+   */
+  _deleteBuildFiles() {
+    const deletePath = this._getBuildPath(this.generatePath);
     if (fs.existsSync(deletePath)) {
       fileWalker(deletePath,
         file => {
           if (! this.protectedFileNames.includes(path.basename(file)) &&
-              ! this.excludedBuildPaths.some(buildPath => file.startsWith(buildPath)) &&
-              this.validSlug(file)) {
+              ! this._excludedBuildPaths.some(buildPath => file.startsWith(buildPath)) &&
+              this._validSlug(file)) {
             try {
               fs.unlinkSync(file);
             } catch {
@@ -176,8 +222,11 @@ export default class OrisonGenerator {
     }
   }
 
-  deleteBuildDirectories() {
-    const deletePath = this.getBuildPath(this.generatePath);
+  /* PRIVATE METHOD
+   * @returns {void} Cleans the build directory by deleting existing directories.
+   */
+  _deleteBuildDirectories() {
+    const deletePath = this._getBuildPath(this.generatePath);
     if (fs.existsSync(deletePath)) {
       fileWalker(deletePath,
         () => { },

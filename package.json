@@ -1,6 +1,6 @@
 {
   "name": "orison",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A static site generator built on top of lit-html.",
   "keywords": [
     "Static site generation",
@@ -38,7 +38,7 @@
     "build": "node ./build/build.js",
     "serve": "node --inspect=5858 ./build/build.js serve",
     "static": "node ./bin/cli.js static",
-    "jsdocs": "doxdox 'bin/orison-directory.js' 'bin/orison-generator.js' 'bin/orison-renderer.js' 'bin/orison-server' 'bin/orison-static-server' --layout bin/documentation-template.hbs --output src/partials/documentation/jsdocs.md"
+    "jsdocs": "doxdox 'bin/orison-generator.js' 'bin/orison-server.js' 'bin/orison-static-server.js' 'bin/orison-directory.js' --layout bin/documentation-template.hbs --output src/partials/documentation/jsdocs.md"
   },
   "bin": {
     "orison": "./bin/cli.js"

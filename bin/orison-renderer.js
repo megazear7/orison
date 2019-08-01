@@ -10,7 +10,18 @@ import { mdString, mdFile } from './markdown.js';
 import { DEFAULTS } from './orison-esm.js';
 
 /**
- * A class that renders a given Orison source file based upon the provided configurations.
+ * Creates an OrisonRenderer that can be used to build a website based upon a specially formatted source directory.
+ * @param {object} config Required configuration for the generator.
+ * @param {string} config.file Required. The file to render. Should be relative to the src directory.
+ * @param {string} config.rootPath Required. Determines the root path of the source and build directories.
+ * @param {string} config.srcDirectory Optional. Defaults to "src". This is the source directory. The static directory, pages directory, and partials directory should all exist under this directory. The source directory should exist under the root path.
+ * @param {string} config.layoutFileBasename Optional. Defaults to "layout". The basename of the layouts created under the pages directory. Pages are inserted into the nearest layout within the pages hierarchy. As an example if "layout" is provided in this configuration then files named "layout.js" will be interpretted as layouts.
+ * @param {string} config.dataFileBasename Optional. Defaults to "data". The basename of the data files under the pages directory. The output of these data files are provided to pages and serve as contextual site metadata.
+ * @param {string} config.pagesDirectory Optional. Defaults to "pages". The name of the pages directory. This directory should exist under the source directory. This is the directory that will be rendered into the build directory and forms the hierarchy of your site.
+ * @param {string} config.fragmentName Optional. Defaults to "fragment". The string to identify fragments with. Fragments are pages that get rendered without the layout. This allows for page content to be requested without the surrounding layout and helps support single page application style linking. If "fragment" is provided, then each page will get a corresponding file built with the format "<page>.fragment.html" where the contents are the same as "<page>.html" but without the layout applied and where <page> is the basename of the corresponding page.
+ * @param {string} config.buildDir Optional. Defaults to "docs". The name of the build directory where the built files will go. The build directory should exist under the root path.
+ * @param {array} config.loaders Optional. Defaults to an empty array. Any objects put in this array should have a name property that is a string and a loader prop that is a function. Review the documentation on the details for implementing a loader.
+ * @returns {OrisonRenderer} An OrisonRenderer based upon the provided configurations.
  */
 export default class OrisonRenderer {
   constructor({
