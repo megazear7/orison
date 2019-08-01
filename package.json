@@ -38,7 +38,9 @@
     "build": "node ./build/build.js",
     "serve": "node --inspect=5858 ./build/build.js serve",
     "static": "node ./bin/cli.js static",
-    "jsdocs": "doxdox 'bin/orison-generator.js' 'bin/orison-server.js' 'bin/orison-static-server.js' 'bin/orison-directory.js' --layout bin/documentation-template.hbs --output src/partials/documentation/jsdocs.md"
+    "jsdocs": "npm run public-jsdocs && npm run full-jsdocs",
+    "public-jsdocs": "doxdox 'bin/orison-generator.js' 'bin/orison-server.js' 'bin/orison-static-server.js' 'bin/orison-directory.js' --layout bin/documentation-template.hbs --output src/partials/documentation/jsdocs.md",
+    "full-jsdocs": "doxdox 'bin/orison-generator.js' 'bin/orison-server.js' 'bin/orison-static-server.js' 'bin/orison-directory.js' 'bin/file-walker.js' 'bin/markdown.js' 'bin/orison-cache-loader.js' 'bin/orison-esm.js' 'bin/orison-path-maker.js' 'bin/orison-path.js' 'bin/orison.js' --layout bin/documentation-template.hbs --output src/partials/documentation/full-jsdocs.md"
   },
   "bin": {
     "orison": "./bin/cli.js"

@@ -6,6 +6,7 @@ export default parentData => html`
     <p>
       <a href="https://github.com/megazear7/orison" rel="noopener">Github</a> -
       <a href="https://www.npmjs.com/package/orison" rel="noopener">npm</a> -
+      <a href="/full-api">Full API</a> -
       <a href="/license.html">License</a> -
       <a href="/about.html">About</a>
     </p>
