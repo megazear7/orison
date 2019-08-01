@@ -2,7 +2,7 @@ import path from 'path';
 import OrisonPath from './orison-path.js';
 
 /**
- * A class which generates and maintains a list of Orison loaders. Refer to the Orison documentation on how to implement a lodaer function.
+ * A class for generating OrisonPath objects.
  * @param {object} rootPath Required. The absolute rooth path in the file system where the src directory is.
  * @param {object} srcDir Required. The name of the src directory.
  * @param {object} pagesDir Required. The name of the pages directory.

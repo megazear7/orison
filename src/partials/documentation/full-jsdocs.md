@@ -468,7 +468,7 @@ A class which generates and maintains a list of Orison loaders. Refer to the Ori
 | Name | Type | Description |  |
 | ---- | ---- | ----------- | -------- |
 | config | `object`  | Required. An object with configurations on how the source directory should be interpretted. | &nbsp; |
-| config.loaderPath | `string`  | Required. The path to the directory containing the loader JS files. | &nbsp; |
+| config.loaderPath | `string`  | Required. The absolute path to the directory containing the loader JS files. | &nbsp; |
 | config.initialLoaders | `array`  | Required. An array contain objects each with a 'name' and 'loader' property. The name property should be a string and the loader property should be a function implementing the loader. Any programatically defined loaders. These will take precedence over any loaders found in JS files under the loaderPath. | &nbsp; |
 
 
@@ -492,7 +492,7 @@ A class which generates and maintains a list of Orison loaders. Refer to the Ori
 
 ##### new OrisonPathMaker(rootPath, srcDir, pagesDir) 
 
-A class which generates and maintains a list of Orison loaders. Refer to the Orison documentation on how to implement a lodaer function.
+A class for generating OrisonPath objects.
 
 
 
@@ -563,6 +563,124 @@ A class which generates and maintains a list of Orison loaders. Refer to the Ori
 
 
 `string`  the absolute file system path to the src directory.
+
+
+
+
+</section>
+
+
+<section class="jsdocs">
+
+## bin/orison-path.js
+
+
+##### new OrisonPath(relPath, pathMaker) 
+
+This class encapsulates logic for generating paths and determining information about a relative src path.
+
+
+
+
+###### Parameters
+
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| relPath | `object`  | Required. The relative path from the src directory. | &nbsp; |
+| pathMaker | `object`  | Required. The OrisonPathMaker object which contains the information needed for calculating absolute paths. | &nbsp; |
+
+
+
+
+###### Returns
+
+
+`OrisonCacheLoader`  A new OrisonCacheLoader with the provided configurations.
+
+
+
+
+##### OrisonPath.full() 
+
+
+
+
+
+
+
+
+###### Returns
+
+
+`string`  The absolute path to the relative path provided in the constructor.
+
+
+
+
+##### OrisonPath.rel() 
+
+
+
+
+
+
+
+
+###### Returns
+
+
+`string`  The relative path as provided in the constructor.
+
+
+
+
+##### OrisonPath.exists() 
+
+
+
+
+
+
+
+
+###### Returns
+
+
+`string`  Whether a file or directory exists at the provided path.
+
+
+
+
+##### OrisonPath.isDirectory() 
+
+
+
+
+
+
+
+
+###### Returns
+
+
+`string`  Whether the item specified by the rel path is a directory.
+
+
+
+
+##### OrisonPath.stat() 
+
+
+
+
+
+
+
+
+###### Returns
+
+
+`string`  The fs.statSync results for the provided rel path.
 
 
 

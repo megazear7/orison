@@ -6,7 +6,7 @@ import camelCase from 'camelcase';
 /**
  * A class which generates and maintains a list of Orison loaders. Refer to the Orison documentation on how to implement a lodaer function.
  * @param {object} config Required. An object with configurations on how the source directory should be interpretted.
- * @param {string} config.loaderPath Required. The path to the directory containing the loader JS files.
+ * @param {string} config.loaderPath Required. The absolute path to the directory containing the loader JS files.
  * @param {array} config.initialLoaders Required. An array contain objects each with a 'name' and 'loader' property. The name property should be a string and the loader property should be a function implementing the loader. Any programatically defined loaders. These will take precedence over any loaders found in JS files under the loaderPath.
  * @returns {OrisonCacheLoader} A new OrisonCacheLoader with the provided configurations.
  */
