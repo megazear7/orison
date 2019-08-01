@@ -450,3 +450,122 @@ Renders the markdown string, returning a lit-html template.
 
 </section>
 
+
+<section class="jsdocs">
+
+## bin/orison-cache-loader.js
+
+
+##### new OrisonCacheLoader(config) 
+
+A class which generates and maintains a list of Orison loaders. Refer to the Orison documentation on how to implement a lodaer function.
+
+
+
+
+###### Parameters
+
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| config | `object`  | Required. An object with configurations on how the source directory should be interpretted. | &nbsp; |
+| config.loaderPath | `string`  | Required. The path to the directory containing the loader JS files. | &nbsp; |
+| config.initialLoaders | `array`  | Required. An array contain objects each with a 'name' and 'loader' property. The name property should be a string and the loader property should be a function implementing the loader. Any programatically defined loaders. These will take precedence over any loaders found in JS files under the loaderPath. | &nbsp; |
+
+
+
+
+###### Returns
+
+
+`OrisonCacheLoader`  A new OrisonCacheLoader with the provided configurations.
+
+
+
+
+</section>
+
+
+<section class="jsdocs">
+
+## bin/orison-path-maker.js
+
+
+##### new OrisonPathMaker(rootPath, srcDir, pagesDir) 
+
+A class which generates and maintains a list of Orison loaders. Refer to the Orison documentation on how to implement a lodaer function.
+
+
+
+
+###### Parameters
+
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| rootPath | `object`  | Required. The absolute rooth path in the file system where the src directory is. | &nbsp; |
+| srcDir | `object`  | Required. The name of the src directory. | &nbsp; |
+| pagesDir | `object`  | Required. The name of the pages directory. | &nbsp; |
+
+
+
+
+###### Returns
+
+
+`OrisonCacheLoader`  A new OrisonCacheLoader with the provided configurations.
+
+
+
+
+##### OrisonPathMaker.create() 
+
+
+
+
+
+
+
+
+###### Returns
+
+
+`object`  An OrisonPath object based upon the configuration provided in the constructor and the relative src path provided to this method.
+
+
+
+
+##### OrisonPathMaker.pagesPath() 
+
+
+
+
+
+
+
+
+###### Returns
+
+
+`string`  the absolute file system path to the pages directory.
+
+
+
+
+##### OrisonPathMaker.srcPath() 
+
+
+
+
+
+
+
+
+###### Returns
+
+
+`string`  the absolute file system path to the src directory.
+
+
+
+
+</section>
+

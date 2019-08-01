@@ -3,6 +3,13 @@ import path from 'path';
 import fileWalker from './file-walker.js';
 import camelCase from 'camelcase';
 
+/**
+ * A class which generates and maintains a list of Orison loaders. Refer to the Orison documentation on how to implement a lodaer function.
+ * @param {object} config Required. An object with configurations on how the source directory should be interpretted.
+ * @param {string} config.loaderPath Required. The path to the directory containing the loader JS files.
+ * @param {array} config.initialLoaders Required. An array contain objects each with a 'name' and 'loader' property. The name property should be a string and the loader property should be a function implementing the loader. Any programatically defined loaders. These will take precedence over any loaders found in JS files under the loaderPath.
+ * @returns {OrisonCacheLoader} A new OrisonCacheLoader with the provided configurations.
+ */
 export default class OrisonCacheLoader {
   constructor({ loaderPath, initialLoaders } = { }) {
     this._caches = { };
@@ -12,17 +19,20 @@ export default class OrisonCacheLoader {
     if (loaderPath && fs.existsSync(loaderPath)) {
       fileWalker(loaderPath,
         file => {
-          this.addLoader(camelCase(path.parse(file).name), require(file).default);
+          this._addLoader(camelCase(path.parse(file).name), require(file).default);
         },
         directory => {
         }
       );
     }
 
-    initialLoaders.forEach(loader => this.addLoader(loader.name, loader.loader));
+    initialLoaders.forEach(loader => this._addLoader(loader.name, loader.loader));
   }
 
-  addLoader(name, loader) {
+  /* PRIVATE METHOD
+   * Add a loader to the internally maintained list of loaders.
+   */
+  _addLoader(name, loader) {
     this._caches[name] = [ ];
 
     this._loaders[name] = loader;
