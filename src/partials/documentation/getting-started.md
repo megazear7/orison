@@ -72,6 +72,35 @@ export default context => html`
 
 The closest layout to the rendered page will be used for that page. For example if you have only one layout.js file and it is directly in the /src/pages directory, it will be used for rendering every page. If a layout.js exists closer in the /src/pages directory hierarchy to the rendered page, it will be used instead.
 
+### Local page data from a layout
+
+You can also access the page context from the layout by using the `context.local` property. For example you could do the following:
+
+#### /src/pages/layout.js
+```js
+import { html } from 'orison';
+
+export default context => html`
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>${context.local.data.title}</title>
+  </head>
+  <body>
+    <div>Website header</div>
+    <nav>
+    ${context.local.children.map(child => html`
+      <a href="${child.path}">${child.data.title}</a>
+    `)}
+    </nav>
+    ${context.page.html}
+    <div>Website footer</div>
+  </body>
+</html>
+`;
+```
+
 ### Utilizing index files
 
 Any file named with the "index" base name will be returned by the server for the url that matches the directory that it is in. For example the following file will be available at localhost:3000 when the server is running, _not_ localhost:3000/index.html. Most web servers that serve static files will behave in the same way.
