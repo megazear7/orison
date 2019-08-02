@@ -65,12 +65,13 @@ export default class OrisonGenerator {
   }
 
   /**
-   * @returns {void} Build the static files for the website based upon the options provided in the constructor. This is essentially a three step process: (1) Delete the directories and files in the buildDir, (2) Copy the static files to the build directory, (3) Generate HTML files in the build directory based upon the page files (HTML, JS, MD) in the pages directory.
+   * Build the static files for the website based upon the options provided in the constructor. This is essentially a three step process: (1) Delete the directories and files in the buildDir, (2) Copy the static files to the build directory, (3) Generate HTML files in the build directory based upon the page files (HTML, JS, MD) in the pages directory.
+   * @returns {object} Information about what was built.
    */
   build() {
     this._prepBuildDir();
     this._copyStaticFiles();
-    this._generatePages();
+    return this._generatePages();
   }
 
   /* PRIVATE METHOD
@@ -109,17 +110,18 @@ export default class OrisonGenerator {
   }
 
   /* PRIVATE METHOD
-   * @returns {void} Generates the pages into the build directory based upon the pages directory.
+   * Generates the pages into the build directory based upon the pages directory.
+   * @returns {object} Returns an object explaining what was generated.
    */
-  _generatePages() {
-    console.log(`Generating to ${this.buildDir} from ${this.srcDirectory}:`);
+  async _generatePages() {
     const generatePath = this._getSrcPath(this.pagesDirectory);
+    const renderInfo = { paths: [ ] };
     if (fs.existsSync(generatePath)) {
-      fileWalker(generatePath,
-        file => {
+      await fileWalker(generatePath,
+        async file => {
           const relFilePath = file.substring(path.join(this.rootPath, this.srcDirectory, this.pagesDirectory).length);
           if (this._isSourcePage(file) && relFilePath.startsWith(this.generatePath) && ! this._excludedSrcPagePaths.some(pagePath => file.startsWith(pagePath))) {
-            (new OrisonRenderer({
+            let filePaths = await new OrisonRenderer({
               file: relFilePath,
               rootPath: this.rootPath,
               srcDirectory: this.srcDirectory,
@@ -129,7 +131,12 @@ export default class OrisonGenerator {
               fragmentName: this.fragmentName,
               buildDir: this.buildDir,
               cacheLoader: this.cacheLoader
-            })).write(this.generateSlugs);
+            }).write(this.generateSlugs);
+
+            for (var pathPromise of filePaths) {
+              var renderPath = await pathPromise;
+              renderInfo.paths.push(renderPath);
+            }
           }
         },
         directory => {
@@ -138,6 +145,8 @@ export default class OrisonGenerator {
         }
       );
     }
+
+    return renderInfo;
   }
 
   /* PRIVATE METHOD

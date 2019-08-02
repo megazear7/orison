@@ -12,6 +12,7 @@ ES6 Modules are available from './node_modules/orison/bin/orison-esm.js'
 ### Static site generation
 
 Here is an example of programmatically building the src directory into the docs directory.
+The build method also returns an object with information about what pages were built which can be integrated into a build pipeline for things such as a service worker build tool or other down stream systems or integrations which needs to know about the pages that exist.
 
 ```js
 const { OrisonGenerator } = require('orison');

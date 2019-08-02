@@ -49,7 +49,7 @@ Creates an OrisonGenerator that can be used to build a website based upon a spec
 
 ##### OrisonGenerator.build() 
 
-
+Build the static files for the website based upon the options provided in the constructor. This is essentially a three step process: (1) Delete the directories and files in the buildDir, (2) Copy the static files to the build directory, (3) Generate HTML files in the build directory based upon the page files (HTML, JS, MD) in the pages directory.
 
 
 
@@ -59,7 +59,7 @@ Creates an OrisonGenerator that can be used to build a website based upon a spec
 ###### Returns
 
 
- Build the static files for the website based upon the options provided in the constructor. This is essentially a three step process: (1) Delete the directories and files in the buildDir, (2) Copy the static files to the build directory, (3) Generate HTML files in the build directory based upon the page files (HTML, JS, MD) in the pages directory.
+`object`  Information about what was built.
 
 
 

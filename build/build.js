@@ -25,15 +25,30 @@ if (process.argv.includes('serve')) {
     loaders,
     generatePath: '/blog/article',
     generateSlugs: [ payload.slug ]
-  }).build();
+  }).build()
+  .then(renderResult => {
+    renderResult.paths.forEach(path => {
+      console.log(path);
+    });
+  });
 
   new OrisonGenerator({
     rootPath,
     loaders,
     generatePath: '/blog',
     excludedPaths: [ '/blog/article' ]
-  }).build();
+  }).build()
+  .then(renderResult => {
+    renderResult.paths.forEach(path => {
+      console.log(path);
+    });
+  });
 } else {
   // If we don't know the build scenario, rebuild the whole site.
-  new OrisonGenerator({ rootPath, loaders }).build();
+  new OrisonGenerator({ rootPath, loaders }).build()
+  .then(renderResult => {
+    renderResult.paths.forEach(path => {
+      console.log(path);
+    });
+  });
 }

@@ -49,7 +49,7 @@ Creates an OrisonGenerator that can be used to build a website based upon a spec
 
 ##### OrisonGenerator.build() 
 
-
+Build the static files for the website based upon the options provided in the constructor. This is essentially a three step process: (1) Delete the directories and files in the buildDir, (2) Copy the static files to the build directory, (3) Generate HTML files in the build directory based upon the page files (HTML, JS, MD) in the pages directory.
 
 
 
@@ -59,7 +59,7 @@ Creates an OrisonGenerator that can be used to build a website based upon a spec
 ###### Returns
 
 
- Build the static files for the website based upon the options provided in the constructor. This is essentially a three step process: (1) Delete the directories and files in the buildDir, (2) Copy the static files to the build directory, (3) Generate HTML files in the build directory based upon the page files (HTML, JS, MD) in the pages directory.
+`object`  Information about what was built.
 
 
 
@@ -356,39 +356,6 @@ of each child directory.
 `Array`  An array of OrisonDirectory objects starting with this one and going up the directory hierarchy by calling the parent method until an OrisonDirectory object
 returns true for `isRoot`.
 
-
-
-
-</section>
-
-
-<section class="jsdocs">
-
-## bin/file-walker.js
-
-
-##### fileWalker(dir, fileCallback, directoryCallback) 
-
-Runs either the fileCallback or the directoryCallback on each file and directory under the given directory.
-
-
-
-
-###### Parameters
-
-| Name | Type | Description |  |
-| ---- | ---- | ----------- | -------- |
-| dir |  | The directory to recursively walk through. | &nbsp; |
-| fileCallback |  | The function to call for each file found. The first parameter to this method is the file path. | &nbsp; |
-| directoryCallback |  | The function to call for each directory found. The first parameter to this method is the directory path. | &nbsp; |
-
-
-
-
-###### Returns
-
-
-`Void`
 
 
 
