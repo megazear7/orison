@@ -5,7 +5,7 @@
   "title": "Home",
   "title": "OrisonJS",
   "libraryMessage": "OrisonJS utilizes the following JavaScript libraries:",
-  "description": "Orison server and static stite generator documentation",
+  "description": "Orison server and static site generator documentation",
   "pageSize": 10,
   "moreText": "More posts",
   "assets": {
