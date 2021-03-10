@@ -44,3 +44,9 @@ npm run static
 git push origin master
 # The Github and Netlify build integration will auto deploy the changes
 ```
+
+## Support
+
+[Buy me a coffee](https://www.buymeacoffee.com/alexlockhart)
+
+[Patreon](https://www.patreon.com/alexlockhart)
