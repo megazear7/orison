@@ -4,7 +4,7 @@ export default context => html`
   <section>
     <div>
       <a href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/orison-netlify-starter-kit">
-        <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify">
+        <img src="https://www.netlify.com/img/deploy/button.svg" width="179px" height="32px" alt="Deploy to Netlify">
       </a>
     </div>
   </section>

@@ -17,6 +17,18 @@ const loaders = [
 
 if (process.argv.includes('serve')) {
   new OrisonServer({ rootPath, loaders }).start();
+} else {
+  // If we don't know the build scenario, rebuild the whole site.
+  new OrisonGenerator({ rootPath, loaders }).build()
+  .then(renderResult => {
+    renderResult.paths.forEach(path => {
+      console.log(path);
+    });
+  });
+}
+
+/*
+// This "partial build is not working on netlify"
 } else if (payload.isBlogPost && payload.hasSlug) {
   // If we know that the scenario is a blog post update, rebuild only the blog post
   // itself and the blog listing pages.
@@ -43,12 +55,4 @@ if (process.argv.includes('serve')) {
       console.log(path);
     });
   });
-} else {
-  // If we don't know the build scenario, rebuild the whole site.
-  new OrisonGenerator({ rootPath, loaders }).build()
-  .then(renderResult => {
-    renderResult.paths.forEach(path => {
-      console.log(path);
-    });
-  });
-}
+ */
