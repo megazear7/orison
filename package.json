@@ -31,7 +31,7 @@
     "ncp": "^2.0.0"
   },
   "devDependencies": {
-    "doxdox": "^3.0.0"
+    "doxdox": "^4.0.0-preview.19"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
