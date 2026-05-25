@@ -1,8 +1,15 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+import { parseJsonRecord, parseOptionalJsonRecord } from "./schemas";
 import { normalizeDirectoryPathFromRoute } from "./routes";
-import { compareDirectories, deepMerge, exists, toPosix } from "./utils";
+import {
+  compareDirectories,
+  deepMerge,
+  exists,
+  isPlainObject,
+  toPosix,
+} from "./utils";
 import type {
   DirectoryNode,
   JsonRecord,
@@ -76,11 +83,12 @@ export function getPublicOutputForRoute(
   directory: DirectoryNode,
   routePath: string,
 ): JsonRecord | null {
+  const publicData = directory.localData.public;
   if (
     directory.path === normalizeDirectoryPathFromRoute(routePath) &&
-    directory.localData.public
+    isPlainObject(publicData)
   ) {
-    return directory.localData.public;
+    return publicData;
   }
 
   for (const child of directory.children) {
@@ -110,8 +118,18 @@ export async function readDirectoryTree(
     `${options.dataFileBasename}.json`,
   );
   const localData = (await exists(localDataPath))
-    ? JSON.parse(await fs.readFile(localDataPath, "utf8"))
+    ? parseJsonRecord(
+        JSON.parse(await fs.readFile(localDataPath, "utf8")),
+        localDataPath,
+      )
     : {};
+  const publicData = parseOptionalJsonRecord(
+    localData.public,
+    `${localDataPath}#public`,
+  );
+  if (publicData) {
+    localData.public = publicData;
+  }
   const relativeUrlPath = relativePath ? `/${toPosix(relativePath)}` : "/";
   const directory: DirectoryNode = {
     children: [],

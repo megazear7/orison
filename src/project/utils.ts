@@ -15,14 +15,31 @@ export function camelCase(value: string) {
 }
 
 export function compareDirectories(left: DirectoryNode, right: DirectoryNode) {
-  const leftOrder = Number(left.data.orison?.order ?? Number.MAX_SAFE_INTEGER);
-  const rightOrder = Number(
-    right.data.orison?.order ?? Number.MAX_SAFE_INTEGER,
-  );
+  const leftOrder = getDirectoryOrder(left);
+  const rightOrder = getDirectoryOrder(right);
   if (leftOrder !== rightOrder) {
     return leftOrder - rightOrder;
   }
   return left.name.localeCompare(right.name);
+}
+
+function getDirectoryOrder(directory: DirectoryNode) {
+  const orisonConfig = directory.data["orison"];
+  if (!isPlainObject(orisonConfig)) {
+    return Number.MAX_SAFE_INTEGER;
+  }
+
+  const orderValue = orisonConfig["order"];
+  if (typeof orderValue === "number") {
+    return Number.isFinite(orderValue) ? orderValue : Number.MAX_SAFE_INTEGER;
+  }
+
+  if (typeof orderValue === "string") {
+    const parsed = Number(orderValue);
+    return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
+  }
+
+  return Number.MAX_SAFE_INTEGER;
 }
 
 export function countDirectories(directory: DirectoryNode): number {
@@ -47,7 +64,7 @@ export function deepMerge(base: JsonRecord, override: JsonRecord): JsonRecord {
   const result: JsonRecord = { ...base };
   for (const [key, value] of Object.entries(override)) {
     if (isPlainObject(value) && isPlainObject(result[key])) {
-      result[key] = deepMerge(result[key], value as JsonRecord);
+      result[key] = deepMerge(result[key], value);
     } else {
       result[key] = value;
     }
