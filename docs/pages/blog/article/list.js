@@ -1,27 +1,17 @@
 import { html } from 'orison';
-import client from '../../../contentful.js';
-
-function searchParams(slug) {
-  var params = {
-    'content_type': 'blogPost',
-    'fields.tags': 'Orison-blog'
-  };
-
-  if (slug) params['fields.slug'] = slug;
-
-  return params;
-}
+import { getDocumentationPost, getDocumentationPosts } from '../../../partials/documentation-blog.js';
 
 export default async (context, slug) => {
-  const entries = await client.getEntries(searchParams(slug));
+  const entries = slug
+    ? [await getDocumentationPost(slug)].filter(Boolean)
+    : await getDocumentationPosts({ order: '-fields.publishDate' });
 
-  return entries.items.map(entry => {
+  return entries.map(entry => {
     return {
       name: entry.fields.slug,
       html: html`
         <section>
-          <h2>${entry.fields.title}</h2>
-          ${context.mdString(entry.fields.body)}
+          ${context.mdFile(entry.mdFilePath)}
         </section>
       `
     };

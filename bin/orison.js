@@ -1,7 +1,7 @@
 'use strict';
 
 var serverTemplate_js = require('@lit-labs/ssr/lib/server-template.js');
-var orisonStaticServer = require('./orison-static-server-BgtQdGlL.js');
+var orisonStaticServer = require('./orison-static-server-yDtzVfnZ.js');
 require('express');
 require('node:fs');
 require('node:fs/promises');

@@ -1,39 +1,34 @@
 import { html } from 'orison';
-import client from '../../contentful.js';
+import { getDocumentationPosts } from '../../partials/documentation-blog.js';
 import blogOverview from '../../partials/blog-overview.js';
-
-function searchParams(page, pageSize) {
-  var params = {
-    'content_type': 'blogPost',
-    'fields.tags': 'Orison-blog',
-    'order': '-fields.publishDate',
-    'limit': pageSize
-  };
-
-  if (page) params['skip'] = (page - 1) * pageSize;
-
-  return params;
-}
 
 async function getPages(pageSize, page) {
   let pages = [];
   if (page) {
     pages.push({
       page: page,
-      entries: await client.getEntries(searchParams(page, pageSize))
+      entries: await getDocumentationPosts({
+        limit: pageSize,
+        order: '-fields.publishDate',
+        skip: (page - 1) * pageSize
+      })
     });
   } else {
     let size = pageSize;
     let page = 1;
     while (size == pageSize) {
-      let entries = await client.getEntries(searchParams(page, pageSize));
-      if (entries.items.length > 0) {
+      let entries = await getDocumentationPosts({
+        limit: pageSize,
+        order: '-fields.publishDate',
+        skip: (page - 1) * pageSize
+      });
+      if (entries.length > 0) {
         pages.push({
           page: page,
           entries: entries
         });
       }
-      size = entries.items.length;
+      size = entries.length;
       page += 1;
     }
   }
@@ -46,7 +41,7 @@ export default async (context, slug) => {
   return pages.map(({entries, page}) => ({
     name: page.toString(),
     html: html`
-      ${entries.items.map(entry => html`
+      ${entries.map(entry => html`
         <section>
           ${blogOverview(entry)}
         </section>

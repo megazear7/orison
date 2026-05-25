@@ -21,7 +21,10 @@ npm install
 npm start
 ```
 
-This will watch files under `/src` and build files to `/bin`
+This will:
+
+ - Watch files under `/src` and build files to `/bin`
+ - Serve the Orison project under `docs` to `localhost:3000` using the Orison code built to `/bin`
 
 ## Publish
 

@@ -195,10 +195,14 @@ export class OrisonProject {
       }
     }
 
-    const listPage = site.pages.find(
-      (page) =>
-        page.kind === "list" && isListRouteMatch(page, normalized.routePath),
-    );
+    const listPage = site.pages
+      .filter(
+        (page) =>
+          page.kind === "list" && isListRouteMatch(page, normalized.routePath),
+      )
+      .sort((left, right) =>
+        right.directory.relativePath.length - left.directory.relativePath.length,
+      )[0];
     if (listPage) {
       const runtime = await this.renderListPage(
         site.tree,
@@ -818,10 +822,6 @@ export class OrisonProject {
     const resolvedWithExtension = await resolveExistingModulePath(resolved);
     if (resolvedWithExtension) {
       return resolvedWithExtension;
-    }
-
-    if (path.basename(resolved) === "contentful.js") {
-      return path.resolve(__dirname, "../src/fallback-contentful.ts");
     }
 
     return specifier;

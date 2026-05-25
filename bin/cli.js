@@ -3,7 +3,7 @@
 
 var path = require('node:path');
 var process = require('node:process');
-var orisonStaticServer = require('./orison-static-server-BgtQdGlL.js');
+var orisonStaticServer = require('./orison-static-server-yDtzVfnZ.js');
 require('express');
 require('node:fs');
 require('node:fs/promises');
