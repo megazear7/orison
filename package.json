@@ -41,23 +41,24 @@
     "@types/node": "^24.0.1",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
-    "concurrently": "^9.1.2",
     "eslint": "^9.27.0",
     "globals": "^16.2.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.5.3",
     "rollup": "^4.41.1",
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "start": "npm run orison:build && concurrently \"npm run orison:watch\" \"npm run docs:serve\"",
+    "start": "npm run orison:build && run-p orison:watch docs:serve",
     "orison:watch": "rollup -c -w",
-    "orison:build": "node -e \"require('node:fs').rmSync('bin', { force: true, recursive: true })\" && rollup -c",
+    "orison:build": "rm -rf bin && rollup -c",
     "docs:serve": "node ./bin/cli.js serve ./docs",
     "docs:build": "node ./bin/cli.js build ./docs",
     "prepare": "npm run orison:build",
     "prepack": "npm run orison:build",
     "lint": "prettier package.json eslint.config.js rollup.config.mjs tsconfig.json src --check && eslint src",
-    "fix": "prettier package.json eslint.config.js rollup.config.mjs tsconfig.json src --write && eslint src --fix"
+    "fix": "prettier package.json eslint.config.js rollup.config.mjs tsconfig.json src --write && eslint src --fix",
+    "test": "run-s orison:build docs:build"
   },
   "bin": {
     "orison": "./bin/cli.js"
