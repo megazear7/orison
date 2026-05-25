@@ -10,7 +10,7 @@ const AsyncFunction = Object.getPrototypeOf(async function () {
   return undefined;
 }).constructor as new (
   ...args: string[]
-) => (...runtimeArgs: any[]) => Promise<any>;
+) => (...runtimeArgs: readonly unknown[]) => Promise<unknown>;
 
 export async function evaluateHtmlTemplate(
   sourcePath: string,

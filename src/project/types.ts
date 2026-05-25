@@ -1,7 +1,26 @@
-export type JsonRecord = Record<string, any>;
+export type JsonPrimitive = boolean | null | number | string;
+
+export interface JsonRecord {
+  [key: string]: JsonValue;
+}
+
+export type JsonValue = JsonPrimitive | JsonRecord | JsonValue[];
+
+export type ProjectModuleFunction = (
+  ...args: readonly unknown[]
+) => Promise<unknown> | unknown;
+
+export type ProjectLoaderFunction = (
+  ...args: readonly unknown[]
+) => Promise<unknown>;
+
+export type ListPageItem = {
+  html: unknown;
+  name: string;
+} & Record<string, unknown>;
 
 export type OrisonLoaderDefinition = {
-  loader: (...args: any[]) => any;
+  loader: ProjectModuleFunction;
   name: string;
 };
 
@@ -94,7 +113,7 @@ export type PageRuntime = {
 export type PageContext = {
   children: DirectoryNode[];
   data: JsonRecord;
-  loaders: Record<string, (...args: any[]) => Promise<any>>;
+  loaders: Record<string, ProjectLoaderFunction>;
   local: DirectoryNode;
   mdFile: (filePath: string) => unknown;
   mdString: (markdown: string) => unknown;
@@ -107,4 +126,9 @@ export type PageContext = {
   parents: DirectoryNode[];
   path: string;
   root: DirectoryNode;
+};
+
+export type SiteState = {
+  pages: PageDefinition[];
+  tree: DirectoryNode;
 };

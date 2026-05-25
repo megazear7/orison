@@ -1,6 +1,6 @@
 {
   "name": "orison",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A static site generator built on top of lit-html.",
   "keywords": [
     "Static site generation",
@@ -29,7 +29,8 @@
     "express": "^5.2.1",
     "jiti": "^2.4.2",
     "lit": "^3.3.1",
-    "markdown-it": "^14.2.0"
+    "markdown-it": "^14.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",

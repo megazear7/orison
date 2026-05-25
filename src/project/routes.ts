@@ -1,7 +1,8 @@
 import path from "node:path";
 
+import { parseListPageItems } from "./schemas";
 import { toPosix } from "./utils";
-import type { PageDefinition, RenderedOutput } from "./types";
+import type { ListPageItem, PageDefinition, RenderedOutput } from "./types";
 
 export function buildListItemRoute(page: PageDefinition, name: string) {
   const prefix = page.directory.relativePath
@@ -102,15 +103,13 @@ export function normalizeDirectoryPathFromRoute(routePath: string) {
   return routePath.replace(/\/data\.json$/, "").replace(/\.html$/, "");
 }
 
-export function normalizeListItems(rawItems: any, slug?: string) {
-  if (!rawItems) {
-    return [];
-  }
-
-  const items = Array.isArray(rawItems) ? rawItems : [rawItems];
-  return items.filter(
-    (item) =>
-      item && typeof item.name === "string" && (!slug || item.name === slug),
+export function normalizeListItems(
+  rawItems: unknown,
+  slug: string | undefined,
+  sourceDescription: string,
+): ListPageItem[] {
+  return parseListPageItems(rawItems, sourceDescription).filter(
+    (item) => !slug || item.name === slug,
   );
 }
 
