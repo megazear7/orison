@@ -17,6 +17,9 @@
   "engines": {
     "node": ">=24.16.0"
   },
+  "files": [
+    "bin"
+  ],
   "main": "bin/orison.js",
   "exports": {
     ".": "./bin/orison.js"
@@ -51,6 +54,8 @@
     "orison:build": "node -e \"require('node:fs').rmSync('bin', { force: true, recursive: true })\" && rollup -c",
     "docs:serve": "node ./bin/cli.js serve ./docs",
     "docs:build": "node ./bin/cli.js build ./docs",
+    "prepare": "npm run orison:build",
+    "prepack": "npm run orison:build",
     "lint": "prettier package.json eslint.config.js rollup.config.mjs tsconfig.json src --check && eslint src",
     "fix": "prettier package.json eslint.config.js rollup.config.mjs tsconfig.json src --write && eslint src --fix"
   },
