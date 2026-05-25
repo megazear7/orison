@@ -46,8 +46,8 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "start": "concurrently \"npm run orison:watch\" \"npm run docs:serve\"",
-    "orison:watch": "node -e \"require('node:fs').rmSync('bin', { force: true, recursive: true })\" && rollup -c -w",
+    "start": "npm run orison:build && concurrently \"npm run orison:watch\" \"npm run docs:serve\"",
+    "orison:watch": "rollup -c -w",
     "orison:build": "node -e \"require('node:fs').rmSync('bin', { force: true, recursive: true })\" && rollup -c",
     "docs:serve": "node ./bin/cli.js serve ./docs",
     "docs:build": "node ./bin/cli.js build ./docs",

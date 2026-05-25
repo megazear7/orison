@@ -112,7 +112,7 @@ type PageContext = {
   mdFile: (filePath: string) => unknown;
   mdString: (markdown: string) => unknown;
   page: {
-    html: string;
+    html: unknown;
     path: string;
     routePath: string;
   };
@@ -774,7 +774,7 @@ export class OrisonProject {
       fragmentHtml,
       new Map(),
     );
-    layoutContext.page.html = fragmentHtml;
+    layoutContext.page.html = unsafeHTML(fragmentHtml);
 
     const jiti = this.createJiti();
     const layoutModule = await this.loadModuleDefault(jiti, layoutPath);
@@ -1121,6 +1121,7 @@ function requireFromPackage(specifier: string) {
 
 function resolveOptions(options: OrisonOptions): ResolvedOptions {
   const rootPath = path.resolve(options.rootPath ?? process.cwd());
+  const defaultBuildDir = path.join(rootPath, "dist");
   const sourceRoot = requireFromPackage("node:fs").existsSync(
     path.join(
       rootPath,
@@ -1133,7 +1134,7 @@ function resolveOptions(options: OrisonOptions): ResolvedOptions {
   return {
     buildDir: options.buildDir
       ? path.resolve(rootPath, options.buildDir)
-      : path.join(rootPath, "docs"),
+      : defaultBuildDir,
     dataFileBasename: options.dataFileBasename ?? "data",
     excludedPaths: options.excludedPaths ?? [],
     fragmentName: options.fragmentName ?? "fragment",
@@ -1143,9 +1144,7 @@ function resolveOptions(options: OrisonOptions): ResolvedOptions {
     loaders: options.loaders ?? [],
     outputRoot: options.buildDir
       ? path.resolve(rootPath, options.buildDir)
-      : sourceRoot === rootPath
-        ? rootPath
-        : path.join(rootPath, "docs"),
+      : defaultBuildDir,
     pagesDirectory: options.pagesDirectory ?? "pages",
     pagesRoot: path.join(sourceRoot, options.pagesDirectory ?? "pages"),
     port: options.port ?? 3000,

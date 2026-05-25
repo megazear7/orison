@@ -418,7 +418,7 @@ class OrisonProject {
             return fragmentHtml;
         }
         const layoutContext = await this.createContext(root, page.directory, page, context.path, fragmentHtml, new Map());
-        layoutContext.page.html = fragmentHtml;
+        layoutContext.page.html = unsafeHtml_js.unsafeHTML(fragmentHtml);
         const jiti = this.createJiti();
         const layoutModule = await this.loadModuleDefault(jiti, layoutPath);
         const layoutResult = await layoutModule(layoutContext);
@@ -679,13 +679,14 @@ function requireFromPackage(specifier) {
 }
 function resolveOptions(options) {
     const rootPath = path.resolve(options.rootPath ?? process.cwd());
+    const defaultBuildDir = path.join(rootPath, "dist");
     const sourceRoot = requireFromPackage("node:fs").existsSync(path.join(rootPath, options.srcDirectory ?? "src", options.pagesDirectory ?? "pages"))
         ? path.join(rootPath, options.srcDirectory ?? "src")
         : rootPath;
     return {
         buildDir: options.buildDir
             ? path.resolve(rootPath, options.buildDir)
-            : path.join(rootPath, "docs"),
+            : defaultBuildDir,
         dataFileBasename: options.dataFileBasename ?? "data",
         excludedPaths: options.excludedPaths ?? [],
         fragmentName: options.fragmentName ?? "fragment",
@@ -695,9 +696,7 @@ function resolveOptions(options) {
         loaders: options.loaders ?? [],
         outputRoot: options.buildDir
             ? path.resolve(rootPath, options.buildDir)
-            : sourceRoot === rootPath
-                ? rootPath
-                : path.join(rootPath, "docs"),
+            : defaultBuildDir,
         pagesDirectory: options.pagesDirectory ?? "pages",
         pagesRoot: path.join(sourceRoot, options.pagesDirectory ?? "pages"),
         port: options.port ?? 3000,
@@ -788,4 +787,4 @@ class OrisonStaticServer {
 exports.OrisonGenerator = OrisonGenerator;
 exports.OrisonServer = OrisonServer;
 exports.OrisonStaticServer = OrisonStaticServer;
-//# sourceMappingURL=orison-static-server-SlH3jWF6.js.map
+//# sourceMappingURL=orison-static-server-BgtQdGlL.js.map
