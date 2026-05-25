@@ -1094,8 +1094,22 @@ function normalizeRequestedRoute(routePath: string, fragmentName: string) {
 
   return {
     fragmentOnly: false,
-    routePath: routePath === "" ? "/" : routePath,
+    routePath: normalizeServeRoutePath(routePath === "" ? "/" : routePath),
   };
+}
+
+function normalizeServeRoutePath(routePath: string) {
+  if (
+    routePath === "/" ||
+    routePath.endsWith("/") ||
+    path.extname(routePath) ||
+    routePath.endsWith("/data.json") ||
+    routePath === "/data.json"
+  ) {
+    return routePath;
+  }
+
+  return `${routePath}.html`;
 }
 
 async function renderUnknown(value: unknown): Promise<string> {
