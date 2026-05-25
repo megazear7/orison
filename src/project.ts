@@ -142,12 +142,41 @@ export class OrisonProject {
   }
 
   async build(): Promise<BuildResult> {
-    const site = await this.inspectSite();
-    process.env.ORISON_PROJECT_ROOT = this.options.rootPath;
-    const outputs = await this.renderBuildOutputs(site.tree);
+    const startedAt = Date.now();
+    this.logBuild(`starting build in ${this.relativeToRoot(this.options.rootPath)}`);
+    this.logBuild(`pages root: ${this.relativeToRoot(this.options.pagesRoot)}`);
+    this.logBuild(`output root: ${this.relativeToRoot(this.options.outputRoot)}`);
 
+    this.logBuild("inspecting site structure");
+    const site = await this.inspectSite();
+    const staticFiles = await this.getStaticFiles();
+
+    this.logBuild(
+      `discovered ${countDirectories(site.tree)} directories and ${site.pages.length} page definitions`,
+    );
+    this.logPageDefinitions(site.pages);
+    if (staticFiles.length === 0) {
+      this.logBuild("no static assets found");
+    } else {
+      this.logBuild(`found ${staticFiles.length} static asset files`);
+      this.logStaticFiles(staticFiles);
+    }
+
+    process.env.ORISON_PROJECT_ROOT = this.options.rootPath;
+
+    this.logBuild("rendering build outputs");
+    const outputs = await this.renderBuildOutputs(site.tree);
+    this.logBuild(`prepared ${outputs.length} output files`);
+    this.logRenderedOutputs(outputs);
+
+    this.logBuild("copying static assets");
     await this.copyStaticDirectory();
+
+    this.logBuild("writing rendered outputs");
     await Promise.all(outputs.map((output) => this.writeOutput(output)));
+
+    const elapsedMs = Date.now() - startedAt;
+    this.logBuild(`build completed in ${elapsedMs}ms`);
 
     return {
       files: outputs.map((output) => output.outputPath),
@@ -251,6 +280,57 @@ export class OrisonProject {
 
   get outputRoot() {
     return this.options.outputRoot;
+  }
+
+  private logBuild(message: string) {
+    console.info(`[orison:build] ${message}`);
+  }
+
+  private logPageDefinitions(pages: PageDefinition[]) {
+    for (const page of pages) {
+      if (page.kind === "list") {
+        this.logBuild(
+          `page list ${this.relativeToRoot(page.sourcePath)} -> dynamic routes under ${page.routeBase}`,
+        );
+        continue;
+      }
+
+      const routes = this.getDirectRoutes(page);
+      this.logBuild(
+        `page file ${this.relativeToRoot(page.sourcePath)} -> ${routes.join(", ")}`,
+      );
+    }
+  }
+
+  private logRenderedOutputs(outputs: RenderedOutput[]) {
+    for (const output of outputs) {
+      this.logBuild(
+        `output ${output.contentType} ${output.routePath} -> ${this.relativeToRoot(output.outputPath)} (${formatByteSize(output.body.length)})`,
+      );
+    }
+  }
+
+  private logStaticFiles(filePaths: string[]) {
+    for (const filePath of filePaths) {
+      this.logBuild(`static asset ${this.relativeToRoot(filePath)}`);
+    }
+  }
+
+  private async getStaticFiles() {
+    if (!(await exists(this.staticRoot))) {
+      return [];
+    }
+
+    return walkFiles(this.staticRoot);
+  }
+
+  private relativeToRoot(targetPath: string) {
+    const relativePath = path.relative(this.options.rootPath, targetPath);
+    if (relativePath === "") {
+      return ".";
+    }
+
+    return toPosix(relativePath);
   }
 
   private async copyStaticDirectory() {
@@ -956,6 +1036,16 @@ function compareDirectories(left: DirectoryNode, right: DirectoryNode) {
   return left.name.localeCompare(right.name);
 }
 
+function countDirectories(directory: DirectoryNode): number {
+  return (
+    1 +
+    directory.children.reduce(
+      (total, child) => total + countDirectories(child),
+      0,
+    )
+  );
+}
+
 function dedupeOutputs(outputs: RenderedOutput[]) {
   const seen = new Map<string, RenderedOutput>();
   for (const output of outputs) {
@@ -983,6 +1073,10 @@ async function exists(targetPath: string) {
   } catch {
     return false;
   }
+}
+
+function formatByteSize(value: number) {
+  return new Intl.NumberFormat("en-US").format(value) + " bytes";
 }
 
 function getParents(directory: DirectoryNode) {
