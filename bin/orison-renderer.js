@@ -1,13 +1,16 @@
 import md from 'markdown-it';
 import fs from 'fs';
 import path from 'path';
-import { unsafeHTML } from '@popeindustries/lit-html-server/directives/unsafe-html.js';
-import { html, renderToString } from '@popeindustries/lit-html-server';
+import createJiti from 'jiti';
 import OrisonDirectory from './orison-directory.js';
 import OrisonPathMaker from './orison-path-maker.js';
 import OrisonCacheLoader from './orison-cache-loader.js';
 import { mdString, mdFile } from './markdown.js';
 import { DEFAULTS } from './orison-esm.js';
+
+const jiti = createJiti(import.meta.url, { interopDefault: true });
+const { html, renderToString } = jiti('@popeindustries/lit-html-server');
+const { unsafeHTML } = jiti('@popeindustries/lit-html-server/directives/unsafe-html.js');
 
 /**
  * Creates an OrisonRenderer that can be used to build a website based upon a specially formatted source directory.
@@ -112,6 +115,7 @@ export default class OrisonRenderer {
   renderHtmlFile(filePathOverride) {
     const filePath = filePathOverride ? filePathOverride : this.file.full;
     const context = this.context();
+    const pageHtml = html`${unsafeHTML(fs.readFileSync(filePath).toString())}`;
 
     return [
       {
@@ -120,14 +124,14 @@ export default class OrisonRenderer {
             .then(layout => renderToString(layout({
               ...context,
               page: {
-                html: eval('html`' + fs.readFileSync(filePath).toString() + '`'),
+                html: pageHtml,
                 path: this.pageContextPath
               }
             })))
       },
       {
         path: this.buildFragmentPath,
-        html: renderToString(eval('html`' + fs.readFileSync(filePath).toString() + '`')),
+        html: renderToString(pageHtml),
       }
     ];
   }
@@ -155,7 +159,7 @@ export default class OrisonRenderer {
     if (process.env.NODE_ENV !== 'production') {
       this.clearSrcModuleCache();
     }
-    const fileExport = require(this.file.full).default;
+    const fileExport = loadModule(this.file.full);
     const slug = segment ? segment.replace('.html', '').replace('.' + this.fragmentName, '') : undefined;
     const context = this.context();
 
@@ -190,7 +194,7 @@ export default class OrisonRenderer {
   }
 
   renderJsonFile() {
-    const json = require(this.file.full).public;
+    const json = loadRawModule(this.file.full).public;
 
     return [{
       path: this.buildJsonFilePath,
@@ -297,6 +301,16 @@ export default class OrisonRenderer {
     const directory = filePath.slice(0, filePath.lastIndexOf(path.sep))
     return path.join(directory, fileName);
   }
+}
+
+function loadModule(modulePath) {
+  const loadedModule = loadRawModule(modulePath);
+
+  return loadedModule && loadedModule.default ? loadedModule.default : loadedModule;
+}
+
+function loadRawModule(modulePath) {
+  return jiti(modulePath);
 }
 
 class LayoutRenderer {

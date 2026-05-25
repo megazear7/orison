@@ -14,8 +14,10 @@
 
 ## Install
 
+Use Node 24.16.0 for local development.
+
 ```
-npm run install
+npm install
 ```
 
 ## Develop

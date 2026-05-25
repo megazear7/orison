@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
+import createJiti from 'jiti';
 import fileWalker from './file-walker.js';
 import camelCase from 'camelcase';
+
+const jiti = createJiti(import.meta.url, { interopDefault: true });
 
 /**
  * A class which generates and maintains a list of Orison loaders. Refer to the Orison documentation on how to implement a lodaer function.
@@ -19,7 +22,7 @@ export default class OrisonCacheLoader {
     if (loaderPath && fs.existsSync(loaderPath)) {
       fileWalker(loaderPath,
         file => {
-          this._addLoader(camelCase(path.parse(file).name), require(file).default);
+          this._addLoader(camelCase(path.parse(file).name), loadModule(file));
         },
         directory => {
         }
@@ -60,6 +63,12 @@ export default class OrisonCacheLoader {
       }
     };
   }
+}
+
+function loadModule(modulePath) {
+  const loadedModule = jiti(modulePath);
+
+  return loadedModule && loadedModule.default ? loadedModule.default : loadedModule;
 }
 
 /*

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "An example Orison project setup for GitHub pages.",
   "main": "orison.js",
+  "engines": {
+    "node": "24.16.0"
+  },
   "dependencies": {
     "orison": "^1.0.0"
   },

@@ -1,2 +1,3 @@
-require = require('esm')(module);
-module.exports = require('./orison-esm.js');
+const createJiti = require('jiti');
+
+module.exports = createJiti(__filename, { interopDefault: true })('./orison-esm.js');

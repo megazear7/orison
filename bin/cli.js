@@ -2,9 +2,10 @@
 
 const ncp = require('ncp');
 const path = require('path');
-const { OrisonGenerator, OrisonServer, OrisonStaticServer } = require('./orison.js');
+const createJiti = require('jiti');
 const pjson = require('../package.json');
-const { DEFAULTS } = require('./orison-esm.js');
+const jiti = createJiti(__filename, { interopDefault: true });
+const { OrisonGenerator, OrisonServer, OrisonStaticServer, DEFAULTS } = jiti('./orison-esm.js');
 
 const generatePath = getConfig('--generatePath', DEFAULTS.GENERATE_PATH);
 const generateSlugs = getArrayConfig('--generateSlugs', DEFAULTS.GENERATE_SLUGS);

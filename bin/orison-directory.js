@@ -1,6 +1,11 @@
 import fsPath, { join } from 'path';
 import fs, { lstatSync, readdirSync } from 'fs';
+import createJiti from 'jiti';
 import { DEFAULTS } from './orison-esm.js';
+
+const jiti = createJiti(import.meta.url, { interopDefault: true });
+const { html } = jiti('@popeindustries/lit-html-server');
+const { unsafeHTML } = jiti('@popeindustries/lit-html-server/directives/unsafe-html.js');
 
 /**
  * A class representing a src pages directory. Provides easy to use accessor methods
@@ -73,14 +78,16 @@ export default class OrisonDirectory {
         let htmlLayoutPath = fsPath.join(directory, this.layoutFileBasename + '.html');
 
         if (fs.existsSync(jsLayoutPath)) {
-          return import(jsLayoutPath).then(layout => layout.default);
+          this._layout = () => Promise.resolve(loadModule(jsLayoutPath));
+          return this._layout();
         } else if (fs.existsSync(htmlLayoutPath)) {
-          return new Promise((resolve, reject) => {
+          this._layout = () => new Promise((resolve, reject) => {
             fs.readFile(htmlLayoutPath, 'utf8', (err, htmlString) => {
               if (err) reject(err);
-              resolve(html`${unsafeHTML(htmlString)}`);
+              resolve(() => html`${unsafeHTML(htmlString)}`);
             });
           });
+          return this._layout();
         } else {
           directory = fsPath.dirname(directory);
         }
@@ -183,4 +190,10 @@ export default class OrisonDirectory {
 
     return parents.reverse();
   }
+}
+
+function loadModule(modulePath) {
+  const loadedModule = jiti(modulePath);
+
+  return loadedModule && loadedModule.default ? loadedModule.default : loadedModule;
 }

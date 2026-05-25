@@ -1,7 +1,10 @@
 const path = require('path');
-const { OrisonGenerator, OrisonServer } = require('../bin/orison.js');
+const createJiti = require('jiti');
 const BuildPayload = require('./build-payload.js');
 require('dotenv').config();
+
+const jiti = createJiti(__filename, { interopDefault: true });
+const { OrisonGenerator, OrisonServer } = jiti('../bin/orison-esm.js');
 
 console.log('INCOMING_HOOK_BODY', process.env.INCOMING_HOOK_BODY);
 
