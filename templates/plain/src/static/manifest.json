@@ -1,6 +1,6 @@
 {
-  "name": "OrisonJS",
-  "short_name": "OrisonJS",
+  "name": "Orison",
+  "short_name": "Orison",
   "description": "Orison server and static stite generator documentation",
   "start_url": "/",
   "display": "standalone",

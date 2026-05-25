@@ -1,4 +1,4 @@
-import { html } from 'orison';
+const { html } = require('orison');
 
 export default parentData => html`
   <ul class="breadcrumb">

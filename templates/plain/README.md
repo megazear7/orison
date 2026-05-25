@@ -3,6 +3,7 @@
 ## Install
 
 ```
+nvm use 24.16.0
 npm install
 ```
 
@@ -12,11 +13,8 @@ npm install
 npm run build
 ```
 
-## Deploy
-
-This requires a remote Github repo with Github Pages configured.
+## Develop
 
 ```
-git commit -m "..."
-git push origin master
+npm run start
 ```
