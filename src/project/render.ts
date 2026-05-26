@@ -6,6 +6,16 @@ import { renderThunked } from "@lit-labs/ssr";
 import { html as orisonHtml } from "../html";
 import type { PageContext } from "./types";
 
+type PromiseLikeValue = {
+  then(onfulfilled?: (value: unknown) => unknown): unknown;
+};
+
+type TemplateLike = {
+  _$litType$: unknown;
+  strings: unknown;
+  values: unknown[];
+};
+
 const AsyncFunction = Object.getPrototypeOf(async function () {
   return undefined;
 }).constructor as new (
@@ -26,6 +36,42 @@ export async function evaluateHtmlTemplate(
   return templateFactory(context, orisonHtml);
 }
 
+function isPromiseLike(value: unknown): value is PromiseLikeValue {
+  return !!value && typeof value === "object" && "then" in value;
+}
+
+function isTemplateLike(value: unknown): value is TemplateLike {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    "_$litType$" in value &&
+    "strings" in value &&
+    "values" in value &&
+    Array.isArray((value as TemplateLike).values)
+  );
+}
+
+async function resolveRenderValue(value: unknown): Promise<unknown> {
+  if (isPromiseLike(value)) {
+    return resolveRenderValue(await value);
+  }
+
+  if (Array.isArray(value)) {
+    return Promise.all(value.map((entry) => resolveRenderValue(entry)));
+  }
+
+  if (isTemplateLike(value)) {
+    return {
+      ...value,
+      values: await Promise.all(
+        value.values.map((entry) => resolveRenderValue(entry)),
+      ),
+    };
+  }
+
+  return value;
+}
+
 export async function renderUnknown(value: unknown): Promise<string> {
   if (value === null || value === undefined || value === false) {
     return "";
@@ -40,5 +86,5 @@ export async function renderUnknown(value: unknown): Promise<string> {
     return chunks.join("");
   }
 
-  return collectResult(renderThunked(value));
+  return collectResult(renderThunked(await resolveRenderValue(value)));
 }

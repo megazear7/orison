@@ -1,0 +1,19 @@
+{
+  "name": "orison-test-02",
+  "version": "1.0.0",
+  "description": "Test 02 for Orison",
+  "main": "orison.js",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "dependencies": {
+    "orison": "file:../.."
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "orison serve",
+    "build": "orison build"
+  },
+  "author": "Alex Lockhart",
+  "license": "ISC"
+}

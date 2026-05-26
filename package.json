@@ -1,6 +1,6 @@
 {
   "name": "orison",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "A static site generator built on top of lit-html.",
   "keywords": [
     "Static site generation",
@@ -59,7 +59,8 @@
     "prepack": "npm run orison:build",
     "lint": "prettier package.json eslint.config.js rollup.config.mjs tsconfig.json src --check && eslint src",
     "fix": "prettier package.json eslint.config.js rollup.config.mjs tsconfig.json src --write && eslint src --fix",
-    "test": "run-s orison:build docs:build"
+    "test:cases": "./tests/test.sh",
+    "test": "run-s orison:build docs:build test:cases"
   },
   "bin": {
     "orison": "bin/cli.js"
