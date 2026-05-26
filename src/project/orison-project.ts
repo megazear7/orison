@@ -88,7 +88,9 @@ export class OrisonProject {
     await Promise.all(outputs.map((output) => this.writeOutput(output)));
 
     const elapsedMs = Date.now() - startedAt;
-    this.logBuild(`build completed in ${elapsedMs}ms`);
+    this.logBuild(
+      `build completed in ${elapsedMs}ms -> ${this.relativeToRoot(this.options.outputRoot)}`,
+    );
 
     return {
       files: outputs.map((output) => output.outputPath),
