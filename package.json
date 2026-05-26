@@ -1,6 +1,6 @@
 {
   "name": "orison",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "A static site generator built on top of lit-html.",
   "keywords": [
     "Static site generation",
@@ -47,6 +47,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.5.3",
     "rollup": "^4.41.1",
+    "tslib": "^2.8.1",
     "typescript": "^5.8.3"
   },
   "scripts": {
