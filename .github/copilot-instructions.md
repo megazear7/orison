@@ -9,4 +9,4 @@ The project uses Prettier and ESLint for code formatting and linting, respective
 The docs directory contains documentation for the project, which is also generated using Orison.
 The templates directory contains minimal example Orison projects that can be used as a starting point for new projects.
 The documentation includes a "Deploy to Netlify" button `templates/netlify` which deploys a simple static site. Later on we will add more templates with "Deploy to Netlify" buttons for different use cases.
-Test the orison build and documentation build using `npm test`, which runs both the `orison:build` and `docs:build` scripts.
+Test the orison build and documentation build using `npm test`, which runs both the `orison:build` and `docs:build` scripts as well as a test script that runs the tests in the `tests` directory. The output of these tests will show discrepancies between the generated files and the expected output, which can be used to identify issues with the build process or the documentation generation. The tests are run using a shell script that compares the generated files to the expected output and outputs any differences.
